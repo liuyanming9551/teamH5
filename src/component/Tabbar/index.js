@@ -9,9 +9,8 @@ class TabBarExample extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedTab: 'redTab',
-      hidden: false,
-      fullScreen: true,
+      selectedTab: 'blueTab',
+      hidden: false
     };
   }
 
