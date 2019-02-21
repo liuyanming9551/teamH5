@@ -9,7 +9,7 @@ class TabBarExample extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedTab: 'blueTab',
+      selectedTab: 'yellowTab',
       hidden: false
     };
   }

@@ -1,8 +1,20 @@
 import React, { Component } from 'react';
-class My extends  Component {
-    render(){
+import { NavBar, Icon } from 'antd-mobile';
+import UserInfo from "./../../component/useInfo";
+class My extends Component {
+    render() {
         return (
-            <div>this is My page</div>
+            <div className="myPlane">
+                <header>
+                    <UserInfo />
+                </header>
+                <section>
+
+                </section>
+                <footer>
+
+                </footer>
+            </div>
         )
     }
 }
