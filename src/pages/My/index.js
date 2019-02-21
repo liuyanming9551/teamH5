@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { NavBar, Icon } from 'antd-mobile';
 import UserInfo from "./useInfo";
+import "./index.less"
 class My extends Component {
     render() {
         return (
