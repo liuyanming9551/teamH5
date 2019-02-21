@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { NavBar, Icon } from 'antd-mobile';
-import UserInfo from "./../../component/useInfo";
+import UserInfo from "./useInfo";
 class My extends Component {
     render() {
         return (
