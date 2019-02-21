@@ -9,6 +9,7 @@
     "less": "^3.9.0",
     "less-loader": "^4.1.0",
     "react": "^16.8.2",
+    "react-app-rewired": "^2.1.0",
     "react-dom": "^16.8.2",
     "react-scripts": "2.1.5"
   },
@@ -27,5 +28,8 @@
     "not ie <= 11",
     "not op_mini all"
   ],
-  "devDependencies": {}
+  "devDependencies": {
+    "css-loader": "^2.1.0",
+    "style-loader": "^0.23.1"
+  }
 }
