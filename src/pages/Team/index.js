@@ -146,11 +146,6 @@ class Team extends Component {
     }
     render() {
         return <div>
-            <NavBar
-                mode="light"
-                icon={<Icon type="left" />}
-                onLeftClick={() => console.log('onLeftClick')}
-            >团队</NavBar>
             <div style={{display:'flex'}}>
             <div id="main1" style={{ width: '300px', height: '300px' }}></div>
              <div style={{marginTop:'30px'}}>
