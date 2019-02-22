@@ -1,6 +1,7 @@
 import React, { Component } from "react";
-import { Flex, WhiteSpace } from 'antd-mobile';
+import { Card, WingBlank, WhiteSpace,Button, } from 'antd-mobile';
 import "./index.less";
+import List from "./../list/index.js";
 export default class UserInfo extends Component {
     render() {
         return (
@@ -17,8 +18,37 @@ export default class UserInfo extends Component {
                 </header>
 
                 <section className="ownDesc">
-                    我是一个对生后充满激情的人。
+                    <WingBlank size="lg">
+                        <WhiteSpace size="lg" />
+                        <Card>
+                            <Card.Header
+                                title="自我评价"
+                                thumb="https://gw.alipayobjects.com/zos/rmsportal/MRhHctKOineMbKAZslML.jpg"
+                            />
+                            <Card.Body>
+                                <div>我是一个对生活充满激情的人。故事和酒我都有，你确定跟不跟我走。</div>
+                            </Card.Body>
+                            {/* <Card.Footer content="footer content" extra={<div>extra footer content</div>} /> */}
+                        </Card>
+                        <WhiteSpace size="sm" />
+                    </WingBlank>
+                    <WingBlank size="lg">
+                        <Card>
+                            <Card.Header
+                                title="他人技能"
+                                thumb="https://gw.alipayobjects.com/zos/rmsportal/MRhHctKOineMbKAZslML.jpg"
+                            />
+                            <Card.Body>
+                                <Button icon="check-circle-o" inline size="small">with icon and inline</Button>
+                                <Button icon="check-circle-o" inline size="small">with icon and inline</Button>
+                            </Card.Body>
+                        </Card>
+                        <WhiteSpace size="lg" />
+                    </WingBlank>
                 </section>
+                <footer>
+                    <List></List>
+                </footer>
             </div>
         )
     }

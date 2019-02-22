@@ -66,6 +66,7 @@ function overWrite(config) {
                 flexbox: 'no-2009',
               }),
             ],
+           
           },
         },
         {
@@ -73,6 +74,7 @@ function overWrite(config) {
           options: {
             // theme vars, also can use theme.js instead of this.
             modifyVars: theme,
+            javascriptEnabled: true
           },
         },
       ]
