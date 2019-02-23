@@ -67,7 +67,7 @@ class Team extends Component {
                 name: '销量',
                 type: 'bar',
                 itemStyle: {
-                    normal: {color: '#33a3f4'}
+                    normal: {color: '#6cbdf7'}
                 },
                   barGap:'-100%',
                   barCategoryGap:'40%',
@@ -130,7 +130,7 @@ class Team extends Component {
                 name: '运动量',
                 type: 'bar',
                 itemStyle: {
-                    normal: {color: '#33a3f4'}
+                    normal: {color: '#6cbdf7'}
                 },
                   barGap:'-100%',
                   barCategoryGap:'40%',
@@ -149,10 +149,10 @@ class Team extends Component {
             <div style={{display:'flex'}}>
             <div id="main1" style={{ width: '300px', height: '300px' }}></div>
              <div style={{marginTop:'30px'}}>
-             <button style={{borderRadius:'4px',background:"#33a3f4",border:'none',color:'white',height:'24px'}}>本周</button><br/>
-             <button style={{marginTop:'10px',borderRadius:'4px',border:'none'}}>本月</button><br/>
-             <button style={{marginTop:'10px',borderRadius:'4px',border:'none'}}>本季度</button><br/>
-             <button style={{marginTop:'10px',borderRadius:'4px',border:'none'}}>本年度</button>
+             <button style={{borderRadius:'4px',background:"#33a3f4",border:'none',color:'white',padding:'6px 8px'}}>本周</button><br/>
+             <button style={{marginTop:'10px',borderRadius:'4px',border:'none',padding:'6px 8px'}}>本月</button><br/>
+             <button style={{marginTop:'10px',borderRadius:'4px',border:'none',padding:'6px 8px'}}>本季度</button><br/>
+             <button style={{marginTop:'10px',borderRadius:'4px',border:'none',padding:'6px 8px'}}>本年度</button>
              </div>
             </div>
             <div id="main2" style={{ width: '375px', height: '300px' }}></div>

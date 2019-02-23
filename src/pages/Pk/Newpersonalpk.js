@@ -1,6 +1,5 @@
-新建个人PK
 import React from "react";
-import { DatePicker, List, Button, TextareaItem, InputItem, WhiteSpace } from 'antd-mobile';
+import { DatePicker, List, Button, TextareaItem, InputItem, WhiteSpace, Flex } from 'antd-mobile';
 const nowTimeStamp = Date.now();
 const now = new Date(nowTimeStamp);
 // GMT is not currently observed in the UK. So use UTC now.
@@ -15,7 +14,7 @@ if (minDate.getDate() !== maxDate.getDate()) {
     minDate = new Date(maxDate.getFullYear(), maxDate.getMonth(), maxDate.getDate());
 }
 
- 
+
 class Pk extends React.Component {
     constructor(props) {
         super(props)
@@ -26,7 +25,6 @@ class Pk extends React.Component {
             dpValue: null,
             customChildValue: null,
             visible: false,
-
         }
     }
     render() {
@@ -51,7 +49,6 @@ class Pk extends React.Component {
                     <List.Item arrow="horizontal">结束日期：</List.Item>
                 </DatePicker>
             </List>
-            <List>
                 <InputItem
                     placeholder="请输入您所要PK的姓名"
                     ref={el => this.labelFocusInst = el}
@@ -63,11 +60,9 @@ class Pk extends React.Component {
                     autoHeight
                     ref={el => this.customFocusInst = el}
                 />
-            </List>
-
-            <div style={{ marginTop: '20px' }}>
-                <Button style={{ width: '96%', marginLeft: '2%', borderRadius: "6px", background: '#33a3f4', color: 'white' }} >确认</Button><WhiteSpace />
-                <Button style={{ width: '96%', marginLeft: '2%', borderRadius: "6px", background: '#33a3f4', color: 'white' }}>重置</Button><WhiteSpace />
+            <div style={{ marginTop: '20px',display:'flex' }}>
+                <Button style={{ width: '96%', borderRadius: "6px", background: '#6cbdf7', color: 'white' }} >确认</Button><WhiteSpace />
+                <Button style={{ width: '96%', borderRadius: "6px", background: '#6cbdf7', color: 'white' }}>重置</Button><WhiteSpace />
             </div>
         </div>
     }
