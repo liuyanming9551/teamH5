@@ -1,126 +1,99 @@
-import React from "react";
-import {Popover,ActionSheet} from 'antd-mobile';
-const Item = Popover.Item;
-class Pk extends React.Component {
-    showShareActionSheet = () => {
-        ActionSheet.showShareActionSheetWithOptions({
-          options: this.dataList,
-        },
-        (buttonIndex) => {
-          this.setState({ clicked1: buttonIndex > -1 ? this.dataList[buttonIndex].title : 'cancel' });
-          return new Promise((resolve) => {
-            setTimeout(resolve,0);
-          });
-        });
-      }
-    constructor(props) {
-        super(props)
-        this.state = {
-            visible: false,
-            selected: '',
-            clicked1: 'none',
-        }
-    }
-    dataList = [
-        { title: '新建' },
-        { title: '筛选' },
-        
-      ].map(obj => ({
-        title: obj.title,
-      }));
-   
-    render() {
-        // const { getFieldProps } = this.props.form;
-        return <div>
-             <div className="imgs" style={{width:'100%',textAlign:'center',height:'100%',marginTop:"46%"}}>
-             <img style={{width:'40px',height:'40px'}} onClick={this.showShareActionSheet} src={require("./../../test/add.png")}></img>
-             </div>
-            {/* <List renderHeader={() => '情况如下'} className="my-list" style={{textAlign:'center'}}>
-                <List.Item arrow="horizontal">
-                    <Badge text={0} style={{ marginLeft: 12 }}><span style={{ fontSize: "0.3rem" }}>刘然</span><span style={{ fontSize: "0.3rem", marginLeft: '0.15rem' }}>2019-2-18</span><span style={{ fontSize: "0.3rem", marginLeft: '0.15rem' }}>2019-2-18</span></Badge>
-                    <div style={{ float: "right", fontSize: "0.2rem" }}> <span>康贝</span><br /><span style={{ color: 'red', display: 'inlineBlock', marginTop: '0.1rem' }}>进行中</span> </div>
-                </List.Item>
-            </List> */}
-        </div>
-    }
-}
-
-
-//新建个人PK
 // import React from "react";
-// import { DatePicker, List, Button, TextareaItem, InputItem, WhiteSpace } from 'antd-mobile';
-// const nowTimeStamp = Date.now();
-// const now = new Date(nowTimeStamp);
-// // GMT is not currently observed in the UK. So use UTC now.
-// const utcNow = new Date(now.getTime() + (now.getTimezoneOffset() * 60000));
-
-// // Make sure that in `time` mode, the maxDate and minDate are within one day.
-// let minDate = new Date(nowTimeStamp - 1e7);
-// const maxDate = new Date(nowTimeStamp + 1e7);
-// // console.log(minDate, maxDate);
-// if (minDate.getDate() !== maxDate.getDate()) {
-//     // set the minDate to the 0 of maxDate
-//     minDate = new Date(maxDate.getFullYear(), maxDate.getMonth(), maxDate.getDate());
-// }
-
- 
+// import {Modal, WhiteSpace,List,Badge} from 'antd-mobile';
+// const operation = Modal.operation;
 // class Pk extends React.Component {
-//     constructor(props) {
-//         super(props)
-//         this.state = {
-//             date: now,
-//             time: now,
-//             utcDate: utcNow,
-//             dpValue: null,
-//             customChildValue: null,
-//             visible: false,
-
-//         }
-//     }
 //     render() {
 //         return <div>
-//             <List className="date-picker-list" style={{ backgroundColor: 'white' }}>
-//                 <DatePicker
-//                     mode="date"
-//                     title="Select Date"
-//                     extra="Optional"
-//                     value={this.state.date}
-//                     onChange={date => this.setState({ date })}
-//                 >
-//                     <List.Item arrow="horizontal">发起日期：</List.Item>
-//                 </DatePicker>
-//                 <DatePicker
-//                     mode="date"
-//                     title="Select Date"
-//                     extra="Optional"
-//                     value={this.state.date}
-//                     onChange={date => this.setState({ date })}
-//                 >
-//                     <List.Item arrow="horizontal">结束日期：</List.Item>
-//                 </DatePicker>
+//         <div style={{width:'100%',textAlign:'center',height:'100%',marginTop:"46%"}}>
+//           <WhiteSpace size="lg"/>
+//           <img style={{width:'40px',height:'40px'}} onClick={this.showShareActionSheet} src={require("./../../test/add.png")} onClick={() => operation([
+//             { text: '新建', onPress: () => console.log() },
+//             { text: '筛选', onPress: () => console.log('置顶聊天被点击了') },
+//           ])}
+//           ></img>
+//         </div>
+//             <List renderHeader={() => '情况如下'} className="my-list" style={{textAlign:'center'}}>
+//                 <List.Item arrow="horizontal">
+//                     <Badge text={0} style={{ marginLeft: 12 }}><span style={{ fontSize: "0.3rem" }}>刘然</span><span style={{ fontSize: "0.3rem", marginLeft: '0.15rem' }}>2019-2-18</span><span style={{ fontSize: "0.3rem", marginLeft: '0.15rem' }}>2019-2-18</span></Badge>
+//                     <div style={{ float: "right", fontSize: "0.2rem" }}> <span>康贝</span><br /><span style={{ color: 'red', display: 'inlineBlock', marginTop: '0.1rem' }}>进行中</span> </div>
+//                 </List.Item>
 //             </List>
-//             <List>
-//                 <InputItem
-//                     placeholder="请输入您所要PK的姓名"
-//                     ref={el => this.labelFocusInst = el}
-//                 ><div onClick={() => this.labelFocusInst.focus()}>姓名：</div></InputItem>
-//                 <TextareaItem
-//                     title="Pk奖励："
-//                     placeholder="你的赌注是什么呢？"
-//                     data-seed="logId"
-//                     autoHeight
-//                     ref={el => this.customFocusInst = el}
-//                 />
-//             </List>
-
-//             <div style={{ marginTop: '20px' }}>
-//                 <Button style={{ width: '96%', marginLeft: '2%', borderRadius: "6px", background: '#33a3f4', color: 'white' }} >确认</Button><WhiteSpace />
-//                 <Button style={{ width: '96%', marginLeft: '2%', borderRadius: "6px", background: '#33a3f4', color: 'white' }}>重置</Button><WhiteSpace />
-//             </div>
 //         </div>
 //     }
 // }
-// position:'fixed',display:'flex',bottom:'1rem',left:'24%'
+
+
+//新建个人PK
+import React from "react";
+import { DatePicker, List, Button, TextareaItem, InputItem, WhiteSpace } from 'antd-mobile';
+const nowTimeStamp = Date.now();
+const now = new Date(nowTimeStamp);
+// GMT is not currently observed in the UK. So use UTC now.
+const utcNow = new Date(now.getTime() + (now.getTimezoneOffset() * 60000));
+
+// Make sure that in `time` mode, the maxDate and minDate are within one day.
+let minDate = new Date(nowTimeStamp - 1e7);
+const maxDate = new Date(nowTimeStamp + 1e7);
+// console.log(minDate, maxDate);
+if (minDate.getDate() !== maxDate.getDate()) {
+    // set the minDate to the 0 of maxDate
+    minDate = new Date(maxDate.getFullYear(), maxDate.getMonth(), maxDate.getDate());
+}
+
+ 
+class Pk extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            date: now,
+            time: now,
+            utcDate: utcNow,
+            dpValue: null,
+            customChildValue: null,
+            visible: false,
+
+        }
+    }
+    render() {
+        return <div>
+            <List className="date-picker-list" style={{ backgroundColor: 'white' }}>
+                <DatePicker
+                    mode="date"
+                    title="Select Date"
+                    extra="Optional"
+                    value={this.state.date}
+                    onChange={date => this.setState({ date })}
+                >
+                    <List.Item arrow="horizontal">发起日期：</List.Item>
+                </DatePicker>
+                <DatePicker
+                    mode="date"
+                    title="Select Date"
+                    extra="Optional"
+                    value={this.state.date}
+                    onChange={date => this.setState({ date })}
+                >
+                    <List.Item arrow="horizontal">结束日期：</List.Item>
+                </DatePicker>
+            </List>
+                <InputItem
+                    placeholder="请输入您所要PK的姓名"
+                    ref={el => this.labelFocusInst = el}
+                ><div onClick={() => this.labelFocusInst.focus()}>姓名：</div></InputItem>
+                <TextareaItem
+                    title="Pk奖励："
+                    placeholder="你的赌注是什么呢？"
+                    data-seed="logId"
+                    autoHeight
+                    ref={el => this.customFocusInst = el}
+                />
+            <div style={{ marginTop: '20px' }}>
+                <Button style={{ width: '96%', marginLeft: '2%', borderRadius: "6px", background: '#33a3f4', color: 'white' }} >确认</Button><WhiteSpace />
+                <Button style={{ width: '96%', marginLeft: '2%', borderRadius: "6px", background: '#33a3f4', color: 'white' }}>重置</Button><WhiteSpace />
+            </div>
+        </div>
+    }
+}
 
 // 查看个人Pk
 // import React from "react";
@@ -147,16 +120,16 @@ class Pk extends React.Component {
 //                 <p style={{ height: '40px', lineHeight: '40px', background: 'white', display: 'flex', justifyContent: 'space-between', paddingLeft: '20px', paddingRight: '20px', borderBottom: 'solid 1px #f2f2f2' }}><span style={{ fontSize: '16px' }}>PK奖励：</span><font style={{ fontSize: '14px' }}>棒棒糖</font></p>
 //             </div>
 //             <div className="pagination-container" >
-//                 <p className="sub-title" style={{color:'#968875'}}>个人每天公里数</p>
-//                    <ul style={{listStyle:'none',display:'flex'}}>
-//                        <li style={{width:'30%'}}>2019-02-21</li>
-//                        <li style={{width:'30%'}}>30</li>
-//                        <li style={{width:'30%'}}>10</li>
+//                 <p className="sub-title" style={{color:'#968875',textAlign:'center',height:'30px',lineHeight:'30px'}}>个人每天公里数</p>
+//                    <ul style={{listStyle:'none',display:'flex',marginLeft:'30px'}}>
+//                        <li style={{width:'30%',height:'30px',lineHeight:'30px'}}>2019-02-21</li>
+//                        <li style={{width:'30%',height:'30px',lineHeight:'30px'}}>30</li>
+//                        <li style={{width:'30%',height:'30px',lineHeight:'30px'}}>10</li>
 //                    </ul>
-//                    <ul style={{listStyle:'none',display:'flex'}}>
-//                        <li style={{width:'30%'}}>2019-02-21</li>
-//                        <li style={{width:'30%'}}>30</li>
-//                        <li style={{width:'30%'}}>10</li>
+//                    <ul style={{listStyle:'none',display:'flex',marginLeft:'30px'}}>
+//                        <li style={{width:'30%',height:'30px',lineHeight:'30px'}}>2019-02-21</li>
+//                        <li style={{width:'30%',height:'30px',lineHeight:'30px'}}>30</li>
+//                        <li style={{width:'30%',height:'30px',lineHeight:'30px'}}>10</li>
 //                    </ul>
 //                 <Pagination total={5} current={1} locale={locale} />
 //             </div>
@@ -177,30 +150,30 @@ class Pk extends React.Component {
 //     }
 //     render() {
 //         return <div>
-//           <p style={{textAlign:'left',marginLeft:'16px',fontSize:'16px'}}>发起日期区间</p>
+//           <p style={{textAlign:'left',marginLeft:'16px',fontSize:'16px',padding:'16px 10px'}}>发起日期区间</p>
 //          <button className="btnStyle btnLeft">今天</button>
 //          <button className="btnStyle">本周内</button>
 //          <button className="btnStyle">本月内</button>
 //          <button className="btnStyle">本季度</button>
 
 //           <div>
-//           <p style={{textAlign:'left',marginLeft:'16px',fontSize:'16px'}}>发起人性别</p>
+//           <p style={{textAlign:'left',marginLeft:'16px',fontSize:'16px',padding:'16px 10px'}}>发起人性别</p>
 //            <div style={{textAlign:'left'}}>
 //            <button className="btnStyle btnLeft">全部</button><button className="btnStyle">男</button><button className="btnStyle">女</button>
 //            </div>
 //           </div>
 //           <div>
-//           <p style={{textAlign:'left',marginLeft:'16px',fontSize:'16px'}}>发起人所属部门</p>
+//           <p style={{textAlign:'left',marginLeft:'16px',fontSize:'16px',padding:'16px 10px'}}>发起人所属部门</p>
 //           <button className="btnStyle btnLeft">产品中心</button>
 //           <button className="btnStyle">前端开发部</button>
 //           <button className="btnStyle">后端开发部</button>
-//           <div style={{textAlign:'left',marginLeft:'14px',marginTop:'10px'}}>
+//           <div style={{textAlign:'left',marginLeft:'24px',marginTop:'10px'}}>
 //            <button className="btnStyle">测试部</button>
 //            <button className="btnStyle">质量保障部</button>
 //           </div>
 //           </div>
 //           <div>
-//           <p style={{textAlign:'left',marginLeft:'16px',fontSize:'16px'}}>PK状态</p>
+//           <p style={{textAlign:'left',marginLeft:'16px',fontSize:'16px',padding:'16px 10px'}}>PK状态</p>
 //             <button className="btnStyle btnLeft">全部</button>
 //             <button className="btnStyle">通知中</button>
 //             <button className="btnStyle">进行中</button>

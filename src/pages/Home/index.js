@@ -20,17 +20,17 @@ class Home extends Component {
         <p style={{background:'white',fontWeight:'500',fontSize:"20px",padding:'6px'}}>上周运动总里程排名</p>
         <ul style={{background:'white',display:'flex',justifyContent:'space-around'}}>
             <li style={{listStyle:'none'}}>
-                <img src={require("./../../test/jin.png")} style={{width:'100px',height:'110px'}}/>
+                <img src={require("./../../test/jin.png")} style={{width:'100px',height:'100px'}}/>
                 <p className="getName">刘然</p>
                 <h3 className="getLength">22.8KM</h3>
             </li>
             <li style={{listStyle:'none'}}>
-                <img src={require("./../../test/yin.png")} style={{width:'100px',height:'110px'}}/>
+                <img src={require("./../../test/yin.png")} style={{width:'100px',height:'100px'}}/>
                 <p className="getName">康贝</p>
                 <h3 className="getLength">22KM</h3>
             </li>
             <li style={{listStyle:'none'}}>
-                <img src={require("./../../test/tong.png")} style={{width:'100px',height:'110px'}}/>
+                <img src={require("./../../test/tong.png")} style={{width:'100px',height:'100px'}}/>
                 <p className="getName">刘艳明</p>
                 <h3 className="getLength">20KM</h3>
             </li>
