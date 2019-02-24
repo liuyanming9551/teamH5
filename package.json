@@ -9,10 +9,12 @@
     "echarts": "^4.1.0",
     "less": "^3.9.0",
     "less-loader": "^4.1.0",
+    "rc-form": "^2.4.2",
     "react": "^16.8.2",
     "react-app-rewire-postcss": "^3.0.2",
     "react-app-rewired": "^2.1.0",
     "react-dom": "^16.8.2",
+    "react-router-dom": "^4.3.1",
     "react-scripts": "2.1.5"
   },
   "scripts": {
@@ -37,7 +39,7 @@
   },
   "theme": {
     "hd": "2px",
-    "brand-primary": "red",
+    "brand-primary": "#108ee9",
     "color-text-base": "#333"
   }
 }
