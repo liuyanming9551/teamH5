@@ -1,5 +1,8 @@
+// 新建个人PK
 import React from "react";
-import { DatePicker, List, Button, TextareaItem, InputItem, WhiteSpace, Flex } from 'antd-mobile';
+import TestWrapper from "./namePicker"
+import TextareaItemExampleWrapper from "./pkjiangli"
+import { DatePicker, List, TextareaItem } from 'antd-mobile';
 const nowTimeStamp = Date.now();
 const now = new Date(nowTimeStamp);
 // GMT is not currently observed in the UK. So use UTC now.
@@ -15,7 +18,7 @@ if (minDate.getDate() !== maxDate.getDate()) {
 }
 
 
-class Pk extends React.Component {
+class Newpersonalpk extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -25,6 +28,7 @@ class Pk extends React.Component {
             dpValue: null,
             customChildValue: null,
             visible: false,
+           
         }
     }
     render() {
@@ -48,22 +52,15 @@ class Pk extends React.Component {
                 >
                     <List.Item arrow="horizontal">结束日期：</List.Item>
                 </DatePicker>
+                 {/* 选择名字 */}
+                <TestWrapper/>
+             <TextareaItemExampleWrapper/>
             </List>
-                <InputItem
-                    placeholder="请输入您所要PK的姓名"
-                    ref={el => this.labelFocusInst = el}
-                ><div onClick={() => this.labelFocusInst.focus()}>姓名：</div></InputItem>
-                <TextareaItem
-                    title="Pk奖励："
-                    placeholder="你的赌注是什么呢？"
-                    data-seed="logId"
-                    autoHeight
-                    ref={el => this.customFocusInst = el}
-                />
-            <div style={{ marginTop: '20px',display:'flex' }}>
-                <Button style={{ width: '96%', borderRadius: "6px", background: '#6cbdf7', color: 'white' }} >确认</Button><WhiteSpace />
-                <Button style={{ width: '96%', borderRadius: "6px", background: '#6cbdf7', color: 'white' }}>重置</Button><WhiteSpace />
-            </div>
+             <div style={{ marginTop: '20px', display: 'flex' }}>
+                <button style={{ width: '96%', borderRadius: "6px", background: '#33a3f4', color: 'white', border: 'none', height: '30px' }} >确认</button>
+                <button style={{ width: '96%', borderRadius: "6px", background: '#33a3f4', color: 'white', border: 'none', height: '30px' }}>重置</button>
+            </div> 
         </div>
     }
 }
+export default Newpersonalpk;
