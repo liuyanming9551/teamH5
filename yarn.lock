@@ -1200,6 +1200,11 @@ ansi-styles@^3.2.0, ansi-styles@^3.2.1:
   dependencies:
     color-convert "^1.9.0"
 
+antd-mobile-demo-data@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/antd-mobile-demo-data/-/antd-mobile-demo-data-0.2.0.tgz#049731dc3c48c42603185e4338724879224c8442"
+  integrity sha512-WomThl/ihX2dKM5BmWB0RkL+if8hzX6uy88g7EI/yayWrBrx9Iqp6aiLICznaQhIfJQWJfBb6Dh5osb+1scH3A==
+
 antd-mobile@^2.2.8:
   version "2.2.8"
   resolved "https://registry.yarnpkg.com/antd-mobile/-/antd-mobile-2.2.8.tgz#d69d21a7778b9de4e0f406dd68b4df47de2c19e6"
