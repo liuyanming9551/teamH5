@@ -1,16 +1,23 @@
-import React from "react";
+import React, {Component,Fragment
+} from 'react'
 // import Newpersonalk from "./Newpersonalpk"
 // import PersonalLook from "./PersonalLook"
-import Personaselect from "./Personalselect"
+// import Personaselect from "./Personalselect"
 import { Modal, List, Badge } from 'antd-mobile';
 const operation = Modal.operation;
 class Pk extends React.Component {
     render() {
-        return <div>
-            {/* <div style={{position:"relative", left: '345px', top: '400px'}}>
+        console.log("this.props",this.props)
+      
+        return <div style={{position:'relative'}}>
+            <div style={{position:"absolute", left: '345px', top: '400px'}}>
                 <img onClick={this.showShareActionSheet} src={require("./../../test/jzjc.png")} onClick={() => operation([
-                    { text: '新建', onPress: () => console.log() },
-                    { text: '筛选', onPress: () => console.log('置顶聊天被点击了') },
+                    { text: '新建', onPress: () => {
+                        this.props.location.history.push('/pk/newpersonalpk')
+                    } },
+                    { text: '筛选', onPress: () =>{
+                        this.props.location.history.push('/pk/personalselect')
+                    } },
                 ])}
                 ></img>
             </div>
@@ -19,11 +26,11 @@ class Pk extends React.Component {
                     <Badge text={0} style={{ marginLeft: "12px" }}><span style={{ fontSize: "16px" }}>刘然</span><span style={{ fontSize: "16px", marginLeft: '20px' }}>2019-2-18</span><span style={{ fontSize: "16px", marginLeft: '16px' }}>2019-2-18</span></Badge>
                     <div style={{ float: "right", fontSize: "12px" }}> <span>康贝</span><br /><span style={{ color: 'red', display: 'inlineBlock', marginTop: '10px' }}>进行中</span> </div>
                 </List.Item>
-            </List> */}
+            </List>
             {/* <Newpersonalk/> */}
             {/* <PersonalLook/> */}
-            <Personaselect/>
-        </div>
+            {/* <Personaselect/> */}
+            </div>
     }
 }
 

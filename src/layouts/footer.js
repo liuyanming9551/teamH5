@@ -27,11 +27,8 @@ export default class Footer extends Component {
     }
 
     render() {
-        console.log(this.props)
         const {children,location} =this.props;
-
         const {pathname} = location.location;
-        console.log(children,location,pathname)
         return (
             <div style={{position: 'fixed', height: '100%', width: '100%', top: 0}}>
 
@@ -61,7 +58,6 @@ export default class Footer extends Component {
                         selected={pathname === '/'}
 
                         onPress={() => {
-                            console.log(this.props.location.history)
                             this.props.location.history.push('/')
                         }}
                         data-seed="logId"
