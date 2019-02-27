@@ -61,7 +61,7 @@ function genData(pIndex = 0) {
     rowIDs = [...rowIDs];
 }
 
-export default class SportLists extends React.Component {
+export default class AdjustmentList extends React.Component {
     constructor(props) {
         super(props);
         const getSectionData = (dataBlob, sectionID) => dataBlob[sectionID];
@@ -143,12 +143,17 @@ export default class SportLists extends React.Component {
             const obj = data[index--];
             return (
                 <div key={rowID} style={{padding: '0 15px'}}>
-                    <div style={{display: '-webkit-box', display: 'flex', padding: '15px 0',alignItems: "center"}}>
-                        <span className="listIcon"></span>
-                        <span className="listTime">2019-8-8</span>
-                        <span className="listState">待审核 ：</span>
-                        <span className="listNumber">9km</span>
-                        
+                    <div style={{padding: '15px 0'}}>
+                        <div style={{marginBottom:'10px',overflow:'hidden'}}>
+                            <span className="ad-name">丽丽</span>
+                            <span className="ad-time">2019-8-8</span>
+                        </div>
+                        <div style={{overflow:'hidden'}}>
+                            <span className="ad-state">待审核 ：<span>9km</span></span>
+                            <span className="ad-number">原因 ：<span>爬上爬上爬</span></span>
+                        </div>
+
+
                         {/*<img style={{ height: '64px', marginRight: '15px' }} src={obj.img} alt="" />*/}
                         {/*<div style={{ lineHeight: 1 }}>*/}
                         {/*<div style={{ marginBottom: '8px', fontWeight: 'bold' }}>{obj.des}</div>*/}
@@ -187,4 +192,3 @@ export default class SportLists extends React.Component {
         );
     }
 }
-

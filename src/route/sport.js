@@ -1,12 +1,12 @@
 import React,{Component} from 'react';
-import SportList from './sportLists';
-import Main from './../../../layouts/main';
-export default class MySport extends Component{
+import Main from '../layouts/main';
+import SportContent from '../pages/Sport';
+export default class Sport extends Component{
     render(){
         let propsData = this.props;
         return(
             <Main location = {propsData}>
-                <SportList />
+                <SportContent/>
             </Main>
         )
     }

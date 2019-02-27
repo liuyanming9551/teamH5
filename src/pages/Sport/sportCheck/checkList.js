@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 
-import {ListView} from "antd-mobile";
+import {ListView,List, Checkbox, Flex } from "antd-mobile";
 import ReactDOM from 'react-dom';
 import "./index.less";
 
@@ -60,8 +60,8 @@ function genData(pIndex = 0) {
     sectionIDs = [...sectionIDs];
     rowIDs = [...rowIDs];
 }
-
-export default class SportLists extends React.Component {
+const CheckboxItem = Checkbox.CheckboxItem;
+export default class SportCheck extends React.Component {
     constructor(props) {
         super(props);
         const getSectionData = (dataBlob, sectionID) => dataBlob[sectionID];
@@ -143,12 +143,29 @@ export default class SportLists extends React.Component {
             const obj = data[index--];
             return (
                 <div key={rowID} style={{padding: '0 15px'}}>
-                    <div style={{display: '-webkit-box', display: 'flex', padding: '15px 0',alignItems: "center"}}>
-                        <span className="listIcon"></span>
-                        <span className="listTime">2019-8-8</span>
-                        <span className="listState">待审核 ：</span>
-                        <span className="listNumber">9km</span>
-                        
+                    <div style={{padding: '15px 0'}}>
+                        <div className='checkItem'>
+
+                            <CheckboxItem>
+                                <div style={{marginBottom:'10px',overflow:'hidden'}}>
+                                    <span className="ck-name">李丽</span>
+                                    <span className="ad-time">当日已完成3km</span>
+                                </div>
+                                <div style={{marginBottom:'10px',overflow:'hidden'}}>
+                                    <span className="ck-name">时间 <span>2019-8-8</span></span>
+                                    <span className="ad-time">运动长度：10km</span>
+                                </div>
+                                <div style={{overflow:'hidden'}}>
+                                    <span className="ck-state">运动时长 ：<span>20min</span></span>
+                                    <span className="ck-number">跑步配速 ：<span>3.3min/km</span></span>
+                                </div>
+                            </CheckboxItem>
+
+
+                        </div>
+
+
+
                         {/*<img style={{ height: '64px', marginRight: '15px' }} src={obj.img} alt="" />*/}
                         {/*<div style={{ lineHeight: 1 }}>*/}
                         {/*<div style={{ marginBottom: '8px', fontWeight: 'bold' }}>{obj.des}</div>*/}
@@ -187,4 +204,3 @@ export default class SportLists extends React.Component {
         );
     }
 }
-
