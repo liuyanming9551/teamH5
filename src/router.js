@@ -12,6 +12,7 @@ import MySport from "./pages/Sport/mySport/index";
 import SportCheck from "./pages/Sport/sportCheck";
 import Newpersonalpk from "./pages/Pk/Newpersonalpk";
 import Personalselect from "./pages/Pk/Personalselect";
+import PersonalLook from "./pages/Pk/PersonalLook";
 export default class Router extends Component{
     render(){
         return (
@@ -23,6 +24,7 @@ export default class Router extends Component{
                         <Route exact path="/pk" component={Pk} />
                         <Route exact path="/pk/newpersonalpk" component={Newpersonalpk} />
                         <Route exact path="/pk/personalselect" component={Personalselect} />
+                        <Route exact path="/pk/personallook" component={PersonalLook} />
                         <Route exact path="/sport" component={Sport} />
                         <Route exact path="/team" component={Team} />
                         <Route exact path="/sport/mysport" component={MySport} />

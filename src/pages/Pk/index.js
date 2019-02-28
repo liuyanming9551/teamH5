@@ -2,6 +2,7 @@ import React from 'react'
 // import Newpersonalk from "./Newpersonalpk"
 // import PersonalLook from "./PersonalLook"
 // import Personaselect from "./Personalselect"
+import {Link} from "react-router-dom";
 import { Modal, List, Badge } from 'antd-mobile';
 const operation = Modal.operation;
 class Pk extends React.Component {
@@ -22,10 +23,12 @@ class Pk extends React.Component {
                 ></img>
             </div>
             <List renderHeader={() => '情况如下'} className="my-list" style={{ textAlign: 'center' }}>
-                <List.Item arrow="horizontal">
+            <Link to='/pk/personallook'>
+                <List.Item arrow="horizontal" >
                     <Badge text={0} style={{ marginLeft: "12px" }}><span style={{ fontSize: "16px" }}>刘然</span><span style={{ fontSize: "16px", marginLeft: '20px' }}>2019-2-18</span><span style={{ fontSize: "16px", marginLeft: '16px' }}>2019-2-18</span></Badge>
                     <div style={{ float: "right", fontSize: "12px" }}> <span>康贝</span><br /><span style={{ color: 'red', display: 'inlineBlock', marginTop: '10px' }}>进行中</span> </div>
                 </List.Item>
+            </Link>
             </List>
             {/* <Newpersonalk/> */}
             {/* <PersonalLook/> */}
