@@ -1,5 +1,4 @@
-import React, {Component,Fragment
-} from 'react'
+import React from 'react'
 // import Newpersonalk from "./Newpersonalpk"
 // import PersonalLook from "./PersonalLook"
 // import Personaselect from "./Personalselect"
@@ -7,6 +6,7 @@ import { Modal, List, Badge } from 'antd-mobile';
 const operation = Modal.operation;
 class Pk extends React.Component {
     render() {
+        console.log("poperation:",operation)
         console.log("this.props",this.props)
       
         return <div style={{position:'relative'}}>
