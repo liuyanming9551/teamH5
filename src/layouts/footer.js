@@ -1,21 +1,6 @@
 import React, {Component} from 'react';
 import {TabBar} from 'antd-mobile';
-import axios from 'axios';
 export default class Footer extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            selectedTab: '',
-            hidden: false
-        };
-    }
-
-    componentDidMount() {
-
-    }
-    renderContent(pageText) {
-
-    }
 
     render() {
         const {children,location} =this.props;
@@ -27,7 +12,6 @@ export default class Footer extends Component {
                     unselectedTintColor="#949494"
                     tintColor="#33A3F4"
                     barTintColor="white"
-                    hidden={this.state.hidden}
                 >
                     <TabBar.Item
                         title="首页"

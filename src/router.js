@@ -6,14 +6,20 @@ import My from './route/my';
 import Pk from './route/pk';
 import Sport from './route/sport';
 import Team from './route/team';
-import store from './store';
 import ExtraSport from "./pages/Sport/adjustment";
 import MySport from "./pages/Sport/mySport/index";
 import SportCheck from "./pages/Sport/sportCheck";
 import Newpersonalpk from "./pages/Pk/Newpersonalpk";
 import Personalselect from "./pages/Pk/Personalselect";
 import PersonalLook from "./pages/Pk/PersonalLook";
+import Login from "./pages/login";
+
+import store from './store';
 export default class Router extends Component{
+    componentWillMount() {
+        console.log(1)
+    }
+
     render(){
         return (
             <Provider store={store}>
@@ -30,7 +36,7 @@ export default class Router extends Component{
                         <Route exact path="/sport/mysport" component={MySport} />
                         <Route exact path="/sport/extrasport" component={ExtraSport} />
                         <Route exact path="/sport/check" component={SportCheck} />
-                        
+                        <Route exact path="/login" component={Login} />
                     </Switch>
                 </BrowserRouter>
             </Provider>

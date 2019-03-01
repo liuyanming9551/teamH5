@@ -1,186 +1,244 @@
 import React, {Component} from 'react';
 
-import {ListView} from "antd-mobile";
+import { PullToRefresh, ListView, Button, Toast, List } from 'antd-mobile';
 import ReactDOM from 'react-dom';
 import "./index.less";
+const Item = List.Item;
 
-function MyBody(props) {
-    return (
-        <div className="am-list-body my-body">
-            <span style={{display: 'none'}}>you can custom body wrap element</span>
-            {props.children}
-        </div>
-    );
-}
-
-const data = [
-    {
-        img: 'https://zos.alipayobjects.com/rmsportal/dKbkpPXKfvZzWCM.png',
-        title: 'Meet hotel',
-        des: '不是所有的兼职汪都需要风吹日晒',
-    },
-    {
-        img: 'https://zos.alipayobjects.com/rmsportal/XmwCzSeJiqpkuMB.png',
-        title: 'McDonald\'s invites you',
-        des: '不是所有的兼职汪都需要风吹日晒',
-    },
-    {
-        img: 'https://zos.alipayobjects.com/rmsportal/hfVtzEhPzTUewPm.png',
-        title: 'Eat the week',
-        des: '不是所有的兼职汪都需要风吹日晒',
-    },
-    {
-        img: 'https://zos.alipayobjects.com/rmsportal/hfVtzEhPzTUewPm.png',
-        title: 'Eat the week',
-        des: '不是所有的兼职汪都需要风吹日晒',
-    },
-];
-const NUM_SECTIONS = 1;
-const NUM_ROWS_PER_SECTION = 3;
-let pageIndex = 0;
-
-const dataBlobs = {};
-let sectionIDs = [];
-let rowIDs = [];
-
-function genData(pIndex = 0) {
-    for (let i = 0; i < NUM_SECTIONS; i++) {
-        const ii = (pIndex * NUM_SECTIONS) + i;
-        const sectionName = `Section ${ii}`;
-        sectionIDs.push(sectionName);
-        dataBlobs[sectionName] = sectionName;
-        rowIDs[ii] = [];
-
-        for (let jj = 0; jj < NUM_ROWS_PER_SECTION; jj++) {
-            const rowName = `S${ii}, R${jj}`;
-            rowIDs[ii].push(rowName);
-            dataBlobs[rowName] = rowName;
-        }
-    }
-    sectionIDs = [...sectionIDs];
-    rowIDs = [...rowIDs];
-}
-
-export default class SportLists extends React.Component {
-    constructor(props) {
-        super(props);
-        const getSectionData = (dataBlob, sectionID) => dataBlob[sectionID];
-        const getRowData = (dataBlob, sectionID, rowID) => dataBlob[rowID];
-
+class SportList extends Component {
+    constructor (props) {
+        super(props)
         const dataSource = new ListView.DataSource({
-            getRowData,
-            getSectionHeaderData: getSectionData,
             rowHasChanged: (row1, row2) => row1 !== row2,
-            sectionHeaderHasChanged: (s1, s2) => s1 !== s2,
-        });
+        })
 
+        this.initData = props.dataList;
         this.state = {
-            dataSource,
-            isLoading: true,
-            height: document.documentElement.clientHeight * 3 / 4,
+            dataSource: dataSource.cloneWithRows(this.initData),
+            refreshing: false,
+            height: document.documentElement.clientHeight,
+            currentPage: 0,
+            pageSize: 20,
+            data: [],
+            hasMore: true,
+            isLoading: false
         };
+        if(props.dataList.length < this.state.pageSize){
+            this.state.hasMore = false
+        }
+
     }
 
     componentDidMount() {
-        // you can scroll to the specified position
-        // setTimeout(() => this.lv.scrollTo(0, 120), 800);
+        this.renderResize();
+        // Set the appropriate height
+        setTimeout(() => this.setState({
+            height: (this.state.height - 50 - 198 - 50) + "px",
+        }), 0);
 
-        const hei = document.documentElement.clientHeight - ReactDOM.findDOMNode(this.lv).parentNode.offsetTop;
-        // simulate initial Ajax
-        setTimeout(() => {
-            genData();
-            this.setState({
-                dataSource: this.state.dataSource.cloneWithRowsAndSections(dataBlobs, sectionIDs, rowIDs),
-                isLoading: false,
-                height: hei,
-            });
-        }, 600);
     }
 
-    // If you use redux, the data maybe at props, you need use `componentWillReceiveProps`
-    // componentWillReceiveProps(nextProps) {
-    //   if (nextProps.dataSource !== this.props.dataSource) {
-    //     this.setState({
-    //       dataSource: this.state.dataSource.cloneWithRowsAndSections(nextProps.dataSource),
-    //     });
-    //   }
-    // }
+    renderResize = () => {
+        var width = document.documentElement.clientWidth;
+        var height =  document.documentElement.clientHeight;
+        if( width > height ){
+            this.setState({
+                height: (height - 50 - 198 - 50) + "px",
+            })
+        } else{
+            this.setState({
+                height: (height - 50 - 198 - 50) + "px",
+            })
+
+        }
+
+    }
+
+    componentWillMount(){
+        window.addEventListener("resize", this.renderResize, false);
+    }
+
+    componentWillUnmount = () => {
+        window.removeEventListener("resize", this.renderResize, false);
+    }
+
+
+    onScroll = (e) => {
+        this.st = e.scroller.getValues().top;
+        this.domScroller = e;
+    };
+
+    getOutputList = () => {
+
+        let params = {
+            pageNo: this.state.currentPage++,
+            pageSize: this.state.pageSize,
+        }
+
+        if(this.state.hasMore){
+            // getOutputList (params).then((data) => {
+            //     setTimeout(() => {
+            //         if(data.dataList.length < this.state.pageSize){
+            //             this.setState({
+            //                 hasMore: false
+            //             });
+            //         }
+            //         this.setState({
+            //             dataSource: this.state.dataSource.cloneWithRows(this.initData.concat(data.dataList)),
+            //             refreshing: false,
+            //             isLoading: false,
+            //             currentPage: params.pageNo
+            //         });
+            //         this.initData = data.dataList.concat(this.initData);
+            //
+            //     }, 600);
+            //
+            // }, (data) => {
+            //     if (data.messageCode !== 'netError' && data.messageCode !== 'sysError' && data.messageCode !== 'timeout') {
+            //         setTimeout(() => {
+            //             this.setState({
+            //                 refreshing: false,
+            //                 isLoading: false,
+            //             });
+            //
+            //         }, 600);
+            //         Toast.info(data.message);
+            //     }
+            // });
+        }else{
+            setTimeout(() => {
+                this.setState({
+                    refreshing: false,
+                    isLoading: false,
+                });
+
+            }, 600);
+        }
+
+    }
+
+    refreshList = () => {
+        let params = {
+            pageNo: 0,
+            pageSize: this.state.pageSize,
+        }
+        // getOutputList(params).then((data) => {
+        //
+        //     if (data.dataList.length < this.state.pageSize) {
+        //         this.setState({
+        //             hasMore: false
+        //         });
+        //     } else {
+        //         this.setState({
+        //             hasMore: true
+        //         });
+        //     }
+        //     this.setState({
+        //         dataSource: this.state.dataSource.cloneWithRows(data.dataList),
+        //         refreshing: false,
+        //         isLoading: false,
+        //         currentPage: params.pageNo
+        //     });
+        //     this.initData = data.dataList;
+        //
+        // }, (data) => {
+        //     if (data.messageCode !== 'netError' && data.messageCode !== 'sysError' && data.messageCode !== 'timeout') {
+        //         setTimeout(() => {
+        //             this.setState({
+        //                 refreshing: false,
+        //                 isLoading: false,
+        //             });
+        //
+        //         }, 600);
+        //         Toast.info(data.message);
+        //
+        //         //commonInfo.hasLoading = true;
+        //     }
+        // });
+    }
 
     onEndReached = (event) => {
-        // load new data
-        // hasMore: from backend data, indicates whether it is the last page, here is false
-        if (this.state.isLoading && !this.state.hasMore) {
-            return;
+        if (this.state.isLoading ) {
+            return false;
         }
-        console.log('reach end', event);
-        this.setState({isLoading: true});
+        if ( !this.state.hasMore) {
+            return false;
+        }
+        this.setState({ isLoading: true });
         setTimeout(() => {
-            genData(++pageIndex);
-            this.setState({
-                dataSource: this.state.dataSource.cloneWithRowsAndSections(dataBlobs, sectionIDs, rowIDs),
-                isLoading: false,
-            });
+            this.getOutputList();
+
         }, 1000);
     }
 
-    render() {
-        console.log("======================>渲染")
-        const separator = (sectionID, rowID) => (
-            <div
-                key={`${sectionID}-${rowID}`}
-                style={{
-                    backgroundColor: '#F5F5F9',
-                    height: 8,
-                    borderTop: '1px solid #ECECED',
-                    borderBottom: '1px solid #ECECED',
-                }}
-            />
-        );
-        let index = data.length - 1;
-        const row = (rowData, sectionID, rowID) => {
-            if (index < 0) {
-                index = data.length - 1;
-            }
-            const obj = data[index--];
+    onRefresh = () => {
+        if (!this.manuallyRefresh) {
+            this.setState({ refreshing: true });
+        } else {
+            this.manuallyRefresh = false;
+        }
+
+        this.refreshList();
+
+    };
+
+// If you use redux, the data maybe at props, you need use `componentWillReceiveProps`
+    componentWillReceiveProps = (props) => {
+        this.initData = props.dataList;
+        this.setState({
+            dataSource: this.state.dataSource.cloneWithRows(this.initData),
+        });
+    }
+
+    renderList() {
+        const row = (dataRow) => {
             return (
-                <div key={rowID} style={{padding: '0 15px'}}>
-                    <div style={{ display: 'flex', padding: '15px 0',alignItems: "center"}}>
-                        <span className="listIcon"></span>
-                        <span className="listTime">2019-8-8</span>
-                        <span className="listState">待审核 ：</span>
-                        <span className="listNumber">9km</span>
-
-                    </div>
+                <div key={dataRow} className="one-output-item" >
+                    {dataRow &&
+                    <Item extra={dataRow.balanceAmount && dataRow.balanceAmount.toFixed(2)}>{dataRow.name}</Item>
+                    }
                 </div>
-            );
-        };
 
+
+            )
+        }
         return (
             <ListView
                 ref={el => this.lv = el}
                 dataSource={this.state.dataSource}
-                renderFooter={() => (<div style={{padding: 30, textAlign: 'center'}}>
-                    {this.state.isLoading ? 'Loading...' : 'Loaded'}
-                </div>)}
-                // renderSectionHeader={sectionData => (
-                //     <div>{`Task ${sectionData.split(' ')[1]}`}</div>
-                // )}
-                renderBodyComponent={() => <MyBody/>}
                 renderRow={row}
-                renderSeparator={separator}
+                initialListSize={this.state.pageSize}
+                pageSize={this.state.pageSize}
                 style={{
                     height: this.state.height,
-                    overflow: 'auto',
                 }}
-                pageSize={1}
-                onScroll={() => {
-                    console.log('scroll');
-                }}
-                scrollRenderAheadDistance={500}
+                scrollerOptions={{ scrollbars: true }}
+                pullToRefresh={<PullToRefresh
+                    refreshing={this.state.refreshing}
+                    onRefresh={this.onRefresh}
+                />}
+                onScroll={this.onScroll}
+                scrollRenderAheadDistance={200}
+                scrollEventThrottle={20}
                 onEndReached={this.onEndReached}
-                onEndReachedThreshold={10}
+                onEndReachedThreshold={20}
+                renderFooter={() => (<p >
+                    {this.state.hasMore ? '正在加载更多的数据...' : '已经全部加载完毕'}
+                </p>)
+                }
             />
+
+        )
+    }
+
+    render() {
+
+        return (
+            <div>
+                {this.renderList()}
+            </div>
+
         );
     }
 }
-
+export default SportList

@@ -6,32 +6,24 @@ import goldJing from "./../../test/jin.png";
 import goldYin from "./../../test/yin.png";
 import goldTong from "./../../test/tong.png";
 import "./index.less";
+const goldList = [goldJing,goldYin,goldTong];
 class Home extends PureComponent {
-    constructor(props){
-        super(props)
-        this.state = {
-            goldList:[goldJing,goldYin,goldTong]
-        }
-    }
     getList(){
         const {rankList} = this.props;
         const newList = rankList.toJS();
         const pageList = [];
         if(newList.length){
-            for(var i = 0;i<2;i++){
-                const goldImg = this.state.goldList
+            for(let i = 0;i<2;i++){
                 pageList.push(
                     <li key={newList[i].UserName} style={{listStyle: 'none'}}>
-                        <img src={goldImg[i]}
+                        <img src={goldList[i]}
                              style={{width: '100px', height: '100px'}}/>
                         <p className="getName">{newList[i].UserName}</p>
                         <h3 className="getLength">{newList[i].RunDistanceNum}KM</h3>
                     </li>
                 )
-
             }
         }
-
         return (
             pageList
         )
@@ -65,10 +57,6 @@ class Home extends PureComponent {
             </div>
         </div>)
     }
-
-
-
-
 }
 
 const mapStateToprops = (state) => ({

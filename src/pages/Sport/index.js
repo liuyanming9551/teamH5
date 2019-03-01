@@ -3,6 +3,7 @@ import { WhiteSpace, Carousel, WingBlank, Card } from 'antd-mobile';
 import {Link} from "react-router-dom";
 import "../../common.less";
 import "./index.less"
+import {actionCreators} from './store';
 
 import SportList from './mySport/sportLists';
 import ViewMySport from './mySport/viewMySport';
