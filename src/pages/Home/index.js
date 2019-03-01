@@ -1,42 +1,82 @@
-import React, { Component } from 'react';
-import { NoticeBar } from 'antd-mobile'
+import React, {PureComponent} from 'react';
+import {connect} from "react-redux";
+import {NoticeBar, Card, WingBlank, WhiteSpace} from 'antd-mobile';
+import {actionCreators} from './store';
+import goldJing from "./../../test/jin.png";
+import goldYin from "./../../test/yin.png";
+import goldTong from "./../../test/tong.png";
 import "./index.less";
-class Home extends Component {
-    constructor(props) {
+class Home extends PureComponent {
+    constructor(props){
         super(props)
         this.state = {
-
+            goldList:[goldJing,goldYin,goldTong]
         }
     }
-    render() {
-        return <div>
-            <NoticeBar marqueeProps={{ loop: true, style: { padding: '0 7.5px' } }}>
-                Notice: The arrival time of incomes and transfers of Yu &#39;E Bao will be delayed during National Day.
-    </NoticeBar>
-    <div>
+    getList(){
+        const {rankList} = this.props;
+        const newList = rankList.toJS();
+        const pageList = [];
+        if(newList.length){
+            for(var i = 0;i<2;i++){
+                const goldImg = this.state.goldList
+                pageList.push(
+                    <li key={newList[i].UserName} style={{listStyle: 'none'}}>
+                        <img src={goldImg[i]}
+                             style={{width: '100px', height: '100px'}}/>
+                        <p className="getName">{newList[i].UserName}</p>
+                        <h3 className="getLength">{newList[i].RunDistanceNum}KM</h3>
+                    </li>
+                )
 
-    </div>
-    <div className="paiMing">
-        <p style={{background:'white',fontWeight:'500',fontSize:"20px",padding:'6px'}}>上周运动总里程排名</p>
-        <ul style={{background:'white',display:'flex',justifyContent:'space-around'}}>
-            <li style={{listStyle:'none'}}>
-                <img src={require("./../../test/jin.png")} style={{width:'100px',height:'100px'}}/>
-                <p className="getName">刘然</p>
-                <h3 className="getLength">22.8KM</h3>
-            </li>
-            <li style={{listStyle:'none'}}>
-                <img src={require("./../../test/yin.png")} style={{width:'100px',height:'100px'}}/>
-                <p className="getName">康贝</p>
-                <h3 className="getLength">22KM</h3>
-            </li>
-            <li style={{listStyle:'none'}}>
-                <img src={require("./../../test/tong.png")} style={{width:'100px',height:'100px'}}/>
-                <p className="getName">刘艳明</p>
-                <h3 className="getLength">20KM</h3>
-            </li>
-        </ul>
-    </div>
-        </div>
+            }
+        }
+
+        return (
+            pageList
+        )
     }
+    componentDidMount() {
+        this.props.getRankData();
+    }
+    render() {
+
+        return (<div>
+            <NoticeBar marqueeProps={{loop: true, style: {padding: '0 7.5px'}}}>
+                Notice: The arrival time of incomes and transfers of Yu &#39;E Bao will be delayed during National Day.
+            </NoticeBar>
+            <div className="paiMing">
+                <WingBlank size="md">
+                    <WhiteSpace size="md"/>
+                    <Card>
+                        <Card.Header
+                            title="上周运动总里程排名"
+                        />
+                        <Card.Body>
+                            <ul style={{background: 'white', display: 'flex', justifyContent: 'space-around'}}>
+                                {this.getList()}
+                            </ul>
+                        </Card.Body>
+                    </Card>
+                    <WhiteSpace size="lg"/>
+                </WingBlank>
+
+
+            </div>
+        </div>)
+    }
+
+
+
+
 }
-export default Home;
+
+const mapStateToprops = (state) => ({
+    rankList: state.getIn(['home', 'sportRank'])
+})
+const mapDispatchToProps = (dispatch) => ({
+    getRankData(){
+        dispatch(actionCreators.getRankData())
+    }
+})
+export default connect(mapStateToprops, mapDispatchToProps)(Home);

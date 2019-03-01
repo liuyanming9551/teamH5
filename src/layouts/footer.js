@@ -11,16 +11,7 @@ export default class Footer extends Component {
     }
 
     componentDidMount() {
-        let formData = new FormData();
-        formData.append("id","1");
-        formData.append("DataCode","5BBA5ABD-CC13-493C-A4FE-AAA554473C8C");
-        axios.post("http://10.168.1.138:9090/api/rundata/AddRunDataRunDataImg",formData)
-        .then((res) => {
-            console.log(res)
-        })
-        .catch((res) => {
-            console.log(res)
-        })
+
     }
     renderContent(pageText) {
 

@@ -124,6 +124,7 @@ export default class SportLists extends React.Component {
     }
 
     render() {
+        console.log("======================>渲染")
         const separator = (sectionID, rowID) => (
             <div
                 key={`${sectionID}-${rowID}`}
@@ -143,17 +144,12 @@ export default class SportLists extends React.Component {
             const obj = data[index--];
             return (
                 <div key={rowID} style={{padding: '0 15px'}}>
-                    <div style={{display: '-webkit-box', display: 'flex', padding: '15px 0',alignItems: "center"}}>
+                    <div style={{ display: 'flex', padding: '15px 0',alignItems: "center"}}>
                         <span className="listIcon"></span>
                         <span className="listTime">2019-8-8</span>
                         <span className="listState">待审核 ：</span>
                         <span className="listNumber">9km</span>
-                        
-                        {/*<img style={{ height: '64px', marginRight: '15px' }} src={obj.img} alt="" />*/}
-                        {/*<div style={{ lineHeight: 1 }}>*/}
-                        {/*<div style={{ marginBottom: '8px', fontWeight: 'bold' }}>{obj.des}</div>*/}
-                        {/*<div><span style={{ fontSize: '30px', color: '#FF6E27' }}>35</span>¥ {rowID}</div>*/}
-                        {/*</div>*/}
+
                     </div>
                 </div>
             );

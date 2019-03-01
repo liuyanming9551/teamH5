@@ -67,6 +67,7 @@ class CreateSport extends Component {
     };
 
     render() {
+
         const {getFieldProps} = this.props.form;
         const {type, files} = this.state;
         return (
