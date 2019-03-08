@@ -7,7 +7,7 @@ export default class Adjustment extends Component{
         let propsData = this.props;
         return(
             <Main location = {propsData}>
-                <AdjustmentList />
+                <AdjustmentList location = {propsData} />
             </Main>
         )
     }

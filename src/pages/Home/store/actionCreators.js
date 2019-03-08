@@ -7,7 +7,7 @@ const changeRankData = (sportRank) =>({
 })
 export const getRankData = () => {
     return (dispatch) =>{
-        axios.post("http://10.168.1.115:8080/api/RunData/LastWeekRankingList")
+        axios.post("http://10.168.1.138:5656/api/RunData/LastWeekRankingList")
             .then((res) => {
                 let result = res.data;
                 dispatch(changeRankData(result))
@@ -15,5 +15,6 @@ export const getRankData = () => {
             .catch((error) => {
                 console.log(error)
             })
+
     }
 }

@@ -2,24 +2,23 @@ import React, {PureComponent} from 'react';
 import {connect} from "react-redux";
 import {NoticeBar, Card, WingBlank, WhiteSpace} from 'antd-mobile';
 import {actionCreators} from './store';
-import goldJing from "./../../test/jin.png";
-import goldYin from "./../../test/yin.png";
-import goldTong from "./../../test/tong.png";
+
 import "./index.less";
-const goldList = [goldJing,goldYin,goldTong];
+
 class Home extends PureComponent {
     getList(){
         const {rankList} = this.props;
         const newList = rankList.toJS();
         const pageList = [];
         if(newList.length){
-            for(let i = 0;i<2;i++){
+            for(let i = 0;i<3;i++){
                 pageList.push(
-                    <li key={newList[i].UserName} style={{listStyle: 'none'}}>
-                        <img src={goldList[i]}
+
+                    <li key={i} style={{listStyle: 'none'}}>
+                        <img
                              style={{width: '100px', height: '100px'}}/>
-                        <p className="getName">{newList[i].UserName}</p>
-                        <h3 className="getLength">{newList[i].RunDistanceNum}KM</h3>
+                        <p className="getName">{newList[i]?newList[i].UserName:"尴尬了"}</p>
+                        <h3 className="getLength">{newList[i]?newList[i].RunDistanceNum:"0"}KM</h3>
                     </li>
                 )
             }

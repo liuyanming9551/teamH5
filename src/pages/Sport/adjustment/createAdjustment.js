@@ -116,8 +116,8 @@ class CreateAdjustment extends Component {
                 <div className="activeBox">
                     <WhiteSpace size='lg' />
                     <WingBlank size='lg' style={{overflow: "hidden"}}>
-                        <Button type="ghost" inline style={{float: "left", width: "48%"}}>重置</Button>
-                        <Button type="primary" inline style={{float: "right", width: "48%"}}>确认</Button>
+                        <Button type="ghost" size="small" inline style={{float: "left", width: "48%"}}>重置</Button>
+                        <Button type="primary" size="small" inline style={{float: "right", width: "48%"}}>确认</Button>
                     </WingBlank>
 
                 </div>

@@ -17,9 +17,9 @@ export default class ViewMySport extends Component{
                 <WhiteSpace size='lg' />
                 <div className="imgViewList">
                     <WingBlank>
-                    <img src={require("./../../../test/0a9d49c184482ccd.jpg")} alt=""/>
-                    <img src={require("./../../../test/0a9d49c184482ccd.jpg")} alt=""/>
-                    <img src={require("./../../../test/0a9d49c184482ccd.jpg")} alt=""/>
+                    <img  alt=""/>
+                    <img  alt=""/>
+                    <img  alt=""/>
                     </WingBlank>
                 </div>
             </div>

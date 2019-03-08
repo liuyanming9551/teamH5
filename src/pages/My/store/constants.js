@@ -1,0 +1,1 @@
+export const GET_USER_INFORMATION = 'my/GET_USER_INFORMATION';

@@ -6,7 +6,7 @@ export default class Sport extends Component{
         let propsData = this.props;
         return(
             <Main location = {propsData}>
-                <SportContent/>
+                <SportContent location = {propsData}/>
             </Main>
         )
     }

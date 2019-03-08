@@ -1,194 +1,158 @@
 import React, {Component} from 'react';
 
-import {ListView} from "antd-mobile";
+import {PullToRefresh, ListView, Toast, List, Badge, Modal} from 'antd-mobile';
 import ReactDOM from 'react-dom';
 import "./index.less";
-
-function MyBody(props) {
-    return (
-        <div className="am-list-body my-body">
-            <span style={{display: 'none'}}>you can custom body wrap element</span>
-            {props.children}
-        </div>
-    );
-}
-
-const data = [
-    {
-        img: 'https://zos.alipayobjects.com/rmsportal/dKbkpPXKfvZzWCM.png',
-        title: 'Meet hotel',
-        des: '不是所有的兼职汪都需要风吹日晒',
-    },
-    {
-        img: 'https://zos.alipayobjects.com/rmsportal/XmwCzSeJiqpkuMB.png',
-        title: 'McDonald\'s invites you',
-        des: '不是所有的兼职汪都需要风吹日晒',
-    },
-    {
-        img: 'https://zos.alipayobjects.com/rmsportal/hfVtzEhPzTUewPm.png',
-        title: 'Eat the week',
-        des: '不是所有的兼职汪都需要风吹日晒',
-    },
-    {
-        img: 'https://zos.alipayobjects.com/rmsportal/hfVtzEhPzTUewPm.png',
-        title: 'Eat the week',
-        des: '不是所有的兼职汪都需要风吹日晒',
-    },
-];
-const NUM_SECTIONS = 1;
-const NUM_ROWS_PER_SECTION = 3;
-let pageIndex = 0;
-
-const dataBlobs = {};
-let sectionIDs = [];
-let rowIDs = [];
-
-function genData(pIndex = 0) {
-    for (let i = 0; i < NUM_SECTIONS; i++) {
-        const ii = (pIndex * NUM_SECTIONS) + i;
-        const sectionName = `Section ${ii}`;
-        sectionIDs.push(sectionName);
-        dataBlobs[sectionName] = sectionName;
-        rowIDs[ii] = [];
-
-        for (let jj = 0; jj < NUM_ROWS_PER_SECTION; jj++) {
-            const rowName = `S${ii}, R${jj}`;
-            rowIDs[ii].push(rowName);
-            dataBlobs[rowName] = rowName;
-        }
-    }
-    sectionIDs = [...sectionIDs];
-    rowIDs = [...rowIDs];
-}
-
+import axios from "axios";
+import Qs from 'qs';
+const operation = Modal.operation;
 export default class AdjustmentList extends React.Component {
     constructor(props) {
         super(props);
-        const getSectionData = (dataBlob, sectionID) => dataBlob[sectionID];
-        const getRowData = (dataBlob, sectionID, rowID) => dataBlob[rowID];
-
         const dataSource = new ListView.DataSource({
-            getRowData,
-            getSectionHeaderData: getSectionData,
             rowHasChanged: (row1, row2) => row1 !== row2,
-            sectionHeaderHasChanged: (s1, s2) => s1 !== s2,
         });
-
         this.state = {
+            couponList: [],
+            pageNo: 0,
+            pageSize: 20, // 分页size
+            totalPage: 0, // 总页数初始化
+            isShowContent: false, // 控制页面再数据请求后显示
+            refreshing: false, // 是否显示刷新状态
             dataSource,
-            isLoading: true,
-            height: document.documentElement.clientHeight * 3 / 4,
+            isLoading: false, // 是否显示加载状态
+            height: document.documentElement.clientHeight,
         };
     }
-
-    componentDidMount() {
-        // you can scroll to the specified position
-        // setTimeout(() => this.lv.scrollTo(0, 120), 800);
-
-        const hei = document.documentElement.clientHeight - ReactDOM.findDOMNode(this.lv).parentNode.offsetTop;
-        // simulate initial Ajax
-        setTimeout(() => {
-            genData();
-            this.setState({
-                dataSource: this.state.dataSource.cloneWithRowsAndSections(dataBlobs, sectionIDs, rowIDs),
-                isLoading: false,
-                height: hei,
-            });
-        }, 600);
+    componentDidMount(){
+        const hei = this.state.height - ReactDOM.findDOMNode(this.lv).offsetTop - 50;
+        this.requestCouponsList();
+        this.setState({
+            height:hei
+        })
     }
 
-    // If you use redux, the data maybe at props, you need use `componentWillReceiveProps`
-    // componentWillReceiveProps(nextProps) {
-    //   if (nextProps.dataSource !== this.props.dataSource) {
-    //     this.setState({
-    //       dataSource: this.state.dataSource.cloneWithRowsAndSections(nextProps.dataSource),
-    //     });
-    //   }
-    // }
+    // 获取列表
+    requestCouponsList() {
+        let dataInfo = {
+            RunDateNum:0,
+            UserCode:"B7AF1D6B-964A-4EDB-9F02-5324F71CDBEE",
+            AuditStatus:4,
+            PageIndex:this.state.pageNo,
+            PageSize:this.state.pageSize
+        }
+        axios({
+            method:"post",
+            url:"http://10.168.1.115:8080/api/RunData/MyMotionData",
+            data:Qs.stringify(dataInfo)
+        }).then((res)=>{
+            let result = res.data;
+            let couponList = [...this.state.couponList, ...result.PageList];
+            this.setState({
+                isShowContent: true,
+                pageNo: this.state.pageNo +1,
+                couponList: couponList,
+                dataSource: this.state.dataSource.cloneWithRows(couponList), // 数据源dataSource
+                totalPage:2,
+                refreshing: false,
+                isLoading: false,
+            }, () => {
+                Toast.hide();
+            });
+        }).catch((res)=>{
 
-    onEndReached = (event) => {
-        // load new data
-        // hasMore: from backend data, indicates whether it is the last page, here is false
-        if (this.state.isLoading && !this.state.hasMore) {
+        })
+
+    }
+
+    // 下拉刷新
+    onRefresh = () => {
+        Toast.loading();
+        this.setState({
+            pageNo: 0,
+            totalPage: 0,
+            couponList: [],
+        },()=>{
+            this.requestCouponsList();
+        })
+    };
+
+    // 加载更多
+    onEndReached = () => {
+        if (this.state.isLoading || (this.state.totalPage < this.state.pageNo +1)) {
+            Toast.hide();
             return;
         }
-        console.log('reach end', event);
-        this.setState({isLoading: true});
-        setTimeout(() => {
-            genData(++pageIndex);
-            this.setState({
-                dataSource: this.state.dataSource.cloneWithRowsAndSections(dataBlobs, sectionIDs, rowIDs),
-                isLoading: false,
-            });
-        }, 1000);
-    }
-
+        this.setState({
+            isLoading: true,
+        },()=>{
+            this.requestCouponsList()
+        });
+    };
     render() {
-        const separator = (sectionID, rowID) => (
-            <div
-                key={`${sectionID}-${rowID}`}
-                style={{
-                    backgroundColor: '#F5F5F9',
-                    height: 8,
-                    borderTop: '1px solid #ECECED',
-                    borderBottom: '1px solid #ECECED',
-                }}
-            />
-        );
-        let index = data.length - 1;
-        const row = (rowData, sectionID, rowID) => {
-            if (index < 0) {
-                index = data.length - 1;
-            }
-            const obj = data[index--];
+        const row =  (rowData, sectionID, rowID) => {
             return (
-                <div key={rowID} style={{padding: '0 15px'}}>
-                    <div style={{padding: '15px 0'}}>
-                        <div style={{marginBottom:'10px',overflow:'hidden'}}>
-                            <span className="ad-name">丽丽</span>
-                            <span className="ad-time">2019-8-8</span>
-                        </div>
-                        <div style={{overflow:'hidden'}}>
-                            <span className="ad-state">待审核 ：<span>9km</span></span>
-                            <span className="ad-number">原因 ：<span>爬上爬上爬</span></span>
-                        </div>
-
-
-                        {/*<img style={{ height: '64px', marginRight: '15px' }} src={obj.img} alt="" />*/}
-                        {/*<div style={{ lineHeight: 1 }}>*/}
-                        {/*<div style={{ marginBottom: '8px', fontWeight: 'bold' }}>{obj.des}</div>*/}
-                        {/*<div><span style={{ fontSize: '30px', color: '#FF6E27' }}>35</span>¥ {rowID}</div>*/}
-                        {/*</div>*/}
-                    </div>
+                <div key={rowID} style={{margin:'10px 0',background:'#fff'}}>
+                    <List className="my-list" style={{textAlign: 'center'}}>
+                        <List.Item>
+                            <Badge text={0} style={{marginLeft: "12px",width:'100%'}}>
+                                <div style={{width: '80vw'}}>
+                                    <div style={{marginBottom:'10px',overflow:'hidden'}}>
+                                        <span className="ad-name">丽丽</span>
+                                        <span className="ad-time">2019-8-8</span>
+                                    </div>
+                                    <div style={{overflow:'hidden'}}>
+                                        <span className="ad-state">待审核 ：<span>9km</span></span>
+                                        <span className="ad-number">原因 ：<span>爬上爬上爬</span></span>
+                                    </div>
+                                </div>
+                            </Badge>
+                        </List.Item>
+                    </List>
                 </div>
             );
-        };
-
+        } ;
         return (
-            <ListView
-                ref={el => this.lv = el}
-                dataSource={this.state.dataSource}
-                renderFooter={() => (<div style={{padding: 30, textAlign: 'center'}}>
-                    {this.state.isLoading ? 'Loading...' : 'Loaded'}
-                </div>)}
-                // renderSectionHeader={sectionData => (
-                //     <div>{`Task ${sectionData.split(' ')[1]}`}</div>
-                // )}
-                renderBodyComponent={() => <MyBody/>}
-                renderRow={row}
-                renderSeparator={separator}
-                style={{
-                    height: this.state.height,
-                    overflow: 'auto',
-                }}
-                pageSize={1}
-                onScroll={() => {
-                    console.log('scroll');
-                }}
-                scrollRenderAheadDistance={500}
-                onEndReached={this.onEndReached}
-                onEndReachedThreshold={10}
-            />
+            <div>
+                <div className="activeBtn">
+                    <img onClick={this.showShareActionSheet}
+                         onClick={() => operation([
+                             {
+                                 text: '新建', onPress: () => {
+                                     this.props.location.history.push('/sport/createAdjustment')
+                                 }
+                             },
+                             {
+                                 text: '筛选', onPress: () => {
+                                     this.props.location.history.push('/sport/searchSport')
+                                 }
+                             },
+                         ])}
+                    />
+                </div>
+                <ListView
+                    key={1}
+                    ref={el => this.lv = el}
+                    dataSource={this.state.dataSource}
+                    renderFooter={() => (<div className="loadFooter">
+                        {this.state.isLoading ? '正在加载...' : '真的没有了'}
+                    </div>)}
+                    style={{
+                        height: this.state.height,
+                    }}
+                    renderRow={row}
+
+                    distanceToRefresh='20'
+                    pullToRefresh={<PullToRefresh
+                        refreshing={this.state.refreshing}
+                        onRefresh={this.onRefresh}
+                    />}
+                    onEndReached={this.onEndReached}
+                    onEndReachedThreshold={30}
+                    pageSize={this.state.pageSize}
+                />
+            </div>
+
         );
     }
 }

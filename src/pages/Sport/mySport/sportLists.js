@@ -1,244 +1,178 @@
 import React, {Component} from 'react';
-
-import { PullToRefresh, ListView, Button, Toast, List } from 'antd-mobile';
+import axios from 'axios';
+import Qs from 'qs';
 import ReactDOM from 'react-dom';
+import {PullToRefresh, ListView, Toast, List, Badge, Modal} from 'antd-mobile';
+import {connect} from 'react-redux';
 import "./index.less";
-const Item = List.Item;
+import {Link} from "react-router-dom";
+const operation = Modal.operation;
 
 class SportList extends Component {
-    constructor (props) {
-        super(props)
+    constructor(props) {
+        super(props);
         const dataSource = new ListView.DataSource({
             rowHasChanged: (row1, row2) => row1 !== row2,
-        })
-
-        this.initData = props.dataList;
+        });
         this.state = {
-            dataSource: dataSource.cloneWithRows(this.initData),
-            refreshing: false,
+            couponList: [],
+            pageNo: 0,
+            pageSize: 20, // 分页size
+            totalPage: 0, // 总页数初始化
+            isShowContent: false, // 控制页面再数据请求后显示
+            refreshing: false, // 是否显示刷新状态
+            dataSource,
+            isLoading: false, // 是否显示加载状态
             height: document.documentElement.clientHeight,
-            currentPage: 0,
-            pageSize: 20,
-            data: [],
-            hasMore: true,
-            isLoading: false
         };
-        if(props.dataList.length < this.state.pageSize){
-            this.state.hasMore = false
-        }
-
     }
 
     componentDidMount() {
-        this.renderResize();
-        // Set the appropriate height
-        setTimeout(() => this.setState({
-            height: (this.state.height - 50 - 198 - 50) + "px",
-        }), 0);
-
-    }
-
-    renderResize = () => {
-        var width = document.documentElement.clientWidth;
-        var height =  document.documentElement.clientHeight;
-        if( width > height ){
-            this.setState({
-                height: (height - 50 - 198 - 50) + "px",
-            })
-        } else{
-            this.setState({
-                height: (height - 50 - 198 - 50) + "px",
-            })
-
-        }
-
-    }
-
-    componentWillMount(){
-        window.addEventListener("resize", this.renderResize, false);
-    }
-
-    componentWillUnmount = () => {
-        window.removeEventListener("resize", this.renderResize, false);
-    }
-
-
-    onScroll = (e) => {
-        this.st = e.scroller.getValues().top;
-        this.domScroller = e;
-    };
-
-    getOutputList = () => {
-
-        let params = {
-            pageNo: this.state.currentPage++,
-            pageSize: this.state.pageSize,
-        }
-
-        if(this.state.hasMore){
-            // getOutputList (params).then((data) => {
-            //     setTimeout(() => {
-            //         if(data.dataList.length < this.state.pageSize){
-            //             this.setState({
-            //                 hasMore: false
-            //             });
-            //         }
-            //         this.setState({
-            //             dataSource: this.state.dataSource.cloneWithRows(this.initData.concat(data.dataList)),
-            //             refreshing: false,
-            //             isLoading: false,
-            //             currentPage: params.pageNo
-            //         });
-            //         this.initData = data.dataList.concat(this.initData);
-            //
-            //     }, 600);
-            //
-            // }, (data) => {
-            //     if (data.messageCode !== 'netError' && data.messageCode !== 'sysError' && data.messageCode !== 'timeout') {
-            //         setTimeout(() => {
-            //             this.setState({
-            //                 refreshing: false,
-            //                 isLoading: false,
-            //             });
-            //
-            //         }, 600);
-            //         Toast.info(data.message);
-            //     }
-            // });
-        }else{
-            setTimeout(() => {
-                this.setState({
-                    refreshing: false,
-                    isLoading: false,
-                });
-
-            }, 600);
-        }
-
-    }
-
-    refreshList = () => {
-        let params = {
-            pageNo: 0,
-            pageSize: this.state.pageSize,
-        }
-        // getOutputList(params).then((data) => {
-        //
-        //     if (data.dataList.length < this.state.pageSize) {
-        //         this.setState({
-        //             hasMore: false
-        //         });
-        //     } else {
-        //         this.setState({
-        //             hasMore: true
-        //         });
-        //     }
-        //     this.setState({
-        //         dataSource: this.state.dataSource.cloneWithRows(data.dataList),
-        //         refreshing: false,
-        //         isLoading: false,
-        //         currentPage: params.pageNo
-        //     });
-        //     this.initData = data.dataList;
-        //
-        // }, (data) => {
-        //     if (data.messageCode !== 'netError' && data.messageCode !== 'sysError' && data.messageCode !== 'timeout') {
-        //         setTimeout(() => {
-        //             this.setState({
-        //                 refreshing: false,
-        //                 isLoading: false,
-        //             });
-        //
-        //         }, 600);
-        //         Toast.info(data.message);
-        //
-        //         //commonInfo.hasLoading = true;
-        //     }
-        // });
-    }
-
-    onEndReached = (event) => {
-        if (this.state.isLoading ) {
-            return false;
-        }
-        if ( !this.state.hasMore) {
-            return false;
-        }
-        this.setState({ isLoading: true });
-        setTimeout(() => {
-            this.getOutputList();
-
-        }, 1000);
-    }
-
-    onRefresh = () => {
-        if (!this.manuallyRefresh) {
-            this.setState({ refreshing: true });
-        } else {
-            this.manuallyRefresh = false;
-        }
-
-        this.refreshList();
-
-    };
-
-// If you use redux, the data maybe at props, you need use `componentWillReceiveProps`
-    componentWillReceiveProps = (props) => {
-        this.initData = props.dataList;
+        const hei = this.state.height - ReactDOM.findDOMNode(this.lv).offsetTop - 50;
+        this.requestCouponsList();
         this.setState({
-            dataSource: this.state.dataSource.cloneWithRows(this.initData),
-        });
+            height: hei
+        })
     }
 
-    renderList() {
-        const row = (dataRow) => {
-            return (
-                <div key={dataRow} className="one-output-item" >
-                    {dataRow &&
-                    <Item extra={dataRow.balanceAmount && dataRow.balanceAmount.toFixed(2)}>{dataRow.name}</Item>
-                    }
-                </div>
-
-
-            )
+    // 获取列表
+    requestCouponsList() {
+        let dataInfo = {
+            RunDateNum: 0,
+            UserCode: "B7AF1D6B-964A-4EDB-9F02-5324F71CDBEE",
+            AuditStatus: 4,
+            PageIndex: this.state.pageNo,
+            PageSize: this.state.pageSize
         }
-        return (
-            <ListView
-                ref={el => this.lv = el}
-                dataSource={this.state.dataSource}
-                renderRow={row}
-                initialListSize={this.state.pageSize}
-                pageSize={this.state.pageSize}
-                style={{
-                    height: this.state.height,
-                }}
-                scrollerOptions={{ scrollbars: true }}
-                pullToRefresh={<PullToRefresh
-                    refreshing={this.state.refreshing}
-                    onRefresh={this.onRefresh}
-                />}
-                onScroll={this.onScroll}
-                scrollRenderAheadDistance={200}
-                scrollEventThrottle={20}
-                onEndReached={this.onEndReached}
-                onEndReachedThreshold={20}
-                renderFooter={() => (<p >
-                    {this.state.hasMore ? '正在加载更多的数据...' : '已经全部加载完毕'}
-                </p>)
-                }
-            />
+        axios({
+            method: "post",
+            url: "http://10.168.1.115:8080/api/RunData/MyMotionData",
+            data: Qs.stringify(dataInfo)
+        }).then((res) => {
+            let result = res.data;
+            let couponList = [...this.state.couponList, ...result.PageList];
+            this.setState({
+                isShowContent: true,
+                pageNo: this.state.pageNo + 1,
+                couponList: couponList,
+                dataSource: this.state.dataSource.cloneWithRows(couponList), // 数据源dataSource
+                totalPage: 2,
+                refreshing: false,
+                isLoading: false,
+            }, () => {
+                Toast.hide();
+            });
+        }).catch((res) => {
 
-        )
+
+        })
+
+    }
+
+    // 下拉刷新
+    onRefresh = () => {
+        Toast.loading();
+        this.setState({
+            pageNo: 0,
+            totalPage: 0,
+            couponList: [],
+        }, () => {
+            this.requestCouponsList();
+        })
+    };
+
+    // 加载更多
+    onEndReached = () => {
+        if (this.state.isLoading || (this.state.totalPage < this.state.pageNo + 1)) {
+            Toast.hide();
+            return;
+        }
+        this.setState({
+            isLoading: true,
+        }, () => {
+            this.requestCouponsList()
+        });
+    };
+
+    getCheckState(auditStatus) {
+        switch (auditStatus) {
+            case 0:
+                return "待审批"
+            case 1:
+                return "通过"
+            case 2:
+                return "不通过"
+            case 3:
+                return "疑问"
+            default:
+                return "出错了"
+        }
     }
 
     render() {
-
+        const row = (rowData, sectionID, rowID) => {
+            return (
+                <div key={rowID} style={{margin: '10px 0', background: '#fff'}}>
+                    <List className="my-list" style={{textAlign: 'center'}}>
+                        <Link to='/sport/viewSport'>
+                            <List.Item arrow="horizontal">
+                                <Badge text={0} style={{marginLeft: "12px"}}>
+                                    <span className='listIcon'></span>
+                                    <span className='listTime'>{rowData.RunDate}</span>
+                                    <span className='listState'>{this.getCheckState(rowData.AuditStatus)}</span>
+                                    <span className='listNumber'>{rowData.RunDistance}KM</span>
+                                </Badge>
+                            </List.Item>
+                        </Link>
+                    </List>
+                </div>
+            );
+        };
         return (
             <div>
-                {this.renderList()}
+                <div className="activeBtn">
+                    <img onClick={this.showShareActionSheet}
+                         onClick={() => operation([
+                             {
+                                 text: '新建', onPress: () => {
+                                     this.props.location.history.push('/sport/createSport')
+                                 }
+                             },
+                             {
+                                 text: '筛选', onPress: () => {
+                                     this.props.location.history.push('/sport/searchSport')
+                                 }
+                             },
+                         ])}
+                    />
+                </div>
+                <ListView
+                    key={1}
+                    ref={el => this.lv = el}
+                    dataSource={this.state.dataSource}
+                    renderFooter={() => (<div className="loadFooter">
+                        {this.state.isLoading ? '正在加载...' : '真的没有了'}
+                    </div>)}
+                    style={{
+                        height: this.state.height,
+                    }}
+                    renderRow={row}
+
+                    distanceToRefresh='20'
+                    pullToRefresh={<PullToRefresh
+                        refreshing={this.state.refreshing}
+                        onRefresh={this.onRefresh}
+                    />}
+                    onEndReached={this.onEndReached}
+                    onEndReachedThreshold={30}
+                    pageSize={this.state.pageSize}
+                />
             </div>
 
         );
     }
 }
-export default SportList
+
+const mapState = (state) => ({})
+const mapDispatch = (dispatch) => ({})
+export default connect(mapState, mapDispatch)(SportList)

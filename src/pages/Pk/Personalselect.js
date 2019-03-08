@@ -22,7 +22,7 @@ class Personalselet extends React.Component {
 
     render() {
         let styleObj = {
-            borderRadius: "6px", background: '#33a3f4', border: 'none', height: '30px',
+            borderRadius: "6px", border: 'none', height: '30px',
             width: this.state.defaultWidth ? '47%' : '98%',
             background: this.state.defaultWidth ? '#33a3f4' : '#e1e1e1',
             color: this.state.defaultWidth?'#ffffff':'#000000'

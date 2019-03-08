@@ -1,31 +1,46 @@
 import React, { Component } from "react";
-import { List, Card, WingBlank, WhiteSpace, Button, Carousel } from 'antd-mobile';
+import { List, Card, WingBlank, WhiteSpace, Button, Carousel,Tag } from 'antd-mobile';
+import {connect} from 'react-redux';
+import Qs from 'qs';
 import "./index.less";
-import ListTmp from "./../list/index.js";
-
+import {actionCreators} from "../store";
 const Item = List.Item;
-export default class UserInfo extends Component {
+class UserInfo extends Component {
     state = {
         data: ['1', '2', '3'],
         imgHeight: 100,
     }
     componentDidMount() {
+        const {userCode} = this.props;
         // simulate img loading
         setTimeout(() => {
             this.setState({
                 data: ['AiyWuByWklrrUDlFignR', 'TekJlZRVCjLFexlOCuWn', 'IJOtIlfsYdTyaDTRVrLI'],
             });
         }, 100);
+        let param = {
+            UserCode:userCode
+        }
+        this.props.getUserInfo(Qs.stringify(param))
+
     }
+
     render() {
+        const {userInformation} = this.props;
+        let userInformationData = '';
+        let userSkills = [];
+        if(userInformation){
+            userInformationData = userInformation.toJS();
+            userSkills = userInformationData.UserSkill.split(',');
+        }
         return (
             <div className="userInnerWrap">
                 <header className="userInner">
                     <div className="userImg">
-                        <img src={require("./../../../test/0a9d49c184482ccd.jpg")}></img>
+                        <img />
                     </div>
                     <div className="userLabel">
-                        <div className="userName">刘艳明</div>
+                        <div className="userName">{userInformationData.UserName}</div>
                         <div className="userTitle">高级软件工程师</div>
                         <div className="company">北京易勤信息技术有限公司</div>
                     </div>
@@ -40,7 +55,7 @@ export default class UserInfo extends Component {
 
                             />
                             <Card.Body>
-                                <div className="evaluateDesc">我是一个对生活充满激情的人。故事和酒我都有，你确定跟不跟我走。</div>
+                                <div className="evaluateDesc">{userInformationData.UserSign}</div>
                             </Card.Body>
                             {/* <Card.Footer content="footer content" extra={<div>extra footer content</div>} /> */}
                         </Card>
@@ -49,7 +64,26 @@ export default class UserInfo extends Component {
                     <WingBlank size="md">
                         <Card>
                             <Card.Header className="cardTitle"
-                                title="他人技能"
+                                         title="用户技能"
+                            />
+                            <Card.Body>
+                                <div className="evaluateList">
+                                    {
+                                        userSkills.map((item,index)=>{
+                                            return (
+                                                <Tag data-seed="logId" key={index} className="skill">{item}</Tag>
+                                            )
+                                        })
+                                    }
+                                </div>
+                            </Card.Body>
+                        </Card>
+                        <WhiteSpace size="sm" />
+                    </WingBlank>
+                    <WingBlank size="md">
+                        <Card>
+                            <Card.Header className="cardTitle"
+                                title="他人评价"
 
                             />
                             <Card.Body>
@@ -146,3 +180,13 @@ export default class UserInfo extends Component {
         )
     }
 }
+const mapState = (state) => ({
+    userCode:state.getIn(['login','userCode']),
+    userInformation:state.getIn(['my','userInformation'])
+})
+const mapDispatch = (dispatch) => ({
+    getUserInfo(userCode){
+        dispatch(actionCreators.getUserInformation(userCode))
+    }
+})
+export default connect(mapState,mapDispatch)(UserInfo);

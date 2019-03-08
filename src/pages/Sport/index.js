@@ -1,17 +1,10 @@
 import React, { Component } from 'react';
 import { WhiteSpace, Carousel, WingBlank, Card } from 'antd-mobile';
 import {Link} from "react-router-dom";
+import { connect } from 'react-redux';
+import {actionCreators} from './store';
 import "../../common.less";
 import "./index.less"
-import {actionCreators} from './store';
-
-import SportList from './mySport/sportLists';
-import ViewMySport from './mySport/viewMySport';
-import CreateSport from "./mySport/createSport";
-import AdjustmentList from "./adjustment";
-import CreateAdjustment from "./adjustment/createAdjustment";
-import SportCheck from "./sportCheck";
-import CheckDetail from "./sportCheck/checkDetail";
 class Sport extends Component {
     state = {
         data: ['1', '2', '3'],
@@ -19,23 +12,20 @@ class Sport extends Component {
     }
     componentDidMount() {
         // simulate img loading
+        // const {getMySportList} = this.props;
+        //this.props.getMySportList()
         setTimeout(() => {
             this.setState({
                 data: ['AiyWuByWklrrUDlFignR', 'TekJlZRVCjLFexlOCuWn', 'IJOtIlfsYdTyaDTRVrLI'],
             });
         }, 100);
+
     }
     render() {
+        const {location} = this.props;
+        console.log(location)
         return (
-
             <div className="sportPlane">
-                {/*<CheckDetail/>*/}
-                {/*<SportCheck/>*/}
-                {/*<CreateAdjustment/>*/}
-                {/*<AdjustmentList/>*/}
-                {/*<CreateSport/>*/}
-                {/*<ViewMySport/>*/}
-                {/*<SportList/>*/}
                  <header>
                     <WhiteSpace size="sm" />
                     <WingBlank size='md'>
@@ -82,7 +72,7 @@ class Sport extends Component {
                             <Card.Body>
                                 <div className="sportLinksBox">
                                     <div className="sportLinkItem">
-                                        <Link to='/sport/mysport'>
+                                        <Link to='/sport/mySport'>
                                             <div className="sportLinkIcon iconfont icon-wodekaobei"></div>
                                         </Link>
 
@@ -112,4 +102,10 @@ class Sport extends Component {
         )
     }
 }
-export default Sport;
+const mapState = (state) => ({
+
+})
+const mapDispatch = (dispatch) => ({
+
+})
+export default connect(mapState,mapDispatch)(Sport);

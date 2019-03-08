@@ -2,26 +2,43 @@ import React,{PureComponent} from 'react';
 import {actionCreators} from './store';
 import "./index.less";
 import {connect} from "react-redux";
-
+import * as util from '../../util/util';
 class Login extends PureComponent{
-    componentWillMount() {
-        this.props.getToken("wxd7d90e914e3cb0a0","-60fowAIpg0iiCg7FDz3LnJpnqqOBs2-7MD7SdUAH2E")
+    componentDidMount() {
+        const {search} = this.props.location;
+        let code = search?util.parseQuery(search).code:'';
+        console.log(code)
+        this.props.getUserInfo(code)
     }
-
+    isLogin(stateCode,history){
+       switch (stateCode) {
+           case 1001:
+               return history.push('/')
+           case 1004:
+               return history.push('/addUserInfo')
+           default:
+               console.log("异常！！！！")
+       }
+    }
     render(){
+        const {stateCode,history} = this.props;
         return(
             <div>
-                this is Login page
+                <div style={{textAlign:"center",lineHeight:'80vh'}}>
+                    {this.isLogin(stateCode,history)}
+                    登录中。。。
+                </div>
             </div>
         )
     }
 }
 const mapState = (state) => ({
-
+    stateCode:state.getIn(['login','stateCode'])
 })
 const mapDispatch = (dispatch) => ({
-    getToken(cropid, corpsecret){
-        dispatch(actionCreators.getToken(cropid, corpsecret))
+    getUserInfo(code){
+        dispatch(actionCreators.getUser(code))
     }
+
 })
 export default connect(mapState,mapDispatch)(Login);

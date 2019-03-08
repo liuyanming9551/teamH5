@@ -1,0 +1,1 @@
+export const GET_MY_SPORT_LIST = 'sport/GET_MY_SPORT_LIST';
