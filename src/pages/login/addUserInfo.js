@@ -1,8 +1,6 @@
 import React,{PureComponent} from 'react';
 import { Picker, List, WhiteSpace, TextareaItem,Button,WingBlank ,Toast} from 'antd-mobile';
 import Qs from 'qs';
-import { createForm } from 'rc-form';
-import arrayTreeFilter from 'array-tree-filter';
 import {actionCreators} from './store';
 import "./index.less";
 import {connect} from "react-redux";
@@ -61,22 +59,26 @@ class AddUserInfo extends PureComponent{
             GroupId
         }
 
-        this.props.changeUserInfo(Qs.stringify(param));
+        this.props.changeUserInfo(param);
         let _that = this;
         setTimeout(function () {
             _that.isLogin()
         },100)
     }
+    componentWillUpdate(nextProps, nextState, nextContext) {
+        const {loginSuccess,history} = this.props;
+        console.log(loginSuccess)
+    }
+
     isLogin(){
         const {loginSuccess,history} = this.props;
-        if (true) {
+        console.log(loginSuccess)
+        if (loginSuccess) {
             Toast.success('登录成功！', 1);
             setTimeout(function () {
                 history.push('/')
             },1200)
 
-        }else {
-            Toast.fail('登录失败！', 1);
         }
     }
     render(){

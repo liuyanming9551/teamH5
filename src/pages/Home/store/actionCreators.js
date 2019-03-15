@@ -1,4 +1,4 @@
-import axios from 'axios';
+import * as req from '../../../request';
 import * as constants from './constants';
 import { fromJS } from 'immutable';
 const changeRankData = (sportRank) =>({
@@ -7,10 +7,10 @@ const changeRankData = (sportRank) =>({
 })
 export const getRankData = () => {
     return (dispatch) =>{
-        axios.post("http://10.168.1.138:5656/api/RunData/LastWeekRankingList")
+        req.post('/api/RunData/LastWeekRankingList')
             .then((res) => {
-                let result = res.data;
-                dispatch(changeRankData(result))
+
+                dispatch(changeRankData(res))
             })
             .catch((error) => {
                 console.log(error)

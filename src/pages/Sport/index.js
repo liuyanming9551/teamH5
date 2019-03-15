@@ -3,27 +3,26 @@ import { WhiteSpace, Carousel, WingBlank, Card } from 'antd-mobile';
 import {Link} from "react-router-dom";
 import { connect } from 'react-redux';
 import {actionCreators} from './store';
-import "../../common.less";
+import "../../iconfont/common.css";
 import "./index.less"
 class Sport extends Component {
+    constructor(props){
+        super(props)
+    }
     state = {
-        data: ['1', '2', '3'],
+        data: ['sport1', 'sport2', 'sport3'],
         imgHeight: 150,
     }
     componentDidMount() {
-        // simulate img loading
-        // const {getMySportList} = this.props;
-        //this.props.getMySportList()
-        setTimeout(() => {
-            this.setState({
-                data: ['AiyWuByWklrrUDlFignR', 'TekJlZRVCjLFexlOCuWn', 'IJOtIlfsYdTyaDTRVrLI'],
-            });
-        }, 100);
-
+        const {changeSportControl,userCode} =this.props;
+        if(userCode){
+            changeSportControl(userCode)
+        }
     }
     render() {
-        const {location} = this.props;
-        console.log(location)
+        const {rightControl} =this.props;
+
+        console.log(rightControl)
         return (
             <div className="sportPlane">
                  <header>
@@ -46,7 +45,7 @@ class Sport extends Component {
                                     }}
                                 >
                                     <img
-                                        src={`https://zos.alipayobjects.com/rmsportal/${val}.png`}
+                                        src={`http://10.168.1.138:5656/termImg/sport/${val}.jpg`}
                                         alt=""
                                         style={{
                                             width: '100%',
@@ -73,21 +72,21 @@ class Sport extends Component {
                                 <div className="sportLinksBox">
                                     <div className="sportLinkItem">
                                         <Link to='/sport/mySport'>
-                                            <div className="sportLinkIcon iconfont icon-wodekaobei"></div>
+                                            <div className="sportLinkIcon iconfont icon-yundong3"></div>
                                         </Link>
 
                                         <div className="sportLinksLabel">我的运动</div>
                                     </div>
                                     <div className="sportLinkItem">
                                         <Link to='/sport/extrasport'>
-                                            <div className="sportLinkIcon iconfont icon-wodekaobei"></div>
+                                            <div className="sportLinkIcon iconfont icon-yundong2"/>
                                         </Link>
 
                                         <div className="sportLinksLabel">额外运动</div>
                                     </div>
-                                    <div className="sportLinkItem">
+                                    <div className="sportLinkItem" style={rightControl?{display: "block"}:{display: "none"}}>
                                         <Link to='/sport/check'>
-                                            <div className="sportLinkIcon iconfont icon-wodekaobei"></div>
+                                            <div className="sportLinkIcon iconfont icon-shape2"/>
                                         </Link>
 
                                         <div className="sportLinksLabel">审核</div>
@@ -103,9 +102,12 @@ class Sport extends Component {
     }
 }
 const mapState = (state) => ({
-
+    userCode:state.getIn(['login','userCode']),
+    rightControl:state.getIn(['sport','rightControl'])
 })
 const mapDispatch = (dispatch) => ({
-
+    changeSportControl(userCode){
+        dispatch(actionCreators.getSportControl(userCode))
+    }
 })
 export default connect(mapState,mapDispatch)(Sport);

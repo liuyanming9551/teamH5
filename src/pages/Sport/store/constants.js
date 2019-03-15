@@ -1,1 +1,7 @@
-export const GET_MY_SPORT_LIST = 'sport/GET_MY_SPORT_LIST';
+export const CHANGE_DETAIL = 'sport/CHANGE_DETAIL';
+export const CHANGE_UPLOAD_STATE = 'sport/CHANGE_UPLOAD_STATE';
+export const CANCEL_UPLOAD_STATE = "sport/CANCEL_UPLOAD_STATE";
+export const CHANGE_SPORT_CONTROL = 'sport/CHANGE_SPORT_CONTROL';
+export const CHANGE_CHECK_LIST = 'sport/CHANGE_CHECK_LIST';
+export const CHANGE_CHECK_STATE = 'sport/CHANGE_CHECK_STATE';
+export const CANCEL_CHECKED_STATE = 'sport/CANCEL_CHECKED_STATE';

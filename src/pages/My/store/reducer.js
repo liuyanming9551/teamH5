@@ -9,7 +9,6 @@ const changeUserInfo = (state,action) => {
     })
 }
 export default (state = defaultState, action) => {
-    console.log(action.userInformation)
     switch(action.type) {
         case constants.GET_USER_INFORMATION:
             return changeUserInfo(state,action)

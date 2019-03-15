@@ -1,13 +1,44 @@
-.checkItem{
-  margin-bottom: 10px;
-
+.checkListWrap{
+  margin-bottom: 20px;
+  .checkTitle{
+    .sportTips{
+      font-size: 28px;
+      color: #666;
+      margin-left: 130px;
+    }
+    .checkUser{
+      font-size: 30px;
+    }
+  }
+  .checkInnerWrap{
+    font-size: 30px;
+    display: flex;
+    .checkLeft{
+      .checkTime{
+        margin-bottom: 20px;
+      }
+    }
+    .checkRight{
+      margin-left: 60px;
+      .checkDuring{
+        margin-bottom: 20px;
+      }
+    }
+  }
 }
-.ck-name{
-
-}
-.ck-number,.ck-time{
-  float: right;
-  width: 50%;
-  overflow: hidden;
-  text-overflow: ellipsis;
+.activeWrap{
+  background: #fff;
+  position: fixed;
+  bottom: 0;
+  height: 80px;
+  width: 100%;
+  padding: 10px 0;
+  .activeGroup{
+    position: absolute;
+    top: 25px;
+    right: 20px;
+    .query{
+      background: rgb(208, 194, 23);
+    }
+  }
 }

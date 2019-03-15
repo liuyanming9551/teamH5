@@ -1,21 +1,14 @@
 import React, {Component} from 'react';
-import {DatePicker, List, InputItem, ImagePicker,Button,WingBlank} from 'antd-mobile';
+import {DatePicker, List, InputItem, ImagePicker, Button, WingBlank, Toast} from 'antd-mobile';
+import {connect} from "react-redux";
 import {createForm} from 'rc-form';
+import {actionCreators} from './../store';
+import {compressImage} from './../../../util/util';
+import {Map} from "immutable";
 
 const nowTimeStamp = Date.now();
 const now = new Date(nowTimeStamp);
-// GMT is not currently observed in the UK. So use UTC now.
-const utcNow = new Date(now.getTime() + (now.getTimezoneOffset() * 60000));
-
-// Make sure that in `time` mode, the maxDate and minDate are within one day.
-let minDate = new Date(nowTimeStamp - 1e7);
-const maxDate = new Date(nowTimeStamp + 1e7);
-// console.log(minDate, maxDate);
-if (minDate.getDate() !== maxDate.getDate()) {
-    // set the minDate to the 0 of maxDate
-    minDate = new Date(maxDate.getFullYear(), maxDate.getMonth(), maxDate.getDate());
-}
-
+const utcOffset = new Date(now.getTime() - (now.getTimezoneOffset() * 60000));
 
 // 通过自定义 moneyKeyboardWrapProps 修复虚拟键盘滚动穿透问题
 // https://github.com/ant-design/ant-design-mobile/issues/307
@@ -27,25 +20,23 @@ if (isIPhone) {
         onTouchStart: e => e.preventDefault(),
     };
 }
-const dataList = [{
-    url: 'https://zos.alipayobjects.com/rmsportal/PZUUCKTRIHWiZSY.jpeg',
-    id: '2121',
-}, {
-    url: 'https://zos.alipayobjects.com/rmsportal/hqQWgTXdrlmVVYi.jpeg',
-    id: '2122',
-}];
 
 class CreateSport extends Component {
-    state = {
-        date: now,
-        time: now,
-        utcDate: utcNow,
-        dpValue: null,
-        customChildValue: null,
-        visible: false,
-        type: 'money',
-        files: dataList
+    constructor(props){
+        super(props)
+        this.handleConfirm = this.handleConfirm.bind(this);
+        this.durationTimeBtn= this.durationTimeBtn.bind(this);
+        this.kilometerBtn = this.kilometerBtn.bind(this);
+        // this.speedBtn = this.speedBtn.bind(this);
+    }
 
+    state = {
+        date:now,
+        type: 'money',
+        files: [],
+        durationTime:'',
+        kilometer:''
+        // speed:''
     }
     onChange = (files, type, index) => {
         console.log(files, type, index);
@@ -54,17 +45,80 @@ class CreateSport extends Component {
         });
     };
     onAddImageClick = (e) => {
-        e.preventDefault();
-        this.setState({
-            files: this.state.files.concat({
-                url: 'https://zos.alipayobjects.com/rmsportal/hqQWgTXdrlmVVYi.jpeg',
-                id: '3',
-            }),
-        });
+        //e.preventDefault();
     };
     onTabChange = (key) => {
         console.log(key);
     };
+    handleConfirm(){
+        const {userCode,changeSport} = this.props;
+        const {durationTime,kilometer,speed,files} =this.state;
+        const fieldsValue = this.props.form.getFieldsValue();
+        const timeValue = fieldsValue.dp.toISOString().slice(0, 10)
+        this.props.form.validateFields((err, values) => {
+            let files = this.state.files;
+            let formData = new FormData();
+            let list = [];
+            let count = 0;
+            formData.append('RunDate',timeValue);
+            formData.append('RunTimeLong',durationTime);
+            formData.append('Creator',userCode);
+            formData.append('RunDistance',kilometer);
+            let a = (file) => {
+                console.log(file)
+                compressImage(file, (f) => {
+                    list.push(f);
+                    count++;
+                    if (count < files.length) {
+                        a(files[count].file);
+                    } else {
+                        Toast.hide()
+                        list.forEach((element,index) => {
+                            formData.append(`${index}`, element);
+                        });
+                        changeSport(formData);
+                    }
+                })
+            }
+            if (files.length) {
+                Toast.loading('正在加载', 10, () => {
+                    console.log('Load complete !!!');
+                })
+                a(files[0].file);
+            } else {
+                changeSport(formData);
+
+            }
+        });
+
+
+    };
+    durationTimeBtn(durationTime){
+        this.setState({
+            durationTime
+        })
+    }
+    kilometerBtn(kilometer){
+        this.setState({
+            kilometer
+        })
+    }
+    // speedBtn(speed){
+    //     this.setState({
+    //         speed
+    //     })
+    // }
+    componentDidMount() {
+
+    }
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        const {sportUpload,cancelUploadState} = this.props;
+        if(sportUpload){
+            Toast.success('上传成功!', 1);
+            cancelUploadState()
+        }
+
+    }
 
     render() {
 
@@ -77,8 +131,10 @@ class CreateSport extends Component {
                         mode="date"
                         title="Select Date"
                         extra="Optional"
-                        value={this.state.date}
-                        onChange={date => this.setState({date})}
+
+                        {...getFieldProps('dp', {
+                            initialValue: this.state.date,
+                        })}
                     >
                         <List.Item arrow="horizontal">跑步日期</List.Item>
                     </DatePicker>
@@ -86,57 +142,60 @@ class CreateSport extends Component {
                         type={type}
                         placeholder="请输入时长"
                         clear
-                        onChange={(v) => {
-                            console.log('onChange', v);
-                        }}
-                        onBlur={(v) => {
-                            console.log('onBlur', v);
-                        }}
+                        onBlur={this.durationTimeBtn}
                         moneyKeyboardWrapProps={moneyKeyboardWrapProps}
                     >时长(分钟)</InputItem>
                     <InputItem
                         type={type}
                         placeholder="请输入公里数"
                         clear
-                        onChange={(v) => {
-                            console.log('onChange', v);
-                        }}
-                        onBlur={(v) => {
-                            console.log('onBlur', v);
-                        }}
+                        onBlur={this.kilometerBtn}
                         moneyKeyboardWrapProps={moneyKeyboardWrapProps}
                     >距离(公里)</InputItem>
-                    <InputItem
-                        type={type}
-                        placeholder="请输入配速"
-                        clear
-                        onChange={(v) => {
-                            console.log('onChange', v);
-                        }}
-                        onBlur={(v) => {
-                            console.log('onBlur', v);
-                        }}
-                        moneyKeyboardWrapProps={moneyKeyboardWrapProps}
-                    >跑步配速</InputItem>
+                    {/*<InputItem*/}
+                        {/*type={type}*/}
+                        {/*placeholder="请输入配速"*/}
+                        {/*clear*/}
+                        {/*onBlur={this.speedBtn}*/}
+                        {/*moneyKeyboardWrapProps={moneyKeyboardWrapProps}*/}
+                    {/*>跑步配速</InputItem>*/}
                 </List>
 
                 <ImagePicker
                     files={files}
                     onChange={this.onChange}
                     onImageClick={(index, fs) => console.log(index, fs)}
-                    selectable={files.length < 5}
+                    selectable={files.length < 9}
+                    multiple={true}
                     onAddImageClick={this.onAddImageClick}
                 />
                 <div className="activeBox">
                     <WingBlank size='lg' style={{overflow:"hidden"}}>
-                        <Button type="ghost" size="small" inline  style={{ float:"left",width:"48%" }}>重置</Button>
-                        <Button type="primary" size="small" inline  style={{ float:"right",width:"48%" }}>确认</Button>
+                        <Button type="ghost" size="small" inline  style={{ float:"left",width:"45%" }} >重置</Button>
+                        <Button
+                            type="primary"
+                            size="small"
+                            inline
+                            style={{ float:"right",width:"45%" }}
+                            onClick={this.handleConfirm}
+                        >确认</Button>
                     </WingBlank>
                 </div>
             </div>
         );
     }
 }
-
-const H5NumberInputExampleWrapper = createForm()(CreateSport);
+const mapState = (state) => ({
+    userCode:state.getIn(['login','userCode']),
+    sportUpload:state.getIn(['sport','sportUpload'])
+})
+const mapDispatch = (dispatch) => ({
+    changeSport(sportData){
+        dispatch(actionCreators.addSport(sportData))
+    },
+    cancelUploadState(){
+        dispatch(actionCreators.cancelUploadState())
+    }
+})
+const H5NumberInputExampleWrapper = connect(mapState,mapDispatch)(createForm()(CreateSport));
 export default H5NumberInputExampleWrapper

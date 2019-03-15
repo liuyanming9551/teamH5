@@ -1,11 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import "./common.less";
+import "./iconfont/common.css";
 import './rem.js'
 import Router from './router';
 import * as serviceWorker from './serviceWorker';
-
 ReactDOM.render(<Router />, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change

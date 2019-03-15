@@ -21,17 +21,20 @@ const changeGroupData = (state,action) =>{
 }
 const changeUserInfo = (state,action) =>{
     let loginSuccess = '';
-    if(action.StatusCode === 1001){
-        loginSuccess =true
+    if(action.sertInfo.StatusCode === 1001){
+        console.log("执行true")
+        loginSuccess = true
     }else {
-        loginSuccess =false
+        console.log("执行false")
+        loginSuccess = false
     }
     return state.merge({
         loginSuccess:fromJS(loginSuccess),
-        userCode:fromJS(action.UserCode)
+        userCode:fromJS(action.sertInfo.UserCode)
     })
 }
 export default (state = defaultState, action) => {
+    console.log(action)
     switch(action.type) {
         case constants.GET_USER_INFO:
             return changeUsrData(state,action)

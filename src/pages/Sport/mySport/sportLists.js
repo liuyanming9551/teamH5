@@ -1,13 +1,11 @@
 import React, {Component} from 'react';
-import axios from 'axios';
-import Qs from 'qs';
+import * as req from '../../../request'
 import ReactDOM from 'react-dom';
 import {PullToRefresh, ListView, Toast, List, Badge, Modal} from 'antd-mobile';
 import {connect} from 'react-redux';
 import "./index.less";
 import {Link} from "react-router-dom";
 const operation = Modal.operation;
-
 class SportList extends Component {
     constructor(props) {
         super(props);
@@ -16,17 +14,16 @@ class SportList extends Component {
         });
         this.state = {
             couponList: [],
-            pageNo: 0,
+            pageNo: 1,
             pageSize: 20, // 分页size
             totalPage: 0, // 总页数初始化
             isShowContent: false, // 控制页面再数据请求后显示
-            refreshing: false, // 是否显示刷新状态
+            refreshing: true, // 是否显示刷新状态
             dataSource,
             isLoading: false, // 是否显示加载状态
             height: document.documentElement.clientHeight,
         };
     }
-
     componentDidMount() {
         const hei = this.state.height - ReactDOM.findDOMNode(this.lv).offsetTop - 50;
         this.requestCouponsList();
@@ -44,19 +41,14 @@ class SportList extends Component {
             PageIndex: this.state.pageNo,
             PageSize: this.state.pageSize
         }
-        axios({
-            method: "post",
-            url: "http://10.168.1.115:8080/api/RunData/MyMotionData",
-            data: Qs.stringify(dataInfo)
-        }).then((res) => {
-            let result = res.data;
-            let couponList = [...this.state.couponList, ...result.PageList];
+        req.post('/api/RunData/MyMotionData',dataInfo).then((res) => {
+            let couponList = [...this.state.couponList, ...res.PageList];
             this.setState({
                 isShowContent: true,
                 pageNo: this.state.pageNo + 1,
                 couponList: couponList,
                 dataSource: this.state.dataSource.cloneWithRows(couponList), // 数据源dataSource
-                totalPage: 2,
+                totalPage:Math.ceil(res.TotalNumber/this.state.pageSize),
                 refreshing: false,
                 isLoading: false,
             }, () => {
@@ -73,7 +65,7 @@ class SportList extends Component {
     onRefresh = () => {
         Toast.loading();
         this.setState({
-            pageNo: 0,
+            pageNo: 1,
             totalPage: 0,
             couponList: [],
         }, () => {
@@ -83,7 +75,8 @@ class SportList extends Component {
 
     // 加载更多
     onEndReached = () => {
-        if (this.state.isLoading || (this.state.totalPage < this.state.pageNo + 1)) {
+        console.log(this.state.totalPage , this.state.pageNo)
+        if (this.state.isLoading || (this.state.totalPage < this.state.pageNo)) {
             Toast.hide();
             return;
         }
@@ -108,16 +101,29 @@ class SportList extends Component {
                 return "出错了"
         }
     }
-
+    getCheckIcon(auditStatus) {
+        switch (auditStatus) {
+            case 0:
+                return "listIcon iconfont icon-daishenhe"
+            case 1:
+                return "listIcon iconfont icon-shenpitongguo"
+            case 2:
+                return "listIcon iconfont icon-shenhebutongguo"
+            case 3:
+                return "listIcon iconfont icon-order-question2"
+            default:
+                return "出错了"
+        }
+    }
     render() {
         const row = (rowData, sectionID, rowID) => {
             return (
                 <div key={rowID} style={{margin: '10px 0', background: '#fff'}}>
                     <List className="my-list" style={{textAlign: 'center'}}>
-                        <Link to='/sport/viewSport'>
+                        <Link to={`/sport/viewSport/${rowData.DataCode}`}>
                             <List.Item arrow="horizontal">
                                 <Badge text={0} style={{marginLeft: "12px"}}>
-                                    <span className='listIcon'></span>
+                                    <span className={this.getCheckIcon(rowData.AuditStatus)}></span>
                                     <span className='listTime'>{rowData.RunDate}</span>
                                     <span className='listState'>{this.getCheckState(rowData.AuditStatus)}</span>
                                     <span className='listNumber'>{rowData.RunDistance}KM</span>
@@ -131,8 +137,7 @@ class SportList extends Component {
         return (
             <div>
                 <div className="activeBtn">
-                    <img onClick={this.showShareActionSheet}
-                         onClick={() => operation([
+                    <span className="iconfont icon-bianji" onClick={() => operation([
                              {
                                  text: '新建', onPress: () => {
                                      this.props.location.history.push('/sport/createSport')

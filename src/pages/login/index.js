@@ -7,9 +7,20 @@ class Login extends PureComponent{
     componentDidMount() {
         const {search} = this.props.location;
         let code = search?util.parseQuery(search).code:'';
-        console.log(code)
-        this.props.getUserInfo(code)
+        if(code){
+            this.props.getUserInfo(code)
+        }
+
+
     }
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        const {stateCode,history} = this.props;
+        console.log("stateCode===========>",stateCode)
+        if(stateCode){
+            this.isLogin(stateCode,history)
+        }
+    }
+
     isLogin(stateCode,history){
        switch (stateCode) {
            case 1001:
@@ -21,11 +32,9 @@ class Login extends PureComponent{
        }
     }
     render(){
-        const {stateCode,history} = this.props;
         return(
             <div>
                 <div style={{textAlign:"center",lineHeight:'80vh'}}>
-                    {this.isLogin(stateCode,history)}
                     登录中。。。
                 </div>
             </div>

@@ -1,32 +1,86 @@
 import {fromJS} from "immutable";
-import * as contants from './constants';
-import {ListView} from 'antd-mobile';
+import * as constants from './constants';
 const defaultState = fromJS({
-    mySportList:[],
-    dataSource:new ListView.DataSource({
-        rowHasChanged: (row1, row2) => row1 !== row2,
-    }),
+    sportUpload:false,
+    sportDetailData:'',
+    rightControl:false,
+    sportCheckList:[],
+    isCheck:false
 })
-function genData(pageIndex,NUM_ROWS) {
-    const dataArr = [];
-    for (let i = 0; i < NUM_ROWS; i++) {
-        dataArr.push(`row - ${(pageIndex * NUM_ROWS) + i}`);
-    }
-    return dataArr;
-}
 
-const addMySportList = (state,action) => {
+/**
+ * @Description: 查看运动数据列表详情
+ * @author YanMing Liu
+ * @date 2019/3/14
+*/
+const changeSportDetail = (state,action) => {
     return state.merge({
-        mySportList: action.sportList.PageList,
-        dataSource: new ListView.DataSource({
-            rowHasChanged: (row1, row2) => row1 !== row2,
-        }).cloneWithRows(genData(0,action.sportList.PageList.length))
+        sportDetailData:fromJS(action.detail)
     })
+}
+/**
+ * @Description: 判断用户是否上传成功
+ * @author YanMing Liu
+ * @date 2019/3/14
+*/
+const changeUploadState = (state) =>{
+    return state.merge({
+        sportUpload:fromJS(true)
+    })
+}
+/**
+ * @Description: 取消图片上传状态
+ * @author YanMing Liu
+ * @date 2019/3/14
+*/
+const cancelUploadState = (state) =>{
+    return state.set('sportUpload',false)
+}
+/**
+ * @Description: 用户有管理员权限
+ * @author YanMing Liu
+ * @date 2019/3/14
+*/
+const changeSportControl = (state) =>{
+    return state.set('rightControl',true)
+}
+/**
+ * @Description: 获取审核列表数据
+ * @author YanMing Liu
+ * @date 2019/3/14
+*/
+const changeCheckList = (state,action) =>{
+    return state.merge({
+        sportCheckList:fromJS(action.checkListData)
+    })
+}
+/**
+ * @Description: 修改isCheck状态(isCheck判断管理员是否审核过数据)
+ * @author YanMing Liu
+ * @date 2019/3/15
+*/
+const changeCheckState = (state) =>{
+    return state.set('isCheck',true)
+}
+const cancelCheckedState = (state) => {
+    return state.set('isCheck',false)
 }
 export default (state = defaultState,action) => {
     switch (action.type) {
-        case contants.GET_MY_SPORT_LIST:
-            return addMySportList(state,action)
+        case constants.CHANGE_DETAIL:
+            return changeSportDetail(state,action);
+        case constants.CHANGE_UPLOAD_STATE:
+            return changeUploadState(state);
+        case constants.CANCEL_UPLOAD_STATE:
+            return cancelUploadState(state);
+        case constants.CHANGE_SPORT_CONTROL:
+            return changeSportControl(state);
+        case constants.CHANGE_CHECK_LIST:
+            return changeCheckList(state,action)
+        case constants.CHANGE_CHECK_STATE:
+            return changeCheckState(state);
+        case constants.CANCEL_CHECKED_STATE:
+            return cancelCheckedState(state)
         default:
             return state;
     }

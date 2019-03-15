@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { List, Card, WingBlank, WhiteSpace, Button, Carousel,Tag } from 'antd-mobile';
+import {Map} from "immutable";
 import {connect} from 'react-redux';
 import Qs from 'qs';
 import "./index.less";
@@ -21,23 +22,25 @@ class UserInfo extends Component {
         let param = {
             UserCode:userCode
         }
-        this.props.getUserInfo(Qs.stringify(param))
+        this.props.getUserInfo(param)
 
     }
 
     render() {
-        const {userInformation} = this.props;
+        const {userInformation,userModel} = this.props;
+        let map = Map(userModel);
         let userInformationData = '';
         let userSkills = [];
         if(userInformation){
             userInformationData = userInformation.toJS();
+            console.log(userInformationData)
             userSkills = userInformationData.UserSkill.split(',');
         }
         return (
             <div className="userInnerWrap">
                 <header className="userInner">
                     <div className="userImg">
-                        <img />
+                        <img src={map.get("avatar")} />
                     </div>
                     <div className="userLabel">
                         <div className="userName">{userInformationData.UserName}</div>
@@ -182,7 +185,8 @@ class UserInfo extends Component {
 }
 const mapState = (state) => ({
     userCode:state.getIn(['login','userCode']),
-    userInformation:state.getIn(['my','userInformation'])
+    userInformation:state.getIn(['my','userInformation']),
+    userModel:state.getIn(['login','userModel'])
 })
 const mapDispatch = (dispatch) => ({
     getUserInfo(userCode){
