@@ -4,6 +4,7 @@ import {BrowserRouter,Route,Switch} from "react-router-dom";
 import Home from './route/home';
 
 import My from './route/my';
+import ChangeDetail from './pages/My/useInfo/changeDetail';
 //PK
 import Pk from './route/pk';
 import Newpersonalpk from "./pages/Pk/Newpersonalpk";
@@ -35,6 +36,7 @@ export default class Router extends Component{
                     <Switch>
                         <Route exact path="/" component={Home} />
                         <Route exact path="/my" component={My} />
+                        <Route exact path="/my/changeDetail" component={ChangeDetail} />
                         <Route exact path="/pk" component={Pk} />
                         <Route exact path="/pk/newpersonalpk" component={Newpersonalpk} />
                         <Route exact path="/pk/personalselect" component={Personalselect} />

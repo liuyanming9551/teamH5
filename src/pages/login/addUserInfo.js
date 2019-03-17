@@ -1,6 +1,5 @@
 import React,{PureComponent} from 'react';
 import { Picker, List, WhiteSpace, TextareaItem,Button,WingBlank ,Toast} from 'antd-mobile';
-import Qs from 'qs';
 import {actionCreators} from './store';
 import "./index.less";
 import {connect} from "react-redux";

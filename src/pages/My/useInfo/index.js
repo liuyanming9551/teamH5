@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { List, Card, WingBlank, WhiteSpace, Button, Carousel,Tag } from 'antd-mobile';
 import {Map} from "immutable";
 import {connect} from 'react-redux';
-import Qs from 'qs';
 import "./index.less";
 import {actionCreators} from "../store";
 const Item = List.Item;
@@ -25,28 +24,34 @@ class UserInfo extends Component {
         this.props.getUserInfo(param)
 
     }
-
+    changeDetailInfo = () =>{
+        const {location} = this.props;
+        location.history.push('/my/changeDetail');
+    }
     render() {
-        const {userInformation,userModel} = this.props;
-        let map = Map(userModel);
-        let userInformationData = '';
-        let userSkills = [];
-        if(userInformation){
-            userInformationData = userInformation.toJS();
-            console.log(userInformationData)
-            userSkills = userInformationData.UserSkill.split(',');
-        }
+        // const {userInformation,userModel} = this.props;
+        // let map = Map(userModel);
+        // let userInformationData = '';
+        // let userSkills = [];
+        // if(userInformation){
+        //     userInformationData = userInformation.toJS();
+        //     console.log(userInformationData)
+        //     userSkills = userInformationData.UserSkill.split(',');
+        // }
         return (
             <div className="userInnerWrap">
                 <header className="userInner">
                     <div className="userImg">
-                        <img src={map.get("avatar")} />
+                        {/*<img src={map.get("avatar")} />*/}
+                        <img src="" />
                     </div>
                     <div className="userLabel">
-                        <div className="userName">{userInformationData.UserName}</div>
+                        {/*<div className="userName">{userInformationData.UserName}</div>*/}
+                        <div className="userName">刘艳明</div>
                         <div className="userTitle">高级软件工程师</div>
                         <div className="company">北京易勤信息技术有限公司</div>
                     </div>
+                    <div className='changeDetail' onClick={this.changeDetailInfo}>修改资料</div>
                 </header>
 
                 <footer className="ownDesc">
@@ -58,7 +63,7 @@ class UserInfo extends Component {
 
                             />
                             <Card.Body>
-                                <div className="evaluateDesc">{userInformationData.UserSign}</div>
+                                {/*<div className="evaluateDesc">{userInformationData.UserSign}</div>*/}
                             </Card.Body>
                             {/* <Card.Footer content="footer content" extra={<div>extra footer content</div>} /> */}
                         </Card>
@@ -71,13 +76,13 @@ class UserInfo extends Component {
                             />
                             <Card.Body>
                                 <div className="evaluateList">
-                                    {
-                                        userSkills.map((item,index)=>{
-                                            return (
-                                                <Tag data-seed="logId" key={index} className="skill">{item}</Tag>
-                                            )
-                                        })
-                                    }
+                                    {/*{*/}
+                                        {/*userSkills.map((item,index)=>{*/}
+                                            {/*return (*/}
+                                                {/*<Tag data-seed="logId" key={index} className="skill">{item}</Tag>*/}
+                                            {/*)*/}
+                                        {/*})*/}
+                                    {/*}*/}
                                 </div>
                             </Card.Body>
                         </Card>
@@ -186,11 +191,15 @@ class UserInfo extends Component {
 const mapState = (state) => ({
     userCode:state.getIn(['login','userCode']),
     userInformation:state.getIn(['my','userInformation']),
-    userModel:state.getIn(['login','userModel'])
+    userModel:state.getIn(['login','userModel']),
+    weekRank:state.getIn(['my','weekRank']),
+    cardInfo:state.getIn(['my','cardInfo'])
 })
 const mapDispatch = (dispatch) => ({
     getUserInfo(userCode){
-        dispatch(actionCreators.getUserInformation(userCode))
+        dispatch(actionCreators.getUserInformation(userCode));
+        dispatch(actionCreators.getWeekRank(userCode));
+        dispatch(actionCreators.getMysportInfo(userCode));
     }
 })
 export default connect(mapState,mapDispatch)(UserInfo);
