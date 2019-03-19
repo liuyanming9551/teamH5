@@ -28,6 +28,7 @@ class SportCheck extends Component {
                                 <div className='checkListWrap' key={index}>
                                     <Link to={`/sport/checkDetail/${item.DataCode}`}>
                                         <List.Item className='checkTitle'>
+                                            
                                             <span className="checkUser">{item.UserName}</span>
                                             <span className="sportTips">当日已完成{item.DailyDistance}km</span>
                                         </List.Item>
