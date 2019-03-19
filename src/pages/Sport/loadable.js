@@ -1,11 +1,15 @@
 import React from 'react';
 import Loadable from 'react-loadable';
-
+import Loading from '../../component/loading';
 
 const LoadableComponent = Loadable({
     loader: () => import('./'),
     loading(){
-        return <div>正在加载。。。</div>
+        return (
+            <div style={{marginTop: "40vh"}}>
+               <Loading /> 
+            </div>
+        )
     }
 });
 

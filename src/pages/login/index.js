@@ -4,6 +4,7 @@ import "./index.less";
 import {connect} from "react-redux";
 import * as util from '../../util/util';
 import { Icon } from 'antd-mobile';
+import Loading from '../../component/loading';
 class Login extends PureComponent{
     componentDidMount() {
         const {search} = this.props.location;
@@ -35,8 +36,9 @@ class Login extends PureComponent{
     render(){
         return(
             <div>
-                <div style={{textAlign:"center",lineHeight:'80vh'}}>
-                    <Icon type="loading" />
+                <div style={{textAlign:"center", lineHeight:'80vh', marginTop: "40vh"}}>
+                    {/* <Icon type="loading" /> */}
+                    <Loading />
                 </div>
             </div>
         )
