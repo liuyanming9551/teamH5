@@ -3,6 +3,7 @@ import {actionCreators} from './store';
 import "./index.less";
 import {connect} from "react-redux";
 import * as util from '../../util/util';
+import { Icon } from 'antd-mobile';
 class Login extends PureComponent{
     componentDidMount() {
         const {search} = this.props.location;
@@ -35,7 +36,7 @@ class Login extends PureComponent{
         return(
             <div>
                 <div style={{textAlign:"center",lineHeight:'80vh'}}>
-                    登录中。。。
+                    <Icon type="loading" />
                 </div>
             </div>
         )
