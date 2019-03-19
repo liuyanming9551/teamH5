@@ -37,10 +37,10 @@ class SportCheck extends Component {
                                                 <div className='checkInnerWrap'>
                                                     <div className='checkLeft'>
                                                         <div className="checkTime">时间 <span>{item.RunDate}</span></div>
-                                                        <div className="checkKm">运动长度：{item.RunDistance}km</div>
+                                                        <div className="checkKm">跑步距离：{item.RunDistance}km</div>
                                                     </div>
                                                     <div className='checkRight'>
-                                                        <div className="checkDuring">运动时长 ：<span>{item.RunTimeLong}</span></div>
+                                                        <div className="checkDuring">跑步时间 ：<span>{item.RunTimeLong}分钟</span></div>
                                                         <div>跑步配速 ：<span>{item.RunSpeed}min/km</span></div>
                                                     </div>
                                                 </div>
