@@ -32,11 +32,10 @@ class SportCheck extends Component {
                                             <span className="sportTips">当日已完成{item.DailyDistance}km</span>
                                         </List.Item>
                                         <List.Item arrow="horizontal">
-
                                             <Badge text={0}>
                                                 <div className='checkInnerWrap'>
                                                     <div className='checkLeft'>
-                                                        <div className="checkTime">时间 <span>{item.RunDate}</span></div>
+                                                        <div className="checkTime"> 时间 <span>{item.RunDate}</span></div>
                                                         <div className="checkKm">跑步距离：{item.RunDistance}km</div>
                                                     </div>
                                                     <div className='checkRight'>
