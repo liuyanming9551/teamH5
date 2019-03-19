@@ -5,6 +5,8 @@ import { connect } from 'react-redux';
 import {actionCreators} from './store';
 import "../../iconfont/common.css";
 import "./index.less"
+import {baseUrl} from "../../request";
+
 class Sport extends Component {
     constructor(props){
         super(props)
@@ -21,15 +23,13 @@ class Sport extends Component {
     }
     render() {
         const {rightControl} =this.props;
-
-        console.log(rightControl)
         return (
             <div className="sportPlane">
                  <header>
                     <WhiteSpace size="sm" />
                     <WingBlank size='md'>
                         <Carousel
-                            autoplay={false}
+                            autoplay={true}
                             infinite
                             beforeChange={(from, to) => console.log(`slide from ${from} to ${to}`)}
                             afterChange={index => console.log('slide to', index)}
@@ -45,7 +45,7 @@ class Sport extends Component {
                                     }}
                                 >
                                     <img
-                                        src={`http://10.168.1.138:5656/termImg/sport/${val}.jpg`}
+                                        src={`${baseUrl}/termImg/sport/${val}.jpg`}
                                         alt=""
                                         style={{
                                             width: '100%',

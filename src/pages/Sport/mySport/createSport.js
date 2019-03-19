@@ -4,7 +4,6 @@ import {connect} from "react-redux";
 import {createForm} from 'rc-form';
 import {actionCreators} from './../store';
 import {compressImage} from './../../../util/util';
-import {Map} from "immutable";
 
 const nowTimeStamp = Date.now();
 const now = new Date(nowTimeStamp);
@@ -39,7 +38,6 @@ class CreateSport extends Component {
         // speed:''
     }
     onChange = (files, type, index) => {
-        console.log(files, type, index);
         this.setState({
             files,
         });
@@ -47,16 +45,13 @@ class CreateSport extends Component {
     onAddImageClick = (e) => {
         //e.preventDefault();
     };
-    onTabChange = (key) => {
-        console.log(key);
-    };
     handleConfirm(){
         const {userCode,changeSport} = this.props;
-        const {durationTime,kilometer,speed,files} =this.state;
+        const {durationTime,kilometer,files} =this.state;
         const fieldsValue = this.props.form.getFieldsValue();
         const timeValue = fieldsValue.dp.toISOString().slice(0, 10)
         this.props.form.validateFields((err, values) => {
-            let files = this.state.files;
+            console.log(err,values)
             let formData = new FormData();
             let list = [];
             let count = 0;
@@ -76,6 +71,7 @@ class CreateSport extends Component {
                         list.forEach((element,index) => {
                             formData.append(`${index}`, element);
                         });
+                        Toast.loading('上传中',0,null,true);
                         changeSport(formData);
                     }
                 })
@@ -86,8 +82,8 @@ class CreateSport extends Component {
                 })
                 a(files[0].file);
             } else {
+                console.log(2)
                 changeSport(formData);
-
             }
         });
 
@@ -103,15 +99,22 @@ class CreateSport extends Component {
             kilometer
         })
     }
-    // speedBtn(speed){
-    //     this.setState({
-    //         speed
-    //     })
-    // }
+    resetUpload = () => {
+        console.log(now)
+        this.props.form.setFieldsValue({
+            dp: now
+        });
+        this.setState({
+            date:now,
+            files: [],
+            durationTime:'',
+            kilometer:''
+        })
+    }
     componentDidMount() {
 
     }
-    componentDidUpdate(prevProps, prevState, snapshot) {
+    componentDidUpdate() {
         const {sportUpload,cancelUploadState} = this.props;
         if(sportUpload){
             Toast.success('上传成功!', 1);
@@ -126,12 +129,12 @@ class CreateSport extends Component {
         const {type, files} = this.state;
         return (
             <div style={{position:"relative"}}>
-                <List className="date-picker-list" style={{backgroundColor: 'white'}}>
+                <List className="date-picker-list">
                     <DatePicker
                         mode="date"
-                        title="Select Date"
+                        title="选择日期"
                         extra="Optional"
-
+                        value={this.state.date}
                         {...getFieldProps('dp', {
                             initialValue: this.state.date,
                         })}
@@ -140,12 +143,14 @@ class CreateSport extends Component {
                     </DatePicker>
                     <InputItem
                         type={type}
+                        value={this.state.durationTime}
                         placeholder="请输入时长"
                         clear
                         onBlur={this.durationTimeBtn}
                         moneyKeyboardWrapProps={moneyKeyboardWrapProps}
                     >时长(分钟)</InputItem>
                     <InputItem
+                        value={this.state.kilometer}
                         type={type}
                         placeholder="请输入公里数"
                         clear
@@ -171,7 +176,13 @@ class CreateSport extends Component {
                 />
                 <div className="activeBox">
                     <WingBlank size='lg' style={{overflow:"hidden"}}>
-                        <Button type="ghost" size="small" inline  style={{ float:"left",width:"45%" }} >重置</Button>
+                        <Button
+                            type="ghost"
+                            size="small"
+                            inline
+                            style={{ float:"left",width:"45%" }}
+                            onClick={this.resetUpload}
+                        >重置</Button>
                         <Button
                             type="primary"
                             size="small"

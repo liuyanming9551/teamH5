@@ -5,7 +5,7 @@ import {actionCreators} from './store';
 import "./index.less";
 import {baseUrl} from "../../request";
 
-const goldImgList = ['gold1','gold2','gold3']
+const goldImgList = ['gold2','gold3','gold1']
 class Home extends PureComponent {
     getList(){
         const {rankList} = this.props;
@@ -15,7 +15,7 @@ class Home extends PureComponent {
             for(let i = 0;i<3;i++){
                 pageList.push(
                     <div key={i} className='goldItem'>
-                        <img src={`${baseUrl}/termImg/sport/${goldImgList[i]}.jpg`} />
+                        <img className='goldIcon' src={`${baseUrl}/termImg/sport/${goldImgList[i]}.jpg`} />
                         <p className="getName">{newList[i]?newList[i].UserName:"尴尬了"}</p>
                         <h3 className="getLength">{newList[i]?newList[i].RunDistanceNum:"0"}KM</h3>
                     </div>

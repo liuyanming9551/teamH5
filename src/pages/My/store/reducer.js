@@ -17,11 +17,13 @@ const changeDetailState = (state) =>{
 const cancelDetailState = (state) =>{
     return state.set('isChangeSuccess',false)
 }
-const changeWeekRank = (state,action) =>{
-    return state.merge()
-}
+// const changeWeekRank = (state,action) =>{
+//     return state.merge()
+// }
 const changeCardInfo = (state,action) =>{
-    return state.merge()
+    return state.merge({
+        cardInfo:fromJS(action.cardInfo)
+    })
 }
 export default (state = defaultState, action) => {
     switch(action.type) {
@@ -31,8 +33,6 @@ export default (state = defaultState, action) => {
             return changeDetailState(state);
         case constants.CANCEL_DETAIL_STATE:
             return cancelDetailState(state);
-        case constants.CHANGE_WEEK_RANK:
-            return changeWeekRank(state,action);
         case constants.CHANGE_MY_SPORT_INFO:
             return changeCardInfo(state,action);
         default:

@@ -34,9 +34,10 @@ class SportList extends Component {
 
     // 获取列表
     requestCouponsList() {
+        const {userCode} = this.props;
         let dataInfo = {
             RunDateNum: 0,
-            UserCode: "B7AF1D6B-964A-4EDB-9F02-5324F71CDBEE",
+            UserCode: userCode,
             AuditStatus: 4,
             PageIndex: this.state.pageNo,
             PageSize: this.state.pageSize
@@ -162,7 +163,6 @@ class SportList extends Component {
                         height: this.state.height,
                     }}
                     renderRow={row}
-
                     distanceToRefresh='20'
                     pullToRefresh={<PullToRefresh
                         refreshing={this.state.refreshing}
@@ -178,6 +178,8 @@ class SportList extends Component {
     }
 }
 
-const mapState = (state) => ({})
+const mapState = (state) => ({
+    userCode:state.getIn(['login','userCode'])
+})
 const mapDispatch = (dispatch) => ({})
 export default connect(mapState, mapDispatch)(SportList)

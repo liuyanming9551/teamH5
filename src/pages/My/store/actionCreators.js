@@ -25,6 +25,7 @@ export const changeUserDetailInfo = (detailValue) => {
         req.post('/api/User/UpdateUserSkill',detailValue)
             .then((res)=>{
                 if(res === true){
+                    console.log("执行")
                     dispatch(changeUserDetail())
                 }
 
@@ -35,29 +36,29 @@ export const cancelDetailState = () =>({
     type:constants.CANCEL_DETAIL_STATE
 })
 
-const changeWeekRank = (rankData) =>({
-    type:constants.CHANGE_WEEK_RANK,
-    rankData
-})
-export const getWeekRank = (userCode) =>{
-    return (dispatch) =>{
-        req.post("",userCode)
-            .then((res) =>{
-                //res数据
-                let rankData = ''
-                dispatch(changeWeekRank(rankData))
-            })
-    }
-}
+// const changeWeekRank = (rankData) =>({
+//     type:constants.CHANGE_WEEK_RANK,
+//     rankData
+// })
+// export const getWeekRank = (userCode) =>{
+//     return (dispatch) =>{
+//         req.post("",userCode)
+//             .then((res) =>{
+//                 //res数据
+//                 let rankData = ''
+//                 dispatch(changeWeekRank(rankData))
+//             })
+//     }
+// }
 const changeCardInfo = (cardInfo) =>({
     type:constants.CHANGE_MY_SPORT_INFO,
     cardInfo
 })
 export const getMysportInfo = (userCode) =>{
     return(dispatch) => {
-        req.post('',userCode).then((res) =>{
-            let cardInfo = '';
-            dispatch(changeCardInfo(cardInfo))
+        req.post('/api/RunData/MySportsStatistics',userCode).then((res) =>{
+
+            dispatch(changeCardInfo(res))
         })
     }
 }

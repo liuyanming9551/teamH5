@@ -11,26 +11,28 @@ let sources = {};
  * @author YanMing Liu
  * @date 2019/3/15
 */
-// const baseUrl = 'http://10.168.1.138:5656';
-// axios.defaults.baseURL = baseUrl;
+//const baseUrl = 'http://139.129.222.23:8021';
+const baseUrl = 'http://10.168.1.138:5656';
+axios.defaults.baseURL = baseUrl;
 /**
  * @Description: 线上环境代码
  * @author YanMing Liu
  * @date 2019/3/15
 */
-let protocol = window.location.protocol; //协议
-let host = window.location.host; //主机
-let reg = /^localhost+/;
-let baseUrl = ''
-if(reg.test(host)) {
-    //若本地项目调试使用
-    axios.defaults.baseURL = 'http://10.168.1.138:5656';
-    baseUrl = 'http://10.168.1.138:5656';
-} else {
-    //动态请求地址
-    axios.defaults.baseURL = protocol + "//" + host;
-    baseUrl = protocol + "//" + host;
-}
+
+// let protocol = window.location.protocol; //协议
+// let host = window.location.host; //主机
+// let reg = /^localhost+/;
+// let baseUrl = ''
+// if(reg.test(host)) {
+//     //若本地项目调试使用
+//     axios.defaults.baseURL = 'http://10.168.1.138:5656';
+//     baseUrl = 'http://10.168.1.138:5656';
+// } else {
+//     //动态请求地址
+//     axios.defaults.baseURL = protocol + "//" + 8021;
+//     baseUrl = protocol + "//" + 8021;
+// }
 
 axios.defaults.timeout = 30000;
 

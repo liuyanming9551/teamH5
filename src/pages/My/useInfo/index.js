@@ -7,21 +7,13 @@ import {actionCreators} from "../store";
 const Item = List.Item;
 class UserInfo extends Component {
     state = {
-        data: ['1', '2', '3'],
         imgHeight: 100,
     }
     componentDidMount() {
         const {userCode} = this.props;
         // simulate img loading
-        setTimeout(() => {
-            this.setState({
-                data: ['AiyWuByWklrrUDlFignR', 'TekJlZRVCjLFexlOCuWn', 'IJOtIlfsYdTyaDTRVrLI'],
-            });
-        }, 100);
-        let param = {
-            UserCode:userCode
-        }
-        this.props.getUserInfo(param)
+
+        this.props.getUserInfo(userCode)
 
     }
     changeDetailInfo = () =>{
@@ -29,25 +21,31 @@ class UserInfo extends Component {
         location.history.push('/my/changeDetail');
     }
     render() {
-        // const {userInformation,userModel} = this.props;
-        // let map = Map(userModel);
-        // let userInformationData = '';
-        // let userSkills = [];
-        // if(userInformation){
-        //     userInformationData = userInformation.toJS();
-        //     console.log(userInformationData)
-        //     userSkills = userInformationData.UserSkill.split(',');
-        // }
+        const {userInformation,userModel,cardInfo} = this.props;
+        console.log(cardInfo)
+
+        let map = Map(userModel);
+        let userInformationData = '';
+        let userSkills = [];
+        let cardList = '';
+        let cardInfoData = '';
+        if(cardInfo){
+            cardInfoData = Map(cardInfo);
+            let cardToArray = cardInfoData.get('SportsStatistics');
+            cardList = cardToArray.toJS();
+        }
+        if(userInformation){
+            userInformationData = userInformation.toJS();
+            userSkills = userInformationData.UserSkill?userInformationData.UserSkill.split(','):'';
+        }
         return (
             <div className="userInnerWrap">
                 <header className="userInner">
                     <div className="userImg">
-                        {/*<img src={map.get("avatar")} />*/}
-                        <img src="" />
+                        <img src={map.get("avatar")} />
                     </div>
                     <div className="userLabel">
-                        {/*<div className="userName">{userInformationData.UserName}</div>*/}
-                        <div className="userName">刘艳明</div>
+                        <div className="userName">{userInformationData.UserName}</div>
                         <div className="userTitle">高级软件工程师</div>
                         <div className="company">北京易勤信息技术有限公司</div>
                     </div>
@@ -63,9 +61,8 @@ class UserInfo extends Component {
 
                             />
                             <Card.Body>
-                                {/*<div className="evaluateDesc">{userInformationData.UserSign}</div>*/}
+                                <div className="evaluateDesc">{userInformationData.UserSign}</div>
                             </Card.Body>
-                            {/* <Card.Footer content="footer content" extra={<div>extra footer content</div>} /> */}
                         </Card>
                         <WhiteSpace size="sm" />
                     </WingBlank>
@@ -76,13 +73,13 @@ class UserInfo extends Component {
                             />
                             <Card.Body>
                                 <div className="evaluateList">
-                                    {/*{*/}
-                                        {/*userSkills.map((item,index)=>{*/}
-                                            {/*return (*/}
-                                                {/*<Tag data-seed="logId" key={index} className="skill">{item}</Tag>*/}
-                                            {/*)*/}
-                                        {/*})*/}
-                                    {/*}*/}
+                                    {
+                                        userSkills?userSkills.map((item,index)=>{
+                                            return (
+                                                <Tag data-seed="logId" key={index} className="skill">{item}</Tag>
+                                            )
+                                        }):''
+                                    }
                                 </div>
                             </Card.Body>
                         </Card>
@@ -118,7 +115,7 @@ class UserInfo extends Component {
 
                             <Card.Body>
                                 <span className="rankTitle">第几名：</span>
-                                <span className="rank">1</span>
+                                <span className="rank">{cardInfoData?cardInfoData.get('RankingThisWeek'):''}</span>
                                 <WhiteSpace size="sm" />
                                 <Carousel className="space-carousel"
                                     frameOverflow="visible"
@@ -129,7 +126,7 @@ class UserInfo extends Component {
                                     beforeChange={(from, to) => console.log(`slide from ${from} to ${to}`)}
                                     afterChange={index => this.setState({ slideIndex: index })}
                                 >
-                                    {this.state.data.map((val, index) => (
+                                    {cardList?cardList.map((val, index) => (
                                         <a
                                             key={val}
                                             style={{
@@ -152,16 +149,16 @@ class UserInfo extends Component {
                                                 }}
                                             >
                                                 <div className="cardDetailWrapInner">
-                                                <p className="cardListTitle">今日运动</p>
-                                                <div className="cardDetailWrap">
-                                                    <span className="cardDetailNum">0</span>
-                                                    <span className="cardDetailMin">分钟</span>
-                                                </div>
+                                                    <div className="cardListTitle">今日运动</div>
+                                                    <div className="cardDetailWrap">
+                                                        <div className="cardDetailMin">运动天数：{val.CountDays}</div>
+                                                        <div className="cardDetailNum">运动量：{val.CountRunDistance}km</div>
+                                                    </div>
                                                 </div>
                                                 
                                             </div>
                                         </a>
-                                    ))}
+                                    )):''}
                                 </Carousel>
                             </Card.Body>
                         </Card>
@@ -192,14 +189,18 @@ const mapState = (state) => ({
     userCode:state.getIn(['login','userCode']),
     userInformation:state.getIn(['my','userInformation']),
     userModel:state.getIn(['login','userModel']),
-    weekRank:state.getIn(['my','weekRank']),
     cardInfo:state.getIn(['my','cardInfo'])
 })
 const mapDispatch = (dispatch) => ({
     getUserInfo(userCode){
-        dispatch(actionCreators.getUserInformation(userCode));
-        dispatch(actionCreators.getWeekRank(userCode));
-        dispatch(actionCreators.getMysportInfo(userCode));
+        let param = {
+            UserCode:userCode
+        }
+        let sportParam = {
+            Creator:userCode
+        }
+        dispatch(actionCreators.getUserInformation(param));
+        dispatch(actionCreators.getMysportInfo(sportParam));
     }
 })
 export default connect(mapState,mapDispatch)(UserInfo);

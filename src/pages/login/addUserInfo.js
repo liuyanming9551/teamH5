@@ -11,7 +11,6 @@ class AddUserInfo extends PureComponent{
         this.getPresentation = this.getPresentation.bind(this)
         this.getSpeciality = this.getSpeciality.bind(this)
         this.btnSubmit = this.btnSubmit.bind(this)
-        this.isLogin = this.isLogin.bind(this)
     }
     state = {
         cols: 1,
@@ -19,7 +18,6 @@ class AddUserInfo extends PureComponent{
         specialityValue:"",
         presentationValue:""
     };
-
     onChangeColor = (group) => {
         console.log(group)
         this.setState({
@@ -59,24 +57,15 @@ class AddUserInfo extends PureComponent{
         }
 
         this.props.changeUserInfo(param);
-        let _that = this;
-        setTimeout(function () {
-            _that.isLogin()
-        },100)
+        Toast.loading('登陆中',0,null,true);
     }
-    componentWillUpdate(nextProps, nextState, nextContext) {
+    componentDidUpdate() {
         const {loginSuccess,history} = this.props;
-        console.log(loginSuccess)
-    }
-
-    isLogin(){
-        const {loginSuccess,history} = this.props;
-        console.log(loginSuccess)
         if (loginSuccess) {
             Toast.success('登录成功！', 1);
             setTimeout(function () {
                 history.push('/')
-            },1200)
+            },1000)
 
         }
     }

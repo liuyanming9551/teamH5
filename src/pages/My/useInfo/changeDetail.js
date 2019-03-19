@@ -14,7 +14,8 @@ class ChangeDetail extends Component {
     }
     componentDidMount(){
         const {userInformation} = this.props;
-        let userInformationData = Map(userInformationData);
+        let userInformationData = Map(userInformation);
+        console.log(userInformationData)
         if(userInformationData){
             this.setState({
                 introduceValue:userInformationData.get('UserSign'),
@@ -23,6 +24,7 @@ class ChangeDetail extends Component {
         }
 
     }
+
     // const {userInformation,userModel} = this.props;
     // let map = Map(userModel);
     // let userInformationData = '';
@@ -44,17 +46,19 @@ class ChangeDetail extends Component {
     }
     btnSubmit = () =>{
         //这里少一个参数
-        const {changeUserDetail} = this.props;
+        const {changeUserDetail,userCode} = this.props;
         const {introduceValue,skillValue} = this.state;
         let detailValue = {
-            UserSkill:skillValue
+            UserSkill:skillValue,
+            UserSign:introduceValue,
+            UserCode:userCode
         }
         changeUserDetail(detailValue)
     }
-    componentWillUpdate(){
-        console.log(this.props)
-        const {isChangeSuccess,cancelDetailState,history} = this.props;
+    componentDidUpdate(){
 
+        const {isChangeSuccess,cancelDetailState,history} = this.props;
+        console.log(isChangeSuccess)
         if(isChangeSuccess){
             Toast.success('修改成功!',1);
             cancelDetailState();
@@ -89,6 +93,7 @@ class ChangeDetail extends Component {
     }
 }
 const mapState = (state) => ({
+    userCode:state.getIn(['login','userCode']),
     userInformation:state.getIn(['my','userInformation']),
     isChangeSuccess:state.getIn(['my','isChangeSuccess'])
 })
