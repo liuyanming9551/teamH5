@@ -16,7 +16,7 @@ class Home extends PureComponent {
                 pageList.push(
                     <div key={i} className='goldItem'>
                         <img className='goldIcon' src={`${baseUrl}/termImg/sport/${goldImgList[i]}.jpg`} />
-                        <p className="getName">{newList[i]?newList[i].UserName:"尴尬了"}</p>
+                        <p className="getName"> {newList[i]?(newList[i].RunDistanceNum===0?"尴尬了":newList[i].UserName):"尴尬了"}</p>
                         <h3 className="getLength">{newList[i]?newList[i].RunDistanceNum:"0"}KM</h3>
                     </div>
                 )
