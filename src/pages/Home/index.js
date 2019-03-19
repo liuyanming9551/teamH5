@@ -5,7 +5,7 @@ import {actionCreators} from './store';
 import "./index.less";
 import {baseUrl} from "../../request";
 
-const goldImgList = ['gold2','gold3','gold1']
+const goldImgList = ['gold1','gold2','gold3']
 class Home extends PureComponent {
     getList(){
         const {rankList} = this.props;
