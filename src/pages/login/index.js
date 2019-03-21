@@ -36,9 +36,9 @@ class Login extends PureComponent{
     render(){
         return(
             <div>
-                <div style={{textAlign:"center", lineHeight:'80vh', marginTop: "40vh"}}>
-                    {/* <Icon type="loading" /> */}
-                    <Loading />
+                <div style={{textAlign:"center", lineHeight:'80vh'}}>
+                    <Icon type="loading" />
+                    {/* <Loading /> */}
                 </div>
             </div>
         )
