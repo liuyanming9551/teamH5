@@ -36,7 +36,7 @@ class Newpersonalpk extends React.Component {
             <List className="date-picker-list" style={{ backgroundColor: 'white' }}>
                 <DatePicker
                     mode="date"
-                    title="Select Date"
+                    title="选择日期"
                     extra="Optional"
                     value={this.state.date}
                     onChange={date => this.setState({ date })}
@@ -45,7 +45,7 @@ class Newpersonalpk extends React.Component {
                 </DatePicker>
                 <DatePicker
                     mode="date"
-                    title="Select Date"
+                    title="选择日期"
                     extra="Optional"
                     value={this.state.date}
                     onChange={date => this.setState({ date })}

@@ -1,6 +1,6 @@
 import React, {PureComponent} from 'react';
 import {connect} from "react-redux";
-import {NoticeBar, Card, WingBlank, WhiteSpace} from 'antd-mobile';
+import {NoticeBar, Card, WingBlank, WhiteSpace,Button,} from 'antd-mobile';
 import {actionCreators} from './store';
 import "./index.less";
 import {baseUrl} from "../../request";
@@ -50,8 +50,6 @@ class Home extends PureComponent {
                     </Card>
                     <WhiteSpace size="lg"/>
                 </WingBlank>
-
-
             </div>
         </div>)
     }
