@@ -8,6 +8,7 @@ import {compressImage} from './../../../util/util';
 const nowTimeStamp = Date.now();
 const now = new Date(nowTimeStamp);
 const utcOffset = new Date(now.getTime() - (now.getTimezoneOffset() * 60000));
+const Item = List.Item;
 
 // 通过自定义 moneyKeyboardWrapProps 修复虚拟键盘滚动穿透问题
 // https://github.com/ant-design/ant-design-mobile/issues/307
@@ -24,19 +25,13 @@ class CreateSport extends Component {
     constructor(props){
         super(props)
         this.handleConfirm = this.handleConfirm.bind(this);
-        this.durationTimeBtn= this.durationTimeBtn.bind(this);
-        this.kilometerBtn = this.kilometerBtn.bind(this);
-        // this.speedBtn = this.speedBtn.bind(this);
+        this.state = {
+            date: now,
+            type: 'money',
+            files: [],
+        }
     }
-
-    state = {
-        date:now,
-        type: 'money',
-        files: [],
-        durationTime:'',
-        kilometer:''
-        // speed:''
-    }
+    
     onChange = (files, type, index) => {
         this.setState({
             files,
@@ -47,80 +42,71 @@ class CreateSport extends Component {
     };
     handleConfirm(){
         const {userCode,changeSport} = this.props;
-        const {durationTime,kilometer,files} =this.state;
+        const {files} =this.state;
         const fieldsValue = this.props.form.getFieldsValue();
         const timeValue = fieldsValue.dp.toISOString().slice(0, 10)
         this.props.form.validateFields((err, values) => {
             console.log(err,values)
-            let formData = new FormData();
-            let list = [];
-            let count = 0;
-            formData.append('RunDate',timeValue);
-            formData.append('RunTimeLong',durationTime);
-            formData.append('Creator',userCode);
-            formData.append('RunDistance',kilometer);
-            let a = (file) => {
-                console.log(file)
-                compressImage(file, (f) => {
-                    list.push(f);
-                    count++;
-                    if (count < files.length) {
-                        a(files[count].file);
-                    } else {
-                        Toast.hide()
-                        list.forEach((element,index) => {
-                            formData.append(`${index}`, element);
-                        });
-                        Toast.loading('上传中',0,null,true);
-                        changeSport(formData);
-                    }
-                })
-            }
-            if (files.length) {
-                Toast.loading('正在加载', 10, () => {
-                    console.log('Load complete !!!');
-                })
-                a(files[0].file);
+            if (!values.RunTimeLong ) {
+                Toast.info('请输入时长', 1);
+            } else if (!values.RunDistance) {
+                Toast.info('请输入公里数', 1);
             } else {
-                console.log(2)
-                changeSport(formData);
+                let formData = new FormData();
+                let list = [];
+                let count = 0;
+                formData.append('RunDate',timeValue);
+                formData.append('RunTimeLong',values.RunTimeLong);
+                formData.append('Creator',userCode);
+                formData.append('RunDistance',values.RunDistance);
+                let a = (file) => {
+                    console.log(file)
+                    compressImage(file, (f) => {
+                        list.push(f);
+                        count++;
+                        if (count < files.length) {
+                            a(files[count].file);
+                        } else {
+                            Toast.hide()
+                            list.forEach((element,index) => {
+                                formData.append(`${index}`, element);
+                            });
+                            Toast.loading('上传中',0,null,true);
+                            changeSport(formData);
+                        }
+                    })
+                }
+                if (files.length) {
+                    Toast.loading('正在加载', 10, () => {
+                        console.log('Load complete !!!');
+                    })
+                    a(files[0].file);
+                } else {
+                    console.log(2)
+                    changeSport(formData);
+                }
             }
+            
         });
-
-
     };
-    durationTimeBtn(durationTime){
-        this.setState({
-            durationTime
-        })
-    }
-    kilometerBtn(kilometer){
-        this.setState({
-            kilometer
-        })
-    }
-    resetUpload = () => {
-        console.log(now)
-        this.props.form.setFieldsValue({
-            dp: now
-        });
-        this.setState({
-            date:now,
-            files: [],
-            durationTime:'',
-            kilometer:''
-        })
-    }
-    componentDidMount() {
-
-    }
+    
     componentDidUpdate() {
-        const {sportUpload,cancelUploadState} = this.props;
+        const {sportUpload,cancelUploadState,history} = this.props;
+        console.log("history",history)
         if(sportUpload){
             Toast.success('上传成功!', 1);
+            this.onReset()
             cancelUploadState()
+            history.goBack()
         }
+    }
 
+    // 重置
+    onReset = () => {
+        this.props.form.resetFields();
+        this.setState({
+            files: []
+        })
     }
 
     render() {
@@ -139,22 +125,32 @@ class CreateSport extends Component {
                             initialValue: this.state.date,
                         })}
                     >
-                        <List.Item arrow="horizontal">跑步日期</List.Item>
+                        <Item arrow="horizontal">跑步日期</Item>
                     </DatePicker>
                     <InputItem
+                        //value={this.state.durationTime}
+                        {...getFieldProps('RunTimeLong', {
+                            rules: [
+                                { required: true, message: '请输入时长' },
+                            ],
+                        })}
                         type={type}
-                        value={this.state.durationTime}
                         placeholder="请输入时长"
                         clear
-                        onBlur={this.durationTimeBtn}
+                        // onBlur={this.durationTimeBtn}
                         moneyKeyboardWrapProps={moneyKeyboardWrapProps}
                     >时长(分钟)</InputItem>
                     <InputItem
-                        value={this.state.kilometer}
+                        //value={this.state.kilometer}
+                        {...getFieldProps('RunDistance', {
+                            rules: [
+                                { required: true, message: '请输入公里数' },
+                            ],
+                        })}
                         type={type}
                         placeholder="请输入公里数"
                         clear
-                        onBlur={this.kilometerBtn}
+                        // onBlur={this.kilometerBtn}
                         moneyKeyboardWrapProps={moneyKeyboardWrapProps}
                     >距离(公里)</InputItem>
                     {/*<InputItem*/}
@@ -174,24 +170,10 @@ class CreateSport extends Component {
                     multiple={true}
                     onAddImageClick={this.onAddImageClick}
                 />
-                <div className="activeBox">
-                    <WingBlank size='lg' style={{overflow:"hidden"}}>
-                        <Button
-                            type="ghost"
-                            size="small"
-                            inline
-                            style={{ float:"left",width:"45%" }}
-                            onClick={this.resetUpload}
-                        >重置</Button>
-                        <Button
-                            type="primary"
-                            size="small"
-                            inline
-                            style={{ float:"right",width:"45%" }}
-                            onClick={this.handleConfirm}
-                        >确认</Button>
-                    </WingBlank>
-                </div>
+                <Item>
+                    <Button size="small" inline style={{ width:"46%", marginRight: "20px" }} onClick={this.onReset}>重置</Button>
+                    <Button type="primary" size="small" inline style={{ width:"46%" }} onClick={this.handleConfirm}>确认</Button>
+                </Item>
             </div>
         );
     }
