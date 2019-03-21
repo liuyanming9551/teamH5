@@ -15,7 +15,7 @@ class SportList extends Component {
         this.state = {
             couponList: [],
             pageNo: 1,
-            pageSize: 20, // 分页size
+            pageSize: 13, // 分页size
             totalPage: 0, // 总页数初始化
             isShowContent: false, // 控制页面再数据请求后显示
             refreshing: true, // 是否显示刷新状态
@@ -26,10 +26,10 @@ class SportList extends Component {
     }
     componentDidMount() {
         const hei = this.state.height - ReactDOM.findDOMNode(this.lv).offsetTop - 50;
-        this.requestCouponsList();
         this.setState({
             height: hei
         })
+        this.requestCouponsList();
     }
 
     // 获取列表
@@ -44,6 +44,7 @@ class SportList extends Component {
         }
         req.post('/api/RunData/MyMotionData',dataInfo).then((res) => {
             let couponList = [...this.state.couponList, ...res.PageList];
+            console.log(couponList)
             this.setState({
                 isShowContent: true,
                 pageNo: this.state.pageNo + 1,
@@ -76,7 +77,7 @@ class SportList extends Component {
 
     // 加载更多
     onEndReached = () => {
-        console.log(this.state.totalPage , this.state.pageNo)
+        console.log("触发加载更多")
         if (this.state.isLoading || (this.state.totalPage < this.state.pageNo)) {
             Toast.hide();
             return;
@@ -118,6 +119,7 @@ class SportList extends Component {
     }
     render() {
         const row = (rowData, sectionID, rowID) => {
+            console.log(rowData,sectionID,rowID)
             return (
                 <div key={rowID} style={{margin: '10px 0', background: '#fff'}}>
                     <List className="my-list" style={{textAlign: 'center'}}>
@@ -163,13 +165,14 @@ class SportList extends Component {
                         height: this.state.height,
                     }}
                     renderRow={row}
+                    initialListSize={13}
                     distanceToRefresh='20'
                     pullToRefresh={<PullToRefresh
                         refreshing={this.state.refreshing}
                         onRefresh={this.onRefresh}
                     />}
                     onEndReached={this.onEndReached}
-                    onEndReachedThreshold={30}
+                    onEndReachedThreshold={100}
                     pageSize={this.state.pageSize}
                 />
             </div>

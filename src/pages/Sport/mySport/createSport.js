@@ -77,7 +77,7 @@ class CreateSport extends Component {
                     })
                 }
                 if (files.length) {
-                    Toast.loading('正在加载', 10, () => {
+                    Toast.loading('上传中', 10, () => {
                         console.log('Load complete !!!');
                     })
                     a(files[0].file);
