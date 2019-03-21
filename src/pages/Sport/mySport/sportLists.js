@@ -136,7 +136,7 @@ class SportList extends Component {
             );
         };
         return (
-            <div>
+            <div className="listview-wrap">
                 <div className="activeBtn">
                     <span className="iconfont icon-bianji" onClick={() => operation([
                              {

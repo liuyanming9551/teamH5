@@ -35,7 +35,6 @@
 .loadFooter{
   text-align: center;
   color: #999;
-  height: 50vh;
 }
 .am-list-body{
   background: #f5f5f9;
@@ -51,4 +50,15 @@
 
 .picker-list .am-list-item .am-list-line .am-list-extra {
   flex-basis: initial;
+}
+
+
+.listview-wrap {
+  .am-list-view-scrollview {
+    .am-list-view-scrollview-content {
+      .am-pull-to-refresh-content-wrapper{
+        height: 100vh;
+      }
+    }
+  }
 }

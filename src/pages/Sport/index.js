@@ -89,7 +89,7 @@ class Sport extends Component {
                                             <div className="sportLinkIcon iconfont icon-shape2"/>
                                         </Link>
 
-                                        <div className="sportLinksLabel">审核</div>
+                                        <div className="sportLinksLabel" style={{marginLeft: "3px"}}>审核</div>
                                     </div>
                                 </div>
                             </Card.Body>

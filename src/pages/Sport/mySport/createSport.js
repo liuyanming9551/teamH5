@@ -131,15 +131,15 @@ class CreateSport extends Component {
                         //value={this.state.durationTime}
                         {...getFieldProps('RunTimeLong', {
                             rules: [
-                                { required: true, message: '请输入时长' },
+                                { required: true, message: '请输入分钟' },
                             ],
                         })}
                         type={type}
-                        placeholder="请输入时长"
+                        placeholder="请输入分钟"
                         clear
                         // onBlur={this.durationTimeBtn}
                         moneyKeyboardWrapProps={moneyKeyboardWrapProps}
-                    >时长(分钟)</InputItem>
+                    >跑步时间</InputItem>
                     <InputItem
                         //value={this.state.kilometer}
                         {...getFieldProps('RunDistance', {
