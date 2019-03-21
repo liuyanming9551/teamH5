@@ -22,8 +22,6 @@ class UserInfo extends Component {
     }
     render() {
         const {userInformation,userModel,cardInfo} = this.props;
-        console.log(cardInfo)
-
         let map = Map(userModel);
         let userInformationData = '';
         let userSkills = [];
@@ -46,37 +44,37 @@ class UserInfo extends Component {
                     </div>
                     <div className="userLabel">
                         <div className="userName">{userInformationData.UserName}</div>
-                        <div className="userTitle">高级软件工程师</div>
+                        <div className="userTitle">{map.get("position")}</div>
                         <div className="company">北京易勤信息技术有限公司</div>
                     </div>
                     <div className='changeDetail' onClick={this.changeDetailInfo}>修改资料</div>
                 </header>
-
                 <footer className="ownDesc">
                     <WingBlank size="md">
-                        <WhiteSpace size="lg" />
+                        <WhiteSpace size="md" />
                         <Card>
-                            <Card.Header className="cardTitle"
-                                title="自我评价"
-
-                            />
                             <Card.Body>
-                                <div className="evaluateDesc">{userInformationData.UserSign}</div>
+                                <div className='cardTitle'>
+                                    自我介绍
+                                </div>
+                                <div className="evaluateBox">
+                                    {userInformationData.UserSign}
+                                </div>
                             </Card.Body>
                         </Card>
                         <WhiteSpace size="sm" />
                     </WingBlank>
                     <WingBlank size="md">
                         <Card>
-                            <Card.Header className="cardTitle"
-                                         title="用户技能"
-                            />
                             <Card.Body>
-                                <div className="evaluateList">
+                                <div className='cardTitle'>
+                                    个人技能
+                                </div>
+                                <div className='evaluateBox'>
                                     {
                                         userSkills?userSkills.map((item,index)=>{
                                             return (
-                                                <Tag data-seed="logId" key={index} className="skill">{item}</Tag>
+                                                <span key={index} className="skill">{item}</span>
                                             )
                                         }):''
                                     }
@@ -87,96 +85,94 @@ class UserInfo extends Component {
                     </WingBlank>
                     <WingBlank size="md">
                         <Card>
-                            <Card.Header className="cardTitle"
-                                title="他人评价"
-
-                            />
                             <Card.Body>
-                                    {/*<Button className="evaluateBtn"  size="small">美丽（1）</Button>*/}
-                                    {/*<Button className="evaluateBtn"  size="small">大方</Button>*/}
-                                    {/*<Button className="evaluateBtn"  size="small">迷人</Button>*/}
-                                    {/*<Button className="evaluateBtn" inline size="small">with icon and inline</Button>*/}
-                                    {/*<Button className="evaluateBtn" inline size="small">一点都不好</Button>*/}
-                                    {/*<Button className="evaluateBtn" inline size="small">完了,这个人废了（99999）</Button>*/}
-
+                                <div className='cardTitle'>
+                                    他人评价
+                                </div>
+                                <div className='evaluateBox'>
+                                    <span className='skill'>美丽（1）</span>
+                                    <span className='skill'>大方</span>
+                                    <span className='skill'>迷人</span>
+                                    <span className='skill'>with icon and inline</span>
+                                    <span className='skill'>完了,这个人废了（99999）</span>
+                                </div>
                             </Card.Body>
                         </Card>
                         <WhiteSpace size="sm" />
                     </WingBlank>
-
                     <WingBlank size="md">
                         <Card>
-
-                            <Card.Header className="cardTitle"
-                                title="本周排名"
-                            />
                             <Card.Body>
-                                <span className="rankTitle">排名：</span>
-                                <span className="rank">第{cardInfoData?cardInfoData.get('RankingThisWeek'):'--'}名</span>
-                                <WhiteSpace size="sm" />
-                                <Carousel className="space-carousel"
-                                    frameOverflow="visible"
-                                    cellSpacing={10}
-                                    slideWidth="150px"
-                                    autoplay={false}
-                                    dots={false}
-                                    beforeChange={(from, to) => console.log(`slide from ${from} to ${to}`)}
-                                    afterChange={index => this.setState({ slideIndex: index })}
-                                >
-                                    {cardList?cardList.map((val, index) => (
-                                        <a
-                                            key={val}
-                                            style={{
-                                                display: 'block',
-                                                position: 'relative',
-                                                top: this.state.slideIndex === index ? -10 : 0,
-                                                height: this.state.imgHeight,
-                                                borderRadius:"4px",
-                                                background:"#f6f6f64f",
-                                                boxShadow: '2px 1px 1px rgba(0, 0, 0, 0.2)',
-                                            }}
-                                        >
-                                            <div  className="cardItem"
-                                                
-                                                style={{ width: '150px', verticalAlign: 'top' }}
-                                                onLoad={() => {
-                                                    // fire window resize event to change height
-                                                    window.dispatchEvent(new Event('resize'));
-                                                    this.setState({ imgHeight: 'auto' });
+                                <div className='cardTitle'>
+                                    本周排名
+                                </div>
+                                <div className='evaluateBox'>
+                                    <span className="rankTitle">排名：</span>
+                                    <span className="rank">第{cardInfoData?(cardInfoData.get('RankingThisWeek')>0?cardInfoData.get('RankingThisWeek'):'--'):'--'}名</span>
+                                    <WhiteSpace size="sm" />
+                                    <Carousel className="space-carousel"
+                                              frameOverflow="visible"
+                                              cellSpacing={10}
+                                              slideWidth="150px"
+                                              autoplay={false}
+                                              dots={false}
+                                              beforeChange={(from, to) => console.log(`slide from ${from} to ${to}`)}
+                                              afterChange={index => this.setState({ slideIndex: index })}
+                                    >
+                                        {cardList?cardList.map((val, index) => (
+                                            <a
+                                                key={val}
+                                                style={{
+                                                    display: 'block',
+                                                    position: 'relative',
+                                                    top: this.state.slideIndex === index ? -10 : 0,
+                                                    height: this.state.imgHeight,
+                                                    borderRadius:"4px",
+                                                    background:"#f6f6f64f",
+                                                    boxShadow: '2px 1px 1px rgba(0, 0, 0, 0.2)',
                                                 }}
                                             >
-                                                <div className="cardDetailWrapInner">
-                                                    <div className="cardListTitle">今日运动</div>
-                                                    <div className="cardDetailWrap">
-                                                        <div className="cardDetailMin">运动天数：{val.CountDays}</div>
-                                                        <div className="cardDetailNum">运动量：{val.CountRunDistance}km</div>
+                                                <div  className="cardItem"
+
+                                                      style={{ width: '150px', verticalAlign: 'top' }}
+                                                      onLoad={() => {
+                                                          // fire window resize event to change height
+                                                          window.dispatchEvent(new Event('resize'));
+                                                          this.setState({ imgHeight: 'auto' });
+                                                      }}
+                                                >
+                                                    <div className="cardDetailWrapInner">
+                                                        <div className="cardListTitle">{val.Time}</div>
+                                                        <div className="cardDetailWrap">
+                                                            <div className="cardDetailMin">运动天数：{val.CountDays}</div>
+                                                            <div className="cardDetailNum">运动量：{val.CountRunDistance}km</div>
+                                                        </div>
                                                     </div>
+
                                                 </div>
-                                                
-                                            </div>
-                                        </a>
-                                    )):''}
-                                </Carousel>
+                                            </a>
+                                        )):''}
+                                    </Carousel>
+                                </div>
+
                             </Card.Body>
                         </Card>
                         <WhiteSpace size="sm" />
                     </WingBlank>
                     <WingBlank size="md">
                         <Card>
-
-                            <Card.Header className="cardTitle"
-                                title="我的段位"
-                            />
-
-
                             <Card.Body>
-                                {/*<img src=""/>*/}
+                                <div className='cardTitle'>
+                                    我的荣誉
+                                </div>
+                                <div className='evaluateBox'>
+                                    <img src=""/>
+                                </div>
                             </Card.Body>
 
                         </Card>
                         <WhiteSpace size="sm" />
                     </WingBlank>
-
                 </footer>
             </div>
         )
