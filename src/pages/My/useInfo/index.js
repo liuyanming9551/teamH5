@@ -92,14 +92,13 @@ class UserInfo extends Component {
 
                             />
                             <Card.Body>
-                                <div className="evaluateList">
-                                    <Button className="evaluateBtn" inline size="small">美丽（1）</Button>
-                                    <Button className="evaluateBtn" inline size="small">大方</Button>
-                                    <Button className="evaluateBtn" inline size="small">迷人</Button>
-                                    <Button className="evaluateBtn" inline size="small">with icon and inline</Button>
-                                    <Button className="evaluateBtn" inline size="small">一点都不好</Button>
-                                    <Button className="evaluateBtn" inline size="small">完了,这个人废了（99999）</Button>
-                                </div>
+                                    {/*<Button className="evaluateBtn"  size="small">美丽（1）</Button>*/}
+                                    {/*<Button className="evaluateBtn"  size="small">大方</Button>*/}
+                                    {/*<Button className="evaluateBtn"  size="small">迷人</Button>*/}
+                                    {/*<Button className="evaluateBtn" inline size="small">with icon and inline</Button>*/}
+                                    {/*<Button className="evaluateBtn" inline size="small">一点都不好</Button>*/}
+                                    {/*<Button className="evaluateBtn" inline size="small">完了,这个人废了（99999）</Button>*/}
+
                             </Card.Body>
                         </Card>
                         <WhiteSpace size="sm" />
@@ -111,11 +110,9 @@ class UserInfo extends Component {
                             <Card.Header className="cardTitle"
                                 title="本周排名"
                             />
-
-
                             <Card.Body>
-                                <span className="rankTitle">第几名：</span>
-                                <span className="rank">{cardInfoData?cardInfoData.get('RankingThisWeek'):''}</span>
+                                <span className="rankTitle">排名：</span>
+                                <span className="rank">第{cardInfoData?cardInfoData.get('RankingThisWeek'):'--'}名</span>
                                 <WhiteSpace size="sm" />
                                 <Carousel className="space-carousel"
                                     frameOverflow="visible"
@@ -173,7 +170,7 @@ class UserInfo extends Component {
 
 
                             <Card.Body>
-                                <img src=""></img>
+                                {/*<img src=""/>*/}
                             </Card.Body>
 
                         </Card>
