@@ -5,6 +5,7 @@ import {
     Chart,
     Geom,
     Axis,
+    Coord,
     Tooltip,
     Legend,
 } from "bizcharts";
@@ -29,10 +30,11 @@ class PersonChart extends PureComponent {
         });
         return (
             <div>
-                <Chart height={300} data={dv} forceFit>
+                <Chart height={300} width={300} data={dv} forceFit>
                     <Axis name="个人" />
                     <Axis name="运动量" />
                     <Legend />
+                    <Coord transpose scale={[1, -1]} />
                     <Tooltip
                         crosshairs={{
                             type: "y"

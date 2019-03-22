@@ -12,7 +12,7 @@ const changePersonData = (resultPersonData,resultPersonNameList) =>({
 })
 export const getTeamData = () => {
     return (dispatch) =>{
-        axios.post("http://10.168.1.115:8080/api/Group/StatisticalGroup").then((res) =>{
+        axios.post("/api/Group/StatisticalGroup").then((res) =>{
             let dataList = res.data;
             //数据拼接成图表所要的格式
             const resultTeamData = []//重组数据集合
@@ -39,7 +39,7 @@ export const getTeamData = () => {
 }
 export const getPersonData = () => {
     return (dispatch) =>{
-        axios.post("http://10.168.1.115:8080/api/User/StatisticalUser").then((res) =>{
+        axios.post("/api/User/StatisticalUser").then((res) =>{
             let dataList = res.data;
             //数据拼接成图表所要的格式
             const resultPersonData = []//重组数据集合

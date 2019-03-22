@@ -2,11 +2,8 @@ import React from "react";
 import TeamChart from './teamChart';
 import PersonChart from './personChart';
 import {WhiteSpace} from "antd-mobile";
-
-
 class Team extends React.Component {
     render() {
-
         return (
             <div>
                 <div>
@@ -18,11 +15,9 @@ class Team extends React.Component {
                     <p style={{textAlign:"center"}}>个人统计图</p>
                     <PersonChart/>
                 </div>
-
             </div>
         );
     }
 }
-
 export default Team
 

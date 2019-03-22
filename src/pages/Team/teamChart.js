@@ -7,6 +7,7 @@ import {
     Axis,
     Tooltip,
     Legend,
+    Coord,
 } from "bizcharts";
 import DataSet from "@antv/data-set";
 class TeamChart extends PureComponent {
@@ -29,10 +30,11 @@ class TeamChart extends PureComponent {
         });
         return (
             <div>
-                <Chart height={300} data={dv} forceFit>
+                <Chart height={400} width={300} data={dv} forceFit>
                     <Axis name="组" />
                     <Axis name="运动量" />
                     <Legend />
+                    <Coord transpose scale={[1, -1]} />
                     <Tooltip
                         crosshairs={{
                             type: "y"
