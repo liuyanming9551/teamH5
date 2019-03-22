@@ -13,8 +13,8 @@ let sources = {};
 */
 //const baseUrl = 'http://139.129.222.23:8021';
     
-//const baseUrl = 'http://10.168.1.138:5454';
-const baseUrl = 'http://10.168.1.138:5656';
+const baseUrl = 'http://10.168.1.138:5454';
+// const baseUrl = 'http://10.168.1.138:5656';
 axios.defaults.baseURL = baseUrl;
 /**
  * @Description: 线上环境代码

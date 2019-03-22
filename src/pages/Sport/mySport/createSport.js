@@ -25,10 +25,16 @@ class CreateSport extends Component {
     constructor(props){
         super(props)
         this.handleConfirm = this.handleConfirm.bind(this);
+        this.handleTimeChange = this.handleTimeChange.bind(this);
+        this.handleDistanceChange = this.handleDistanceChange.bind(this);
+        this.onBlurTime = this.onBlurTime.bind(this);
+        this.onBlurDistance = this.onBlurDistance.bind(this);
         this.state = {
             date: now,
             type: 'money',
             files: [],
+            RunTimeLong: '',
+            RunDistance: '',
         }
     }
     
@@ -42,23 +48,23 @@ class CreateSport extends Component {
     };
     handleConfirm(){
         const {userCode,changeSport} = this.props;
-        const {files} =this.state;
+        const {files, RunTimeLong, RunDistance} =this.state;
         const fieldsValue = this.props.form.getFieldsValue();
         const timeValue = fieldsValue.dp.toISOString().slice(0, 10)
         this.props.form.validateFields((err, values) => {
             console.log(err,values)
-            if (!values.RunTimeLong ) {
+            if (!RunTimeLong ) {
                 Toast.info('请输入时长', 1);
-            } else if (!values.RunDistance) {
+            } else if (!RunDistance) {
                 Toast.info('请输入公里数', 1);
             } else {
                 let formData = new FormData();
                 let list = [];
                 let count = 0;
                 formData.append('RunDate',timeValue);
-                formData.append('RunTimeLong',values.RunTimeLong);
+                formData.append('RunTimeLong',RunTimeLong);
                 formData.append('Creator',userCode);
-                formData.append('RunDistance',values.RunDistance);
+                formData.append('RunDistance',RunDistance);
                 let a = (file) => {
                     console.log(file)
                     compressImage(file, (f) => {
@@ -105,14 +111,56 @@ class CreateSport extends Component {
     onReset = () => {
         this.props.form.resetFields();
         this.setState({
-            files: []
+            files: [],
+            RunTimeLong: '',
+            RunDistance: ''
+        })
+    }
+
+    onBlurTime = (val) => {
+        if (val) {
+            this.setState({
+                RunTimeLong: Number(val).toFixed(2)
+            })
+        }
+    }
+
+    onBlurDistance = (val) => {
+        if (val) {
+            this.setState({
+                RunDistance: Number(val).toFixed(2)
+            })
+        }
+    }
+
+    handleTimeChange = (value) => {
+        console.log("value", value)
+        console.log("type",typeof(value))
+        if (value >= 1000) {
+            value = 999
+        } else {
+            value = value.replace(/^(\-)*(\d+)\.(\d\d).*$/, '$1$2.$3')
+        }
+        this.setState({
+            RunTimeLong: value
+        })
+    }
+
+    handleDistanceChange = (value) => {
+        if (value >= 1000) {
+            value = 999
+        } else {
+            value = value.replace(/^(\-)*(\d+)\.(\d\d).*$/, '$1$2.$3')
+        }
+        this.setState({
+            RunDistance: value
         })
     }
 
     render() {
 
         const {getFieldProps} = this.props.form;
-        const {type, files} = this.state;
+        const {type, files, RunTimeLong, RunDistance} = this.state;
         return (
             <div style={{position:"relative"}}>
                 <List className="date-picker-list">
@@ -129,28 +177,24 @@ class CreateSport extends Component {
                     </DatePicker>
                     <InputItem
                         //value={this.state.durationTime}
-                        {...getFieldProps('RunTimeLong', {
-                            rules: [
-                                { required: true, message: '请输入分钟' },
-                            ],
-                        })}
+                        {...getFieldProps('RunTimeLong')}
                         type={type}
                         placeholder="请输入分钟"
+                        value={RunTimeLong}
                         clear
-                        // onBlur={this.durationTimeBtn}
+                        onChange={this.handleTimeChange}
+                        onBlur={this.onBlurTime}
                         moneyKeyboardWrapProps={moneyKeyboardWrapProps}
                     >跑步时间</InputItem>
                     <InputItem
                         //value={this.state.kilometer}
-                        {...getFieldProps('RunDistance', {
-                            rules: [
-                                { required: true, message: '请输入公里数' },
-                            ],
-                        })}
+                        {...getFieldProps('RunDistance')}
                         type={type}
                         placeholder="请输入公里数"
+                        value={RunDistance}
                         clear
-                        // onBlur={this.kilometerBtn}
+                        onChange={this.handleDistanceChange}
+                        onBlur={this.onBlurDistance}
                         moneyKeyboardWrapProps={moneyKeyboardWrapProps}
                     >距离(公里)</InputItem>
                     {/*<InputItem*/}
