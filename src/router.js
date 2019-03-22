@@ -3,17 +3,17 @@ import { Provider } from 'react-redux';
 import Loadable from 'react-loadable';
 import {BrowserRouter,Route,Switch} from "react-router-dom";
 
-// import Home from './route/home';
+import Home from './route/home';
 //
-// import My from './route/my';
+import My from './route/my';
 import ChangeDetail from './pages/My/useInfo/changeDetail';
 //PK
-// import Pk from './route/pk';
+import Pk from './route/pk';
 import Newpersonalpk from "./pages/Pk/Newpersonalpk";
 import Personalselect from "./pages/Pk/Personalselect";
 import PersonalLook from "./pages/Pk/PersonalLook";
 //sport
-// import Sport from './route/sport';
+import Sport from './route/sport';
 import ExtraSport from "./pages/Sport/adjustment";
 import MySport from "./pages/Sport/mySport/index";
 import SportCheck from "./pages/Sport/sportCheck";
@@ -23,54 +23,54 @@ import SearchSport from './pages/Sport/mySport/searchSport';
 import CreateAdjustment from './pages/Sport/adjustment/createAdjustment';
 import CheckDetail from './pages/Sport/sportCheck/checkDetail';
 //team
-// import Team from './route/team';
+import Team from './route/team';
 
 //登录
-// import Login from "./pages/login";
+import Login from "./pages/login";
 import AddUserInfo from "./pages/login/addUserInfo";
 
 import store from './store';
-const Loading = () => {
-    return <div>Loading......</div>
-};
-const Home = Loadable({
-    // 要load的component，用import的方式插入componenr
-    loader() {
-        return import('./route/home');
-    },
-    // 如果loading較慢時，要render的component
-    loading: Loading,
-});
-const My = Loadable({
-    loader(){
-        return import('./route/my');
-    },
-    loading:Loading
-})
-const Pk = Loadable({
-    loader(){
-        return import('./route/pk');
-    },
-    loading:Loading
-})
-const Sport = Loadable({
-    loader(){
-        return import('./route/sport');
-    },
-    loading:Loading
-})
-const Team = Loadable({
-    loader(){
-        return import('./route/team');
-    },
-    loading:Loading
-})
-const Login = Loadable({
-    loader(){
-        return import('./pages/login');
-    },
-    loading:Loading
-})
+// const Loading = () => {
+//     return <div>Loading......</div>
+// };
+// const Home = Loadable({
+//     // 要load的component，用import的方式插入componenr
+//     loader() {
+//         return import('./route/home');
+//     },
+//     // 如果loading較慢時，要render的component
+//     loading: Loading,
+// });
+// const My = Loadable({
+//     loader(){
+//         return import('./route/my');
+//     },
+//     loading:Loading
+// })
+// const Pk = Loadable({
+//     loader(){
+//         return import('./route/pk');
+//     },
+//     loading:Loading
+// })
+// const Sport = Loadable({
+//     loader(){
+//         return import('./route/sport');
+//     },
+//     loading:Loading
+// })
+// const Team = Loadable({
+//     loader(){
+//         return import('./route/team');
+//     },
+//     loading:Loading
+// })
+// const Login = Loadable({
+//     loader(){
+//         return import('./pages/login');
+//     },
+//     loading:Loading
+// })
 export default class Router extends Component{
     render(){
         return (
