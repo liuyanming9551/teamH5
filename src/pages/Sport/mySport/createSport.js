@@ -27,8 +27,8 @@ class CreateSport extends Component {
         this.handleConfirm = this.handleConfirm.bind(this);
         this.handleTimeChange = this.handleTimeChange.bind(this);
         this.handleDistanceChange = this.handleDistanceChange.bind(this);
-        this.onBlurTime = this.onBlurTime.bind(this);
-        this.onBlurDistance = this.onBlurDistance.bind(this);
+        // this.onBlurTime = this.onBlurTime.bind(this);
+        // this.onBlurDistance = this.onBlurDistance.bind(this);
         this.state = {
             date: now,
             type: 'money',
@@ -48,9 +48,11 @@ class CreateSport extends Component {
     };
     handleConfirm(){
         const {userCode,changeSport} = this.props;
-        const {files, RunTimeLong, RunDistance} =this.state;
+        let {files, RunTimeLong, RunDistance} =this.state;
         const fieldsValue = this.props.form.getFieldsValue();
         const timeValue = fieldsValue.dp.toISOString().slice(0, 10)
+        RunTimeLong = Number(RunTimeLong).toFixed(2);
+        RunDistance = Number(RunDistance).toFixed(2)
         this.props.form.validateFields((err, values) => {
             console.log(Number(RunTimeLong),Number(RunDistance))
             if (!RunTimeLong) {
@@ -124,20 +126,20 @@ class CreateSport extends Component {
             RunDistance: ''
         })
     }
-    onBlurTime = (val) => {
-        if (val) {
-            this.setState({
-                RunTimeLong: Number(val).toFixed(2)
-            })
-        }
-    }
-    onBlurDistance = (val) => {
-        if (val) {
-            this.setState({
-                RunDistance: Number(val).toFixed(2)
-            })
-        }
-    }
+    // onBlurTime = (val) => {
+    //     if (val) {
+    //         this.setState({
+    //             RunTimeLong: Number(val).toFixed(2)
+    //         })
+    //     }
+    // }
+    // onBlurDistance = (val) => {
+    //     if (val) {
+    //         this.setState({
+    //             RunDistance: Number(val).toFixed(2)
+    //         })
+    //     }
+    // }
     handleTimeChange = (value) => {
         console.log("value", value)
         console.log("type",typeof(value))
@@ -185,7 +187,7 @@ class CreateSport extends Component {
                         value={RunTimeLong}
                         clear
                         onChange={this.handleTimeChange}
-                        onBlur={this.onBlurTime}
+                        // onBlur={this.onBlurTime}
                         moneyKeyboardWrapProps={moneyKeyboardWrapProps}
                     >跑步时间</InputItem>
                     <InputItem
@@ -196,7 +198,7 @@ class CreateSport extends Component {
                         value={RunDistance}
                         clear
                         onChange={this.handleDistanceChange}
-                        onBlur={this.onBlurDistance}
+                        // onBlur={this.onBlurDistance}
                         moneyKeyboardWrapProps={moneyKeyboardWrapProps}
                     >距离(公里)</InputItem>
                     {/*<InputItem*/}
