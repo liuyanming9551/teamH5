@@ -84,7 +84,7 @@ class Sport extends Component {
 
                                         <div className="sportLinksLabel">额外运动</div>
                                     </div>
-                                    <div className="sportLinkItem" style={rightControl?{display: "block"}:{display: "block"}}>
+                                    <div className="sportLinkItem" style={rightControl?{display: "block"}:{display: "none"}}>
                                         <Link to='/sport/check'>
                                             <div className="sportLinkIcon iconfont icon-shape2"/>
                                         </Link>
