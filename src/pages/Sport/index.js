@@ -84,12 +84,12 @@ class Sport extends Component {
 
                                         <div className="sportLinksLabel">额外运动</div>
                                     </div>
-                                    <div className="sportLinkItem" style={rightControl?{display: "block"}:{display: "none"}}>
+                                    <div className="sportLinkItem" style={rightControl?{display: "block"}:{display: "block"}}>
                                         <Link to='/sport/check'>
                                             <div className="sportLinkIcon iconfont icon-shape2"/>
                                         </Link>
 
-                                        <div className="sportLinksLabel" style={{marginLeft: "3px"}}>审核</div>
+                                        <div className="sportLinksLabel">审核运动</div>
                                     </div>
                                 </div>
                             </Card.Body>
