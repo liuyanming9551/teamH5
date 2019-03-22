@@ -52,11 +52,21 @@ class CreateSport extends Component {
         const fieldsValue = this.props.form.getFieldsValue();
         const timeValue = fieldsValue.dp.toISOString().slice(0, 10)
         this.props.form.validateFields((err, values) => {
-            console.log(err,values)
-            if (!RunTimeLong ) {
-                Toast.info('请输入时长', 1);
-            } else if (!RunDistance) {
+            console.log(Number(RunTimeLong),Number(RunDistance))
+            if (!RunTimeLong) {
+
+                Toast.info('请输入跑步时间', 1);
+
+            }
+            else if(Number(RunTimeLong) == 0){
+                Toast.info('跑步时间不能为0', 1);
+            }
+            else if (!RunDistance) {
                 Toast.info('请输入公里数', 1);
+
+            }
+            else if(Number(RunDistance) == 0){
+                Toast.info('公里数不能为0', 1);
             } else {
                 let formData = new FormData();
                 let list = [];
@@ -95,7 +105,6 @@ class CreateSport extends Component {
             
         });
     };
-    
     componentDidUpdate() {
         const {sportUpload,cancelUploadState,history} = this.props;
         console.log("history",history)
@@ -106,7 +115,6 @@ class CreateSport extends Component {
             history.goBack()
         }
     }
-
     // 重置
     onReset = () => {
         this.props.form.resetFields();
@@ -116,7 +124,6 @@ class CreateSport extends Component {
             RunDistance: ''
         })
     }
-
     onBlurTime = (val) => {
         if (val) {
             this.setState({
@@ -124,7 +131,6 @@ class CreateSport extends Component {
             })
         }
     }
-
     onBlurDistance = (val) => {
         if (val) {
             this.setState({
@@ -132,7 +138,6 @@ class CreateSport extends Component {
             })
         }
     }
-
     handleTimeChange = (value) => {
         console.log("value", value)
         console.log("type",typeof(value))
@@ -145,7 +150,6 @@ class CreateSport extends Component {
             RunTimeLong: value
         })
     }
-
     handleDistanceChange = (value) => {
         if (value >= 1000) {
             value = 999
@@ -156,9 +160,7 @@ class CreateSport extends Component {
             RunDistance: value
         })
     }
-
     render() {
-
         const {getFieldProps} = this.props.form;
         const {type, files, RunTimeLong, RunDistance} = this.state;
         return (
