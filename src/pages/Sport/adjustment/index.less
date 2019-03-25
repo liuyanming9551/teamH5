@@ -7,3 +7,25 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.nameSelect {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  justify-content: space-between;
+  .selectedName {
+    float: left;
+    width: 50%;
+  }
+  .adjustDistance {
+    float: right;
+    width: 50%;
+  }
+  .deleteBtn {
+    position: absolute;
+    top: 0.2rem;
+    right: 0.3rem;
+    color: #333333;
+    z-index: 10;
+  }
+}

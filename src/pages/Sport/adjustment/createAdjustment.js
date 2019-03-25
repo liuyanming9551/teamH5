@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
-import {DatePicker, List, InputItem, ImagePicker, Button, WingBlank,WhiteSpace} from 'antd-mobile';
+import {Picker, DatePicker, ImagePicker, List, InputItem, Button, WingBlank, WhiteSpace, Icon, Toast} from 'antd-mobile';
 import {createForm} from 'rc-form';
+import {compressImage} from './../../../util/util';
 
 const nowTimeStamp = Date.now();
 const now = new Date(nowTimeStamp);
@@ -44,8 +45,26 @@ class CreateAdjustment extends Component {
         customChildValue: null,
         visible: false,
         type: 'money',
-        files: dataList
-
+        files: [],
+        selectedArr: [[undefined, undefined]],
+        nameArr: [
+            {
+                label: 'Grace',
+                value: 'Grace',
+            },{
+                label: 'Lily',
+                value: 'Lily',
+            },{
+                label: 'Nancy',
+                value: 'Nancy',
+            },{
+                label: 'Frank',
+                value: 'Frank',
+            },{
+                label: 'Mia',
+                value: 'Mia',
+            }
+        ]
     }
     onChange = (files, type, index) => {
         console.log(files, type, index);
@@ -62,65 +81,189 @@ class CreateAdjustment extends Component {
             }),
         });
     };
+
     onTabChange = (key) => {
         console.log(key);
     };
 
+    handleConfirm = () => {
+        let {files} =this.state;
+        this.props.form.validateFields((err, values) => {
+            console.log("values", values)
+            if (!values.activityName) {
+                Toast.info('请输入活动名称', 1);
+            } else {
+                let formData = new FormData();
+                let list = [];
+                let count = 0;
+                formData.append('activityName',values.activityName);
+                let a = (file) => {
+                    compressImage(file, (f) => {
+                        list.push(f);
+                        count++;
+                        if (count < files.length) {
+                            a(files[count].file);
+                        } else {
+                            Toast.hide()
+                            list.forEach((element,index) => {
+                                formData.append(`${index}`, element);
+                            });
+                            Toast.loading('上传中',0,null,true);
+                            // changeSport(formData);
+                        }
+                    })
+                }
+                if (files.length) {
+                    Toast.loading('上传中', 10, () => {
+                    })
+                    a(files[0].file);
+                } else {
+                    // changeSport(formData);
+                }
+            }
+            
+        });
+    };
+
+    // 重置
+    onReset = () => {
+        this.props.form.resetFields();
+        this.setState({
+            files: [],
+        })
+    }
+
+    onAddImageClick = (e) => {
+        //e.preventDefault();
+    };
+
+    // 图片发生改变
+    onImageChange = (files, type, index) => {
+        this.setState({
+            files,
+        });
+    };
+
+    // 调整距离改变
+    distanceChange = (v, index) => {
+        let { selectedArr } = this.state;
+        selectedArr[index][1] = v;
+        selectedArr = [...selectedArr];
+        this.setState({
+            selectedArr
+        });
+    }
+
+    // 选中
+    selectNameOK = (v) => {
+        let { selectedArr } = this.state;
+        selectedArr.push([v, undefined])
+        selectedArr = [...selectedArr];
+        this.setState({
+            selectedArr
+        });
+    }
+
+    // 删除
+    deleteSelectName = (index) => {
+        let { selectedArr } = this.state;
+        selectedArr.splice(index, 1);
+        selectedArr = [...selectedArr];
+    
+        this.setState({
+            selectedArr
+        });
+    };
+
     render() {
         const {getFieldProps} = this.props.form;
-        const {type, files} = this.state;
+        const {type, files, nameArr, selectedArr} = this.state;
         return (
             <div style={{position: "relative"}}>
                 <List className="date-picker-list" style={{backgroundColor: 'white'}}>
+                    <InputItem
+                        placeholder="请输入活动名称"
+                        clear
+                        onChange={(v) => {}}
+                        moneyKeyboardWrapProps={moneyKeyboardWrapProps}
+                        {...getFieldProps('activityName', {
+                            initialValue: '',
+                        })}
+                    >活动名称</InputItem>
                     <DatePicker
                         mode="date"
                         title="Select Date"
                         extra="Optional"
                         value={this.state.date}
                         onChange={date => this.setState({date})}
+                        {...getFieldProps('activityDate', {
+                            initialValue: this.state.date,
+                        })}
                     >
-                        <List.Item>跑步日期</List.Item>
+                        <List.Item>活动日期</List.Item>
                     </DatePicker>
-                    <List>
-                        <InputItem
-                            {...getFieldProps('inputclear')}
-                            clear
-                            placeholder="请输入姓名"
-                            style={{textAlign:'right'}}
-                        >姓名</InputItem>
-                    </List>
+                    <Picker 
+                        data={nameArr} 
+                        cols={1} 
+                        {...getFieldProps('name')} 
+                        className="forss"
+                        onOk={(v) => {this.selectNameOK(v)}}
+                    >
+                        <List.Item arrow="horizontal">请选择姓名</List.Item>
+                    </Picker>
+                    {
+                        selectedArr.map((item, index) => {
+                            if (item[0]) {
+                                return (
+                                    <div key={index} className="nameSelect">
+                                        <div className="deleteBtn"><Icon type="cross-circle" /></div>
+                                        <div className="selectedName">
+                                            <InputItem
+                                                value={item[0]}
+                                                moneyKeyboardWrapProps={moneyKeyboardWrapProps}
+                                                moneyKeyboardAlign="left"
+                                            >姓名</InputItem>
+                                        </div>
+                                        <div className="adjustDistance">
+                                            <InputItem
+                                                type={type}
+                                                value={item[1]}
+                                                onChange={(v) => {this.distanceChange(v, index)}}
+                                                moneyKeyboardWrapProps={moneyKeyboardWrapProps}
+                                                moneyKeyboardAlign="left"
+                                            >调整距离</InputItem>
+                                        </div>
+                                    </div>
+                                )
+                            } else {
+                                return null;
+                            }
+                        })
+                    }
+                    
                     <InputItem
-                        type={type}
-                        placeholder="请输入公里数"
                         clear
                         onChange={(v) => {
                             console.log('onChange', v);
                         }}
-                        onBlur={(v) => {
-                            console.log('onBlur', v);
-                        }}
                         moneyKeyboardWrapProps={moneyKeyboardWrapProps}
-                    >调整距离</InputItem>
-                    <List>
-                        <InputItem
-                            {...getFieldProps('inputclear')}
-                            clear
-                            placeholder="请输入原因"
-                            style={{textAlign:'right'}}
-                        >调整原因</InputItem>
-                    </List>
-
+                        {...getFieldProps('activityRemark', {
+                            initialValue: '',
+                        })}
+                    >备注</InputItem>
                 </List>
-
-
-                <div className="activeBox">
-                    <WhiteSpace size='lg' />
-                    <WingBlank size='lg' style={{overflow: "hidden"}}>
-                        <Button type="ghost" size="small" inline style={{float: "left", width: "48%"}}>重置</Button>
-                        <Button type="primary" size="small" inline style={{float: "right", width: "48%"}}>确认</Button>
-                    </WingBlank>
-
-                </div>
+                <ImagePicker
+                    files={files}
+                    onChange={(files) => {this.onImageChange(files)}}
+                    onImageClick={(index, fs) => console.log(index, fs)}
+                    selectable={files.length < 9}
+                    multiple={true}
+                    onAddImageClick={() => {this.onAddImageClick()}}
+                />
+                <List.Item>
+                    <Button size="small" inline style={{ width:"46%", marginRight: "20px" }} onClick={() => {this.onReset()}}>重置</Button>
+                    <Button type="primary" size="small" inline style={{ width:"46%" }} onClick={() => {this.handleConfirm()}}>确认</Button>
+                </List.Item>
             </div>
         );
     }

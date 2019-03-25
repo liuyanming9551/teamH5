@@ -24,13 +24,13 @@ export default class AdjustmentList extends React.Component {
             height: document.documentElement.clientHeight,
         };
     }
-    componentDidMount(){
-        const hei = this.state.height - ReactDOM.findDOMNode(this.lv).offsetTop - 50;
-        this.requestCouponsList();
-        this.setState({
-            height:hei
-        })
-    }
+    // componentDidMount(){
+    //     const hei = this.state.height - ReactDOM.findDOMNode(this.lv).offsetTop - 50;
+    //     this.requestCouponsList();
+    //     this.setState({
+    //         height:hei
+    //     })
+    // }
 
     // 获取列表
     requestCouponsList() {
@@ -43,7 +43,7 @@ export default class AdjustmentList extends React.Component {
         }
         axios({
             method:"post",
-            url:"http://10.168.1.115:8080/api/RunData/MyMotionData",
+            url:"/api/RunData/MyMotionData",
             data:Qs.stringify(dataInfo)
         }).then((res)=>{
             let result = res.data;
@@ -115,22 +115,39 @@ export default class AdjustmentList extends React.Component {
         return (
             <div>
                 <div className="activeBtn">
-                    <img onClick={this.showShareActionSheet}
-                         onClick={() => operation([
-                             {
-                                 text: '新建', onPress: () => {
-                                     this.props.location.history.push('/sport/createAdjustment')
-                                 }
-                             },
-                             {
-                                 text: '筛选', onPress: () => {
-                                     this.props.location.history.push('/sport/searchSport')
-                                 }
-                             },
-                         ])}
+                    <span className="iconfont icon-bianji" onClick={() => operation([
+                            {
+                                text: '新建', onPress: () => {
+                                    this.props.location.history.push('/sport/createAdjustment')
+                                }
+                            },
+                            {
+                                text: '筛选', onPress: () => {
+                                    this.props.location.history.push('/sport/searchSport')
+                                }
+                            },
+                        ])}
                     />
                 </div>
-                <ListView
+                <div style={{margin:'10px 0',background:'#fff'}}>
+                    <List className="my-list" style={{textAlign: 'center'}}>
+                        <List.Item>
+                            <Badge text={0} style={{marginLeft: "12px",width:'100%'}}>
+                                <div style={{width: '80vw'}}>
+                                    <div style={{marginBottom:'10px',overflow:'hidden'}}>
+                                        <span className="ad-name">丽丽</span>
+                                        <span className="ad-time">2019-8-8</span>
+                                    </div>
+                                    <div style={{overflow:'hidden'}}>
+                                        <span className="ad-state">待审核 ：<span>9km</span></span>
+                                        <span className="ad-number">原因 ：<span>爬上爬上爬</span></span>
+                                    </div>
+                                </div>
+                            </Badge>
+                        </List.Item>
+                    </List>
+                </div>
+                {/* <ListView
                     key={1}
                     ref={el => this.lv = el}
                     dataSource={this.state.dataSource}
@@ -150,7 +167,7 @@ export default class AdjustmentList extends React.Component {
                     onEndReached={this.onEndReached}
                     onEndReachedThreshold={30}
                     pageSize={this.state.pageSize}
-                />
+                /> */}
             </div>
 
         );
