@@ -1,5 +1,4 @@
 import React from "react";
-import "./index.less";
 import { List, Badge } from 'antd-mobile'
 
 class Personalselet extends React.Component {

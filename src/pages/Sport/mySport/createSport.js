@@ -7,7 +7,6 @@ import {compressImage} from './../../../util/util';
 
 const nowTimeStamp = Date.now();
 const now = new Date(nowTimeStamp);
-const utcOffset = new Date(now.getTime() - (now.getTimezoneOffset() * 60000));
 const Item = List.Item;
 
 // 通过自定义 moneyKeyboardWrapProps 修复虚拟键盘滚动穿透问题

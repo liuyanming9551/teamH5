@@ -12,8 +12,6 @@ class Login extends PureComponent{
         if(code){
             this.props.getUserInfo(code)
         }
-
-
     }
     componentDidUpdate(prevProps, prevState, snapshot) {
         const {stateCode,history} = this.props;

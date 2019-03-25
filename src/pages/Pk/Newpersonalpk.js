@@ -1,66 +1,105 @@
 // 新建个人PK
 import React from "react";
-import TestWrapper from "./namePicker"
-import TextareaItemExampleWrapper from "./pkjiangli"
-import { DatePicker, List, TextareaItem } from 'antd-mobile';
+import {connect} from 'react-redux';
+import {actionCreators} from './store';
+import {Button, DatePicker, List, Picker, TextareaItem, WhiteSpace, WingBlank} from 'antd-mobile';
+import { createForm } from 'rc-form';
+import {
+    ActiveBox
+} from './style';
+
+const Item = List.Item;
 const nowTimeStamp = Date.now();
 const now = new Date(nowTimeStamp);
-// GMT is not currently observed in the UK. So use UTC now.
-const utcNow = new Date(now.getTime() + (now.getTimezoneOffset() * 60000));
 
-// Make sure that in `time` mode, the maxDate and minDate are within one day.
-let minDate = new Date(nowTimeStamp - 1e7);
-const maxDate = new Date(nowTimeStamp + 1e7);
-// console.log(minDate, maxDate);
-if (minDate.getDate() !== maxDate.getDate()) {
-    // set the minDate to the 0 of maxDate
-    minDate = new Date(maxDate.getFullYear(), maxDate.getMonth(), maxDate.getDate());
-}
 
 
 class Newpersonalpk extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            date: now,
-            time: now,
-            utcDate: utcNow,
-            dpValue: null,
-            customChildValue: null,
-            visible: false,
-           
+            startDate: now,
+            endDate:now,
+            nameValue:[]
+
         }
     }
+    componentDidMount() {
+        const {userCode,changeAllUser} =this.props;
+        changeAllUser(userCode)
+    }
+
+    onChangeName = (value) =>{
+        this.setState({
+            nameValue:value
+        })
+    }
     render() {
-        return <div>
-            <List className="date-picker-list" style={{ backgroundColor: 'white' }}>
-                <DatePicker
-                    mode="date"
-                    title="选择日期"
-                    extra="Optional"
-                    value={this.state.date}
-                    onChange={date => this.setState({ date })}
-                >
-                    <List.Item arrow="horizontal">发起日期：</List.Item>
-                </DatePicker>
-                <DatePicker
-                    mode="date"
-                    title="选择日期"
-                    extra="Optional"
-                    value={this.state.date}
-                    onChange={date => this.setState({ date })}
-                >
-                    <List.Item arrow="horizontal">结束日期：</List.Item>
-                </DatePicker>
-                 {/* 选择名字 */}
-                <TestWrapper/>
-             <TextareaItemExampleWrapper/>
-            </List>
-             <div style={{ marginTop: '20px', display: 'flex' }}>
-                <button style={{ width: '96%', borderRadius: "6px", background: '#33a3f4', color: 'white', border: 'none', height: '30px' }} >确认</button>
-                <button style={{ width: '96%', borderRadius: "6px", background: '#33a3f4', color: 'white', border: 'none', height: '30px' }}>重置</button>
-            </div> 
-        </div>
+        const { getFieldProps } = this.props.form;
+        const {pkPeopleList} = this.props;
+        let pkPeopleListData = '';
+        if(pkPeopleList){
+            pkPeopleListData = pkPeopleList.toJS();
+        }
+        return (
+            <div>
+                <List className="date-picker-list" style={{backgroundColor: 'white'}}>
+                    <DatePicker
+                        mode="date"
+                        title="选择日期"
+                        extra="Optional"
+                        value={this.state.startDate}
+                        {...getFieldProps('startValue', {
+                            initialValue: this.state.startDate,
+                        })}
+                    >
+                        <Item arrow="horizontal">跑步日期</Item>
+                    </DatePicker>
+                    <DatePicker
+                        mode="date"
+                        title="选择日期"
+                        extra="Optional"
+                        value={this.state.endDate}
+                        {...getFieldProps('endValue', {
+                            initialValue: this.state.endDate,
+                        })}
+                    >
+                        <Item arrow="horizontal">跑步日期</Item>
+                    </DatePicker>
+                    <Picker
+                        data={pkPeopleListData}
+                        value={this.state.nameValue}
+                        cols={1}
+                        onChange={this.onChangeName}
+                    >
+                        <List.Item arrow="horizontal">被挑战人</List.Item>
+                    </Picker>
+                    <TextareaItem
+                        {...getFieldProps('note1')}
+                        rows={3}
+                        placeholder="请输入你的赌注"
+                    />
+                </List>
+                <ActiveBox>
+                    <WhiteSpace size='lg'/>
+                    <WingBlank size='lg' style={{overflow: "hidden"}}>
+                        <Button type="ghost" size="small" inline style={{float: "left", width: "48%"}}>重置</Button>
+                        <Button type="primary" size="small" inline style={{float: "right", width: "48%"}}>确认</Button>
+                    </WingBlank>
+                </ActiveBox>
+            </div>
+
+        )
+
     }
 }
-export default Newpersonalpk;
+const mapState = (state) =>({
+    userCode:state.getIn(['login','userCode']),
+    pkPeopleList:state.getIn(['pk','pkPeopleList'])
+})
+const mapDispatch = (dispatch) =>({
+    changeAllUser(userCode){
+        dispatch(actionCreators.getAllUser(userCode))
+    }
+})
+export default connect(mapState,mapDispatch)(createForm()(Newpersonalpk));
