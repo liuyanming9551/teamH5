@@ -1,8 +1,5 @@
 import React from 'react'
 import * as req from '../../request'
-// import Newpersonalk from "./Newpersonalpk"
-// import PersonalLook from "./PersonalLook"
-// import Personaselect from "./Personalselect"
 import {Link} from "react-router-dom";
 import {Modal, List, Badge, ListView, Toast, PullToRefresh} from 'antd-mobile';
 import ReactDOM from "react-dom";
@@ -19,7 +16,7 @@ class Pk extends React.Component {
         });
         this.state = {
             couponList: [],
-            pageNo: 0,
+            pageNo: 1,
             pageSize: 20, // 分页size
             totalPage: 0, // 总页数初始化
             isShowContent: false, // 控制页面再数据请求后显示
@@ -54,7 +51,7 @@ class Pk extends React.Component {
                 pageNo: this.state.pageNo + 1,
                 couponList: couponList,
                 dataSource: this.state.dataSource.cloneWithRows(couponList), // 数据源dataSource
-                totalPage: 2,
+                totalPage: Math.ceil(res.TotalNumber/this.state.pageSize),
                 refreshing: false,
                 isLoading: false,
             }, () => {
@@ -81,7 +78,7 @@ class Pk extends React.Component {
 
     // 加载更多
     onEndReached = () => {
-        if (this.state.isLoading || (this.state.totalPage < this.state.pageNo + 1)) {
+        if (this.state.isLoading || (this.state.totalPage < this.state.pageNo)) {
             Toast.hide();
             return;
         }
@@ -142,6 +139,7 @@ class Pk extends React.Component {
                 renderRow={row}
 
                 distanceToRefresh='20'
+                initialListSize={13}
                 pullToRefresh={<PullToRefresh
                     refreshing={this.state.refreshing}
                     onRefresh={this.onRefresh}

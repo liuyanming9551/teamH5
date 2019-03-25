@@ -50,7 +50,15 @@ const Item = List.Item;
                         {
                             imgList?imgList.map(function (item,index) {
                                 return (
-                                    <Zmage key={item.ImgUrl} src={`${baseUrl}/${item.ImgUrl}`} />
+                                    <Zmage key={item.ImgUrl}
+                                           src={`${baseUrl}/${item.ImgUrl}`}
+                                           controller={{
+                                               // 关闭按钮
+                                               close: true,
+                                               // 缩放按钮
+                                               zoom: true
+                                           }}
+                                    />
                                 )
                             }):''
                         }
