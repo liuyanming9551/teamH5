@@ -16,7 +16,7 @@ class Home extends PureComponent {
                 pageList.push(
                     <div key={i} className='goldItem'>
                         <img className='goldIcon' src={`${baseUrl}/termImg/sport/${goldImgList[i]}.jpg`} />
-                        <p className="getName"> {newList[i]?(newList[i].RunDistanceNum===0?"尴尬了":newList[i].UserName):"尴尬了"}</p>
+                        <p className="getName"> {newList[i]?(newList[i].RunDistanceNum===0?"虚位以待":newList[i].UserName):"虚位以待"}</p>
                         <h3 className="getLength">{newList[i]?newList[i].RunDistanceNum:"0"}KM</h3>
                     </div>
                 )
@@ -30,10 +30,11 @@ class Home extends PureComponent {
         this.props.getRankData();
     }
     render() {
-
+        const {rankList} = this.props;
+        const newList = rankList.toJS();
         return (<div>
             <NoticeBar marqueeProps={{loop: true, style: {padding: '0 7.5px'}}}>
-                Notice: The arrival time of incomes and transfers of Yu &#39;E Bao will be delayed during National Day.
+                Notice: {newList[0]? (newList[0].RunDistanceNum !== 0 ? `恭喜${newList[0].UserName}荣获上周运动冠军！喜大普奔~`:'暂无人上榜') :''}.
             </NoticeBar>
             <div className="paiMing">
                 <WingBlank size="md">

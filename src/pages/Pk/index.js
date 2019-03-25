@@ -47,7 +47,7 @@ class Pk extends React.Component {
             PageIndex: this.state.pageNo,
             PageSize: this.state.pageSize
         }
-        req.post('/api/RunData/MyMotionData',dataInfo).then((res) => {
+        req.post('/api/PK/PersonalPKList',dataInfo).then((res) => {
             let couponList = [...this.state.couponList, ...res.PageList];
             this.setState({
                 isShowContent: true,
