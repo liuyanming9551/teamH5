@@ -39,23 +39,26 @@ const dataList = [{
 }];
 
 class CreateAdjustment extends Component {
-    state = {
-        date: now,
-        time: now,
-        utcDate: utcNow,
-        dpValue: null,
-        customChildValue: null,
-        visible: false,
-        type: 'money',
-        files: [],
-        selectedArr: [],
-        activityType: []
+    constructor(props) {
+        super(props)
+        this.state = {
+            date: now,
+            time: now,
+            utcDate: utcNow,
+            dpValue: null,
+            customChildValue: null,
+            visible: false,
+            type: 'money',
+            files: [],
+            selectedArr: [],
+            activityType: [],
+    
+        }
     }
 
     componentDidMount () {
         this.props.getUsers();
         this.props.getActivityType();
-        // this.props.addActivity()
     }
 
     onChange = (files, type, index) => {
@@ -74,6 +77,7 @@ class CreateAdjustment extends Component {
 
     // 确认
     handleConfirm = () => {
+        const {userCode, addActivity} = this.props;
         let {files, selectedArr} =this.state;
         let emptyName = false;
         let emptyDistance = false;
@@ -105,14 +109,14 @@ class CreateAdjustment extends Component {
                 let formData = new FormData();
                 let list = [];
                 let count = 0;
-                formData.append('Creator',this.props.userCode);
+                formData.append('Creator',userCode);
                 formData.append('ActivityName',values.activityName);
                 formData.append('ActivityDate',activityDate);
                 formData.append('ActivityRemark',values.activityRemark);
                 formData.append('ParameterCode',values.activityType);
                 formData.append('PersonCount',personCount);
                 for (let i = 0; i < selectedArr.length; i++) {
-                    formData.append('UserCode'+(i+1), selectedArr[i][0]);
+                    formData.append('UserCode'+(i+1), selectedArr[i][0].value);
                     formData.append('AdjustedDistance'+(i+1), selectedArr[i][1]);
                 }
                 let a = (file) => {
@@ -126,19 +130,18 @@ class CreateAdjustment extends Component {
                             list.forEach((element,index) => {
                                 formData.append(`${index}`, element);
                             });
-                            Toast.loading('上传中',0,null,true);
-                            this.props.addActivity(formData);
+                            Toast.loading('上传中',1,null,true);
+                            addActivity(formData);
                         }
                     })
                 }
                 if (files.length) {
-                    Toast.loading('上传中', 10, () => {
+                    Toast.loading('上传中', 1, () => {
                         console.log('Load complete !!!');
                     })
                     a(files[0].file);
                 } else {
-                    console.log(2)
-                    this.props.addActivity(formData);
+                    addActivity(formData);
                 }
             }
             
@@ -147,7 +150,6 @@ class CreateAdjustment extends Component {
 
     componentDidUpdate() {
         const {activityUpload,cancelUploadActivity,history} = this.props;
-        console.log("history", history)
         if(activityUpload){
             Toast.success('上传成功!', 1);
             this.onReset()
@@ -160,7 +162,6 @@ class CreateAdjustment extends Component {
 
     // 重置
     onReset = () => {
-        console.log("onReset")
         this.props.form.resetFields();
         this.setState({
             files: [],
@@ -190,15 +191,27 @@ class CreateAdjustment extends Component {
 
     // 添加姓名
     selectNameOK = (v) => {
+        const {allUsers} = this.props;
+        let users = "";
+        let currentData = ''
+        if(allUsers) {
+            users = allUsers.toJS();
+            users.map((item,index) => {
+                if(v[0] === item.value){
+                    currentData = item
+                }
+                
+            })
+        }
         let { selectedArr } = this.state;
         for (var i = 0; i < selectedArr.length; i++) {
-            if (selectedArr[i][0] == v) {
+            if (selectedArr[i][0].value == v) {
                 v = undefined;
                 Toast.info('该名称已存在', 1);
             }
         }
         if (v) {
-            selectedArr.push([v, undefined])
+            selectedArr.push([currentData, undefined])
             selectedArr = [...selectedArr];
             this.setState({
                 selectedArr
@@ -233,6 +246,7 @@ class CreateAdjustment extends Component {
         let types = "";
         if(allUsers) {
             users = allUsers.toJS();
+            
         }
         if (allTypes) {
             types = allTypes.toJS();
@@ -290,7 +304,7 @@ class CreateAdjustment extends Component {
                                         <div className="deleteBtn" onClick={() => {this.deleteSelectName(index)}}><Icon type="cross-circle" /></div>
                                         <div className="selectedName">
                                             <InputItem
-                                                value={item[0]}
+                                                value={item[0].label}
                                                 moneyKeyboardWrapProps={moneyKeyboardWrapProps}
                                                 moneyKeyboardAlign="left"
                                             >姓名</InputItem>

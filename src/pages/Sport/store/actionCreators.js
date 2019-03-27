@@ -180,8 +180,8 @@ export const getActivityType = () =>{
  * @author maxiaomin
  * @date 2019/3/27
 */
-const changeAdjustSport = () => ({
-    type:constants.ADD_ACTIVITY
+const changeUploadActivity = () => ({
+    type:constants.CHANGE_UPLOAD_ACTIVITY
 })
 export const addActivity = (activityData) =>{
     return (dispatch) =>{
@@ -189,7 +189,7 @@ export const addActivity = (activityData) =>{
         .then((res) => {
             const result = res.data;
             if(result.IsSuccess){
-                dispatch(changeAdjustSport())
+                dispatch(changeUploadActivity())
             }
         })
         .catch((res) => {
