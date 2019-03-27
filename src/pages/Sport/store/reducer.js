@@ -5,7 +5,9 @@ const defaultState = fromJS({
     sportDetailData:'',
     rightControl:false,
     sportCheckList:[],
-    isCheck:false
+    isCheck:false,
+    allUsers: [],
+    allTypes: []
 })
 
 /**
@@ -65,6 +67,19 @@ const changeCheckState = (state) =>{
 const cancelCheckedState = (state) => {
     return state.set('isCheck',false)
 }
+
+const getAllUsers = (state, action) => {
+    return state.merge({
+        allUsers:fromJS(action.result)
+    })
+}
+
+const getAllTypes = (state, action) => {
+    return state.merge({
+        allUsers:fromJS(action.result)
+    })
+}
+
 export default (state = defaultState,action) => {
     switch (action.type) {
         case constants.CHANGE_DETAIL:
@@ -80,7 +95,11 @@ export default (state = defaultState,action) => {
         case constants.CHANGE_CHECK_STATE:
             return changeCheckState(state);
         case constants.CANCEL_CHECKED_STATE:
-            return cancelCheckedState(state)
+            return cancelCheckedState(state);
+        case constants.GET_ALL_USERS:
+            return getAllUsers(state, action);
+        case constants.GET_ACTIVITY_TYPE:
+            return getAllTypes(state, action)
         default:
             return state;
     }

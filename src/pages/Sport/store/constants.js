@@ -5,3 +5,5 @@ export const CHANGE_SPORT_CONTROL = 'sport/CHANGE_SPORT_CONTROL';
 export const CHANGE_CHECK_LIST = 'sport/CHANGE_CHECK_LIST';
 export const CHANGE_CHECK_STATE = 'sport/CHANGE_CHECK_STATE';
 export const CANCEL_CHECKED_STATE = 'sport/CANCEL_CHECKED_STATE';
+export const GET_ALL_USERS = 'sport/GET_ALL_USERS';
+export const GET_ACTIVITY_TYPE = 'sport/GET_ALL_USERS';

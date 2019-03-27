@@ -1,12 +1,13 @@
 import React, {Component} from 'react';
-
+import {Link} from 'react-router-dom';
+import {connect} from 'react-redux';
 import {PullToRefresh, ListView, Toast, List, Badge, Modal} from 'antd-mobile';
 import ReactDOM from 'react-dom';
 import "./index.less";
 import axios from "axios";
 import Qs from 'qs';
 const operation = Modal.operation;
-export default class AdjustmentList extends React.Component {
+class AdjustmentList extends React.Component {
     constructor(props) {
         super(props);
         const dataSource = new ListView.DataSource({
@@ -90,6 +91,8 @@ export default class AdjustmentList extends React.Component {
         });
     };
     render() {
+        const {rightControl} = this.props.rightControl;
+        console.log("rightControl", this.props.rightControl)
         const row =  (rowData, sectionID, rowID) => {
             return (
                 <div key={rowID} style={{margin:'10px 0',background:'#fff'}}>
@@ -115,36 +118,60 @@ export default class AdjustmentList extends React.Component {
         return (
             <div>
                 <div className="activeBtn">
-                    <span className="iconfont icon-bianji" onClick={() => operation([
-                            {
-                                text: '新建', onPress: () => {
-                                    this.props.location.history.push('/sport/createAdjustment')
-                                }
-                            },
-                            {
-                                text: '筛选', onPress: () => {
-                                    this.props.location.history.push('/sport/searchSport')
-                                }
-                            },
-                        ])}
-                    />
+                    {
+                        rightControl ? (
+                            <span className="iconfont icon-bianji" onClick={() => operation([
+                                {
+                                    text: '新建', onPress: () => {
+                                        this.props.location.history.push('/sport/createAdjustment')
+                                    }
+                                },
+                                {
+                                    text: '筛选', onPress: () => {
+                                        this.props.location.history.push('/sport/searchSport')
+                                    }
+                                },
+                            ])}
+                        />
+                        ) : (
+                            <span className="iconfont icon-bianji" onClick={() => operation([
+                                {
+                                    text: '新建', onPress: () => {
+                                        this.props.location.history.push('/sport/createAdjustment')
+                                    }
+                                },
+                                {
+                                    text: '筛选', onPress: () => {
+                                        this.props.location.history.push('/sport/searchSport')
+                                    }
+                                },
+                            ])}
+                        />
+                        )
+                    }
+                    
                 </div>
-                <div style={{margin:'10px 0',background:'#fff'}}>
+                <div className="list-wrap">
                     <List className="my-list" style={{textAlign: 'center'}}>
-                        <List.Item>
-                            <Badge text={0} style={{marginLeft: "12px",width:'100%'}}>
-                                <div style={{width: '80vw'}}>
-                                    <div style={{marginBottom:'10px',overflow:'hidden'}}>
-                                        <span className="ad-name">丽丽</span>
-                                        <span className="ad-time">2019-8-8</span>
-                                    </div>
-                                    <div style={{overflow:'hidden'}}>
-                                        <span className="ad-state">待审核 ：<span>9km</span></span>
-                                        <span className="ad-number">原因 ：<span>爬上爬上爬</span></span>
-                                    </div>
+                        <Link to="/sport/adjustmentDetail">
+                            <List.Item>
+                                <div className="list-content">
+                                    <p>
+                                        <span className="ad-name">爬凤凰山</span>
+                                        <span className="ad-time">参加人数：3人</span>
+                                    </p>
+                                    <p className="list-discription">
+                                        在一个阳光明媚、晴空万里的周末，小伙伴们相约一起去爬凤凰山。
+                                    </p>
+                                    <p>
+                                        2019-03-21
+                                    </p>
                                 </div>
-                            </Badge>
-                        </List.Item>
+                                <div className="list-img">
+                                    <img src="" />
+                                </div>
+                            </List.Item>
+                        </Link>
                     </List>
                 </div>
                 {/* <ListView
@@ -173,3 +200,13 @@ export default class AdjustmentList extends React.Component {
         );
     }
 }
+
+const mapState = (state) => ({
+    rightControl:state.getIn(['sport','rightControl'])
+})
+const mapDispatch = (dispatch) => ({
+    // changeSportControl(userCode){
+    //     dispatch(actionCreators.getSportControl(userCode))
+    // }
+})
+export default connect(mapState,mapDispatch)(AdjustmentList);

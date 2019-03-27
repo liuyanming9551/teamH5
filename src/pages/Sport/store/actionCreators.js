@@ -113,3 +113,79 @@ export const checkSportData = (sportData) =>{
 export const cancelCheckedState = () => ({
     type:constants.CANCEL_CHECKED_STATE
 })
+
+/**
+ * @Description: 获取所有人及usercode接口
+ * @author maxiaomin
+ * @date 2019/3/26
+*/
+const changeAllUsers = (result) => ({
+    type:constants.GET_ALL_USERS,
+    result
+})
+export const getAllUsers = () =>{
+    return (dispatch) =>{
+        req.get('/api/user/GetALLUsers')
+        .then((res) => {
+            const result = res.poepleList;
+            
+            if(res.code === 1001){
+                dispatch(changeAllUsers(result))
+            }
+        })
+        .catch((res) => {
+
+        })
+    }
+}
+
+/**
+ * @Description: 获取活动类型接口
+ * @author maxiaomin
+ * @date 2019/3/26
+*/
+const changeActivityType = (result) => ({
+    type:constants.GET_ACTIVITY_TYPE,
+    result
+})
+export const getActivityType = () =>{
+    return (dispatch) =>{
+        req.get('/api/Parameter/ActivityCategory')
+        .then((res) => {
+            const result = res.poepleList;
+            
+            if(res.code === 1001){
+                dispatch(changeActivityType(result))
+            }
+        })
+        .catch((res) => {
+
+        })
+    }
+}
+
+
+/**
+ * @Description: 新建额外运动接口
+ * @author maxiaomin
+ * @date 2019/3/26
+*/
+const changeAdjustSport = (result) => ({
+    type:constants.GET_ACTIVITY_TYPE,
+    result
+})
+export const addAdjustSport = () =>{
+    return (dispatch) =>{
+        req.get('/api/AdjustedData/AddAdjustedData')
+        .then((res) => {
+            const result = res;
+            
+            if(res.code === 1001){
+                dispatch(changeAdjustSport(result))
+            }
+        })
+        .catch((res) => {
+
+        })
+    }
+}

@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
 import {Picker, DatePicker, ImagePicker, List, InputItem, Button, WingBlank, WhiteSpace, Icon, Toast} from 'antd-mobile';
 import {createForm} from 'rc-form';
 import {compressImage} from './../../../util/util';
+import {actionCreators} from './../store';
 
 const nowTimeStamp = Date.now();
 const now = new Date(nowTimeStamp);
@@ -46,26 +48,15 @@ class CreateAdjustment extends Component {
         visible: false,
         type: 'money',
         files: [],
-        selectedArr: [[undefined, undefined]],
-        nameArr: [
-            {
-                label: 'Grace',
-                value: 'Grace',
-            },{
-                label: 'Lily',
-                value: 'Lily',
-            },{
-                label: 'Nancy',
-                value: 'Nancy',
-            },{
-                label: 'Frank',
-                value: 'Frank',
-            },{
-                label: 'Mia',
-                value: 'Mia',
-            }
-        ]
+        selectedArr: [],
+        activityType: []
     }
+
+    componentDidMount () {
+        this.props.getUsers();
+        this.props.getActivityType();
+    }
+
     onChange = (files, type, index) => {
         console.log(files, type, index);
         this.setState({
@@ -86,12 +77,27 @@ class CreateAdjustment extends Component {
         console.log(key);
     };
 
+    // 确认
     handleConfirm = () => {
-        let {files} =this.state;
+        let {files, selectedArr} =this.state;
+        let emptyTip = false;
+        if (selectedArr.length) {
+            selectedArr.map((it, i) => {
+                if (it[1] == undefined) {
+                    Toast.info('请输入调整距离', 1);
+                }
+            })
+        } else {
+            emptyTip = true;
+        }
         this.props.form.validateFields((err, values) => {
             console.log("values", values)
             if (!values.activityName) {
                 Toast.info('请输入活动名称', 1);
+            } else if (!values.activityType) {
+                Toast.info('请选择活动类型', 1);
+            } else if (emptyTip) {
+                Toast.info('请选择姓名', 1);
             } else {
                 let formData = new FormData();
                 let list = [];
@@ -154,18 +160,37 @@ class CreateAdjustment extends Component {
         });
     }
 
-    // 选中
+    // 添加姓名
     selectNameOK = (v) => {
+        console.log("v", v)
         let { selectedArr } = this.state;
-        selectedArr.push([v, undefined])
-        selectedArr = [...selectedArr];
+        for (var i = 0; i < selectedArr.length; i++) {
+            console.log('selectedArr[i][0]', selectedArr[i][0])
+            if (selectedArr[i][0] == v) {
+                v = undefined;
+                Toast.info('该名称已存在', 1);
+            }
+        }
+        if (v) {
+            selectedArr.push([v, undefined])
+            selectedArr = [...selectedArr];
+            this.setState({
+                selectedArr
+            });
+        }
+    }
+
+    // 选择类型
+    selectTypeOK = (v) => {
+        console.log("selectTypeOK", v)
         this.setState({
-            selectedArr
-        });
+            activityType: v
+        })
     }
 
     // 删除
     deleteSelectName = (index) => {
+        console.log("index", index)
         let { selectedArr } = this.state;
         selectedArr.splice(index, 1);
         selectedArr = [...selectedArr];
@@ -175,9 +200,15 @@ class CreateAdjustment extends Component {
         });
     };
 
-    render() {
+    render() {     
+        const {allUsers} = this.props;
+        let users = "";
+        if(allUsers){
+            users = allUsers.toJS();
+        }
+        console.log("users", users)
         const {getFieldProps} = this.props.form;
-        const {type, files, nameArr, selectedArr} = this.state;
+        const {type, files, selectedArr, activityType} = this.state;
         return (
             <div style={{position: "relative"}}>
                 <List className="date-picker-list" style={{backgroundColor: 'white'}}>
@@ -203,7 +234,17 @@ class CreateAdjustment extends Component {
                         <List.Item>活动日期</List.Item>
                     </DatePicker>
                     <Picker 
-                        data={nameArr} 
+                        data={users} 
+                        cols={1} 
+                        value={activityType}
+                        {...getFieldProps('activityType')} 
+                        className="forss"
+                        onOk={(v) => {this.selectTypeOK(v)}}
+                    >
+                        <List.Item arrow="horizontal">活动类型</List.Item>
+                    </Picker>
+                    <Picker 
+                        data={users} 
                         cols={1} 
                         {...getFieldProps('name')} 
                         className="forss"
@@ -216,7 +257,7 @@ class CreateAdjustment extends Component {
                             if (item[0]) {
                                 return (
                                     <div key={index} className="nameSelect">
-                                        <div className="deleteBtn"><Icon type="cross-circle" /></div>
+                                        <div className="deleteBtn" onClick={() => {this.deleteSelectName(index)}}><Icon type="cross-circle" /></div>
                                         <div className="selectedName">
                                             <InputItem
                                                 value={item[0]}
@@ -269,5 +310,19 @@ class CreateAdjustment extends Component {
     }
 }
 
-const H5NumberInputExampleWrapper = createForm()(CreateAdjustment);
-export default H5NumberInputExampleWrapper
+const mapState =  (state) => ({
+    sportDetailData:state.getIn(['sport','sportDetailData']),
+    allUsers: state.getIn(['sport', 'allUsers'])
+})
+
+const mapDispatch = (dispatch) => ({
+    getUsers(){
+        dispatch(actionCreators.getAllUsers())
+    },
+    getActivityType(){
+        dispatch(actionCreators.getActivityType())
+    }
+})
+
+const H5NumberInputExampleWrapper = connect(mapState,mapDispatch)(createForm()(CreateAdjustment));
+export default H5NumberInputExampleWrapper;

@@ -1,11 +1,51 @@
-.ad-name{
-  margin-right: 80px;
-}
-.ad-number,.ad-time{
-  float: right;
-  width: 50%;
-  overflow: hidden;
-  text-overflow: ellipsis;
+.list-wrap {
+  .my-list {
+    overflow: hidden;
+    .ad-name{
+      margin-right: 80px;
+      color: #666666;
+      font-size: 0.3rem;
+      font-weight: 600;
+    }
+    .ad-number,.ad-time{
+      float: right;
+      width: 50%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-size: 0.25rem;
+    }
+    p {
+      font-size: 0.25rem;
+      line-height: 0.3rem;
+    }
+    .list-content {
+      overflow: hidden;
+      float: left;
+      width: 70vw;
+      padding-right: 0.2rem;
+      .list-discription {
+        width: 70vw;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+    .list-img {
+      float: right;
+      width: 20vw;
+      height: 20vw;
+      margin-left: 0.2rem;
+    }
+    .am-list-item {
+      padding: 0;
+      .am-list-line {
+        padding-left: 0.25rem;
+        .am-list-content {
+          padding: 0;
+        }
+      }
+    }
+  }
 }
 
 .nameSelect {
@@ -27,5 +67,41 @@
     right: 0.3rem;
     color: #333333;
     z-index: 10;
+  }
+}
+
+// 调整详情
+.adjustDetail {
+  padding: 0 0.3rem;
+  .detailTop {
+    overflow: hidden;
+    background: #eeeeee;;
+    p {
+      display: flex;
+      justify-content: space-between;
+    }
+    .detailTitle {
+      span {
+        font-size: 0.25rem;
+      }
+      .detailName {
+        font-size: 0.3rem;
+        font-weight: 600;
+      }
+    }
+  }
+  .detailPerson {
+    overflow: hidden;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #dddddd;
+    p {
+      float: left;
+      margin: 10px 20px;
+      padding-left: 15px;
+      width: 170px;
+      height: 50px;
+      border: 1px solid #888888;
+      line-height: 50px;
+    }
   }
 }
