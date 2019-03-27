@@ -87,7 +87,7 @@ export default class Router extends Component{
                         <Route exact path="/pk" component={Pk} />
                         <Route exact path="/pk/newpersonalpk" component={Newpersonalpk} />
                         <Route exact path="/pk/personalselect" component={Personalselect} />
-                        <Route exact path="/pk/personallook" component={PersonalLook} />
+                        <Route exact path="/pk/personallook/:code" component={PersonalLook} />
                         <Route exact path="/team" component={Team} />
                         <Route exact path="/sport" component={Sport} />
                         <Route exact path="/sport/mySport" component={MySport} />

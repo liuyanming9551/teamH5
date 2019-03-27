@@ -108,12 +108,13 @@ class CreateSport extends Component {
     };
     componentDidUpdate() {
         const {sportUpload,cancelUploadState,history} = this.props;
-        console.log("history",history)
         if(sportUpload){
             Toast.success('上传成功!', 1);
             this.onReset()
             cancelUploadState()
-            history.goBack()
+            setTimeout(() =>{
+                history.goBack();
+            },1000)
         }
     }
     // 重置

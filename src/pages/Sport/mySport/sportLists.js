@@ -32,6 +32,7 @@ class SportList extends Component {
         this.requestCouponsList();
     }
 
+
     // 获取列表
     requestCouponsList() {
         const {userCode} = this.props;
@@ -65,7 +66,6 @@ class SportList extends Component {
 
     // 下拉刷新
     onRefresh = () => {
-        Toast.loading();
         this.setState({
             pageNo: 1,
             totalPage: 0,
@@ -77,7 +77,6 @@ class SportList extends Component {
 
     // 加载更多
     onEndReached = () => {
-        console.log("触发加载更多")
         if (this.state.isLoading || (this.state.totalPage < this.state.pageNo)) {
             Toast.hide();
             return;
@@ -119,7 +118,6 @@ class SportList extends Component {
     }
     render() {
         const row = (rowData, sectionID, rowID) => {
-            console.log(rowData,sectionID,rowID)
             return (
                 <div key={rowID} style={{margin: '10px 0', background: '#fff'}}>
                     <List className="my-list" style={{textAlign: 'center'}}>

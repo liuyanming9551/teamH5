@@ -1,26 +1,30 @@
-import React from 'react'
-import * as req from '../../request'
+import React, {Component} from 'react';
+import * as req from '../../request';
 import {Link} from "react-router-dom";
 import {Modal, List, Badge, ListView, Toast, PullToRefresh} from 'antd-mobile';
 import ReactDOM from "react-dom";
 import {connect} from 'react-redux';
+import {
+    ActiveBtn,
+    PkListItem
+} from './style';
 
 
 const operation = Modal.operation;
 
-class Pk extends React.Component {
+class Pk extends Component {
     constructor(props) {
         super(props);
         const dataSource = new ListView.DataSource({
-            rowHasChanged: (row1, row2) => row1 !== row2,
+            rowHasChanged: (row3, row4) => row3 !== row4,
         });
         this.state = {
             couponList: [],
             pageNo: 1,
-            pageSize: 20, // 分页size
+            pageSize: 10, // 分页size
             totalPage: 0, // 总页数初始化
             isShowContent: false, // 控制页面再数据请求后显示
-            refreshing: false, // 是否显示刷新状态
+            refreshing: true, // 是否显示刷新状态
             dataSource,
             isLoading: false, // 是否显示加载状态
             height: document.documentElement.clientHeight,
@@ -28,37 +32,38 @@ class Pk extends React.Component {
     }
 
     componentDidMount() {
-        const hei = this.state.height - ReactDOM.findDOMNode(this.lv).offsetTop - 50;
-        this.requestCouponsList();
+        const hei = this.state.height - ReactDOM.findDOMNode(this.lv2).offsetTop - 50;
         this.setState({
             height: hei
         })
-    }
+        this.requestCouponsList();
 
+    }
     //获取列表
     requestCouponsList() {
         let dataInfo = {
-            RunDateNum: 0,
-            UserCode: "B7AF1D6B-964A-4EDB-9F02-5324F71CDBEE",
-            AuditStatus: 4,
+            PKDate: 0,
+            GroupId: 0,
+            PKStatus: 3,
             PageIndex: this.state.pageNo,
             PageSize: this.state.pageSize
         }
-        req.post('/api/PK/PersonalPKList',dataInfo).then((res) => {
+        req.post('/api/PK/PersonalPKList', dataInfo).then((res) => {
             let couponList = [...this.state.couponList, ...res.PageList];
+            console.log(couponList)
             this.setState({
                 isShowContent: true,
                 pageNo: this.state.pageNo + 1,
                 couponList: couponList,
                 dataSource: this.state.dataSource.cloneWithRows(couponList), // 数据源dataSource
-                totalPage: Math.ceil(res.TotalNumber/this.state.pageSize),
+                totalPage:Math.ceil(res.TotalNumber/this.state.pageSize),
                 refreshing: false,
                 isLoading: false,
             }, () => {
                 Toast.hide();
             });
         }).catch((res) => {
-
+            console.log(res)
 
         })
 
@@ -66,9 +71,8 @@ class Pk extends React.Component {
 
     // 下拉刷新
     onRefresh = () => {
-        Toast.loading();
         this.setState({
-            pageNo: 0,
+            pageNo: 1,
             totalPage: 0,
             couponList: [],
         }, () => {
@@ -88,69 +92,120 @@ class Pk extends React.Component {
             this.requestCouponsList()
         });
     };
-    render() {
-        const row = (rowData, sectionID, rowID) => {
-            return (
-                <div key={rowID} style={{margin: '10px 0', background: '#fff'}}>
-                    <List className="my-list" style={{textAlign: 'center'}}>
-                        <Link to='/pk/personallook'>
-                            <List.Item arrow="horizontal">
-                                <Badge text={0} style={{marginLeft: "12px"}}>
-                                    <span style={{fontSize: "16px"}}>刘然</span>
-                                    <span style={{fontSize: "16px", marginLeft: '20px'}}>2019-2-18</span>
-                                    <span style={{fontSize: "16px", marginLeft: '16px'}}>2019-2-18</span>
-                                </Badge>
-                                <div style={{float: "right", fontSize: "12px"}}>
-                                    <span>康贝</span><br/>
-                                    <span style={{color: 'red', display: 'inlineBlock', marginTop: '10px'}}>进行中</span>
-                                </div>
-                            </List.Item>
-                        </Link>
-                    </List>
-                </div>
-            );
-        };
-        return (<div>
-            <div className="activeBtn">
-                <span className='iconfont icon-bianji' onClick={() => operation([
-                         {
-                             text: '新建', onPress: () => {
-                                 this.props.location.history.push('/pk/newpersonalpk')
-                             }
-                         },
-                         {
-                             text: '筛选', onPress: () => {
-                                 this.props.location.history.push('/pk/personalselect')
-                             }
-                         },
-                     ])}
-                />
+    getPkState(pkStatus) {
+        switch (pkStatus) {
+            case 0:
+                return "未开始"
+            case 1:
+                return "已开始"
+            case 2:
+                return "已结束"
+            default:
+                return "出错了"
+        }
+
+    }
+    getPkAccept(pKAccept){
+        switch (pKAccept) {
+            case 0:
+                return "未读"
+            case 1:
+                return "已读"
+            case 2:
+                return "接受"
+            case 3:
+                return "拒绝"
+            default:
+                return "出错了"
+        }
+    }
+    getPkResult(pKResult,name1,name2){
+        switch (pKResult) {
+            case 0:
+                return "未出结果"
+            case 1:
+                return `${name1}胜利`
+            case 2:
+                return `${name2}胜利`
+            case 3:
+                return "平局"
+            default:
+                return "出错了"
+        }
+    }
+    row = (rowData, sectionID, rowID) => {
+        console.log(rowData, sectionID, rowID)
+        return (
+            <div key={rowID} style={{margin: '10px 0', background: '#fff'}}>
+                <List>
+                    <Link to={`/pk/personallook/${rowData.PKCode}`}>
+                        <List.Item arrow="horizontal">
+                            <Badge>
+                                <PkListItem>
+                                    <div className='initiate'>
+                                        <div className='initiateName'>{rowData.PKAName}</div>
+                                        <div className='initiateState'>{this.getPkState(rowData.PKStatus)}</div>
+                                    </div>
+                                    <div className='dateWrap'>
+                                        <span className='startDate'>{rowData.StartDate}</span>
+                                        <span className='endDate'>{rowData.EndDate}</span>
+                                    </div>
+                                    <div className='receive'>
+                                        <div className='receiveName'>{rowData.PKBName}</div>
+                                        <div className='receiveState'>{rowData.PKStatus===0?this.getPkAccept(rowData.PKAccept):this.getPkResult(rowData.PKResult,rowData.PKAName,rowData.PKBName)}</div>
+                                    </div>
+                                </PkListItem>
+                            </Badge>
+                        </List.Item>
+                    </Link>
+                </List>
             </div>
-            <ListView
-                key={1}
-                ref={el => this.lv = el}
-                dataSource={this.state.dataSource}
-                renderFooter={() => (<div className="loadFooter">
-                    {this.state.isLoading ? '正在加载...' : '真的没有了'}
-                </div>)}
-                style={{
-                    height: this.state.height,
-                }}
-                renderRow={row}
+        );
+    };
+    render() {
 
-                distanceToRefresh='20'
-                initialListSize={13}
-                pullToRefresh={<PullToRefresh
-                    refreshing={this.state.refreshing}
-                    onRefresh={this.onRefresh}
-                />}
-                onEndReached={this.onEndReached}
-                onEndReachedThreshold={30}
-                pageSize={this.state.pageSize}
-            />
+        return (
+            <div className="listview-wrap">
+                <ActiveBtn>
+                    <span className='iconfont icon-bianji' onClick={() => operation([
+                        {
+                            text: '新建', onPress: () => {
+                                this.props.location.history.push('/pk/newpersonalpk')
+                            }
+                        },
+                        {
+                            text: '筛选', onPress: () => {
+                                this.props.location.history.push('/pk/personalselect')
+                            }
+                        },
+                    ])}
+                    />
+                </ActiveBtn>
+                <ListView
+                    key={1}
+                    dataSource={this.state.dataSource}
+                    ref={el => this.lv2 = el}
+
+                    renderFooter={() => (<div className="loadFooter">
+                        {this.state.isLoading ? '正在加载...' : '真的没有了'}
+                    </div>)}
+                    style={{
+                        height: this.state.height,
+                    }}
+                    renderRow={this.row}
+                    initialListSize={13}
+                    distanceToRefresh='20'
+                    pullToRefresh={<PullToRefresh
+                        refreshing={this.state.refreshing}
+                        onRefresh={this.onRefresh}
+                    />}
+                    onEndReached={this.onEndReached}
+                    onEndReachedThreshold={100}
+                    pageSize={this.state.pageSize}
+                />
 
 
-        </div>)
+            </div>)
     }
 }
 
@@ -160,4 +215,4 @@ const mapState = (state) => ({
 const mapDispatch = (dispatch) => ({
 
 })
-export default connect(mapState,mapDispatch)(Pk);
+export default connect(mapState, mapDispatch)(Pk);
