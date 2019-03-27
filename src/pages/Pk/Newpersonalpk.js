@@ -4,17 +4,9 @@ import {connect} from 'react-redux';
 import {actionCreators} from './store';
 import {Button, DatePicker, List, Picker, TextareaItem, Toast, WhiteSpace, WingBlank} from 'antd-mobile';
 import { createForm } from 'rc-form';
-import {
-    ActiveBtnBox
-} from './style';
-
-
 const Item = List.Item;
 const nowTimeStamp = Date.now();
 const now = new Date(nowTimeStamp);
-
-
-
 class Newpersonalpk extends React.Component {
     constructor(props) {
         super(props)
@@ -136,13 +128,11 @@ class Newpersonalpk extends React.Component {
                         placeholder="请输入你的赌注"
                     />
                 </List>
-                <ActiveBtnBox>
-                    <WhiteSpace size='lg'/>
-                    <WingBlank size='lg' style={{overflow: "hidden"}}>
-                        <Button type="ghost" size="small" inline style={{float: "left", width: "48%"}} onClick={this.onReset}>重置</Button>
-                        <Button type="primary" size="small" inline style={{float: "right", width: "48%"}} onClick={this.handleConfirm}>确认</Button>
-                    </WingBlank>
-                </ActiveBtnBox>
+                <WhiteSpace size='lg'/>
+                <WingBlank size='lg' style={{overflow: "hidden"}}>
+                    <Button type="ghost" size="small" inline style={{float: "left", width: "48%"}} onClick={this.onReset}>重置</Button>
+                    <Button type="primary" size="small" inline style={{float: "right", width: "48%"}} onClick={this.handleConfirm}>确认</Button>
+                </WingBlank>
             </div>
 
         )

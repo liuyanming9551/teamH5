@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {DatePicker, List, InputItem, ImagePicker, Button, WingBlank, Toast} from 'antd-mobile';
+import {DatePicker, List, InputItem, ImagePicker, Button, WingBlank, Toast, WhiteSpace} from 'antd-mobile';
 import {connect} from "react-redux";
 import {createForm} from 'rc-form';
 import {actionCreators} from './../store';
@@ -88,18 +88,17 @@ class CreateSport extends Component {
                             list.forEach((element,index) => {
                                 formData.append(`${index}`, element);
                             });
-                            Toast.loading('上传中',0,null,true);
+                            Toast.loading('上传中',1,null,true);
                             changeSport(formData);
                         }
                     })
                 }
                 if (files.length) {
-                    Toast.loading('上传中', 10, () => {
+                    Toast.loading('上传中', 1, () => {
                         console.log('Load complete !!!');
                     })
                     a(files[0].file);
                 } else {
-                    console.log(2)
                     changeSport(formData);
                 }
             }
@@ -218,10 +217,11 @@ class CreateSport extends Component {
                     multiple={true}
                     onAddImageClick={this.onAddImageClick}
                 />
-                <Item>
-                    <Button size="small" inline style={{ width:"46%", marginRight: "20px" }} onClick={this.onReset}>重置</Button>
-                    <Button type="primary" size="small" inline style={{ width:"46%" }} onClick={this.handleConfirm}>确认</Button>
-                </Item>
+                <WhiteSpace size='lg'/>
+                <WingBlank size='lg' style={{overflow: "hidden"}}>
+                    <Button size="small" inline style={{float: "left", width: "48%"}} onClick={this.onReset}>重置</Button>
+                    <Button type="primary" size="small" inline style={{float: "right", width: "48%"}} onClick={this.handleConfirm}>确认</Button>
+                </WingBlank>
             </div>
         );
     }

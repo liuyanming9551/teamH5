@@ -4,10 +4,7 @@ import {Link} from "react-router-dom";
 import {Modal, List, Badge, ListView, Toast, PullToRefresh} from 'antd-mobile';
 import ReactDOM from "react-dom";
 import {connect} from 'react-redux';
-import {
-    ActiveBtn,
-    PkListItem
-} from './style';
+import './index.less';
 
 
 const operation = Modal.operation;
@@ -141,7 +138,7 @@ class Pk extends Component {
                     <Link to={`/pk/personallook/${rowData.PKCode}`}>
                         <List.Item arrow="horizontal">
                             <Badge>
-                                <PkListItem>
+                                <div className='pkListItem'>
                                     <div className='initiate'>
                                         <div className='initiateName'>{rowData.PKAName}</div>
                                         <div className='initiateState'>{this.getPkState(rowData.PKStatus)}</div>
@@ -154,7 +151,7 @@ class Pk extends Component {
                                         <div className='receiveName'>{rowData.PKBName}</div>
                                         <div className='receiveState'>{rowData.PKStatus===0?this.getPkAccept(rowData.PKAccept):this.getPkResult(rowData.PKResult,rowData.PKAName,rowData.PKBName)}</div>
                                     </div>
-                                </PkListItem>
+                                </div>
                             </Badge>
                         </List.Item>
                     </Link>
@@ -166,7 +163,7 @@ class Pk extends Component {
 
         return (
             <div className="listview-wrap">
-                <ActiveBtn>
+                <div className="pkActiveBox">
                     <span className='iconfont icon-bianji' onClick={() => operation([
                         {
                             text: '新建', onPress: () => {
@@ -180,7 +177,7 @@ class Pk extends Component {
                         },
                     ])}
                     />
-                </ActiveBtn>
+                </div>
                 <ListView
                     key={1}
                     dataSource={this.state.dataSource}

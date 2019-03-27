@@ -46,3 +46,35 @@ export const createPk = (pkInfo) => {
 export const cancelCreatePkSuccess = () =>({
     type:constants.CANCEL_CREATE_PK_SUCCESS
 })
+/**
+ * @Description: 获取pk详情
+ * @author YanMing Liu
+ * @date 2019/3/27
+*/
+const changePkDetail = (pkDetail) =>({
+    type:constants.CHANGE_PK_DETAIL,
+    pkDetail
+})
+export const getPkDetail = (pkCode) =>{
+    return (dispatch) => {
+        req.post('api/PK/PersonalPKDetails',{
+            PKCode:pkCode
+        }).then((res) => {
+            if(res){
+               dispatch(changePkDetail(res))
+            }
+        })
+    }
+}
+/**
+ * @Description: 修改PK状态
+ * @author YanMing Liu
+ * @date 2019/3/27
+*/
+export const changePkState = (pkState) => {
+    return (dispatch) => {
+        req.post('/api/PK/UpdatePKAccept',pkState).then((res) =>{
+
+        })
+    }
+}

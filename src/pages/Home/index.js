@@ -34,7 +34,7 @@ class Home extends PureComponent {
         const newList = rankList.toJS();
         return (<div>
             <NoticeBar marqueeProps={{loop: true, style: {padding: '0 7.5px'}}}>
-                Notice: {newList[0]? (newList[0].RunDistanceNum !== 0 ? `恭喜${newList[0].UserName}荣获上周运动冠军！喜大普奔~`:'暂无人上榜') :''}.
+                Notice: {newList[0]? (newList[0].RunDistanceNum !== 0 ? `恭喜${newList[0].UserName}荣获上周运动冠军！人生处处PK场，认真对待不恐慌，拼尽全力撑到底，铿锵倒下也无妨！笑迎失败无遗憾，傲立天下我最棒！`:'暂无人上榜~') :''}
             </NoticeBar>
             <div className="paiMing">
                 <WingBlank size="md">
@@ -51,6 +51,49 @@ class Home extends PureComponent {
                     </Card>
                     <WhiteSpace size="lg"/>
                 </WingBlank>
+                <WingBlank size="md">
+                    <WhiteSpace size="md"/>
+                    <Card>
+                        <Card.Header
+                            title="本月运动总里程排名"
+                        />
+                        <Card.Body>
+                            <div style={{background: 'white', display: 'flex', justifyContent: 'space-around'}}>
+                                {this.getList()}
+                            </div>
+                        </Card.Body>
+                    </Card>
+                    <WhiteSpace size="lg"/>
+                </WingBlank>
+                <WingBlank size="md">
+                    <WhiteSpace size="md"/>
+                    <Card>
+                        <Card.Header
+                            title="本季度运动总里程排名"
+                        />
+                        <Card.Body>
+                            <div style={{background: 'white', display: 'flex', justifyContent: 'space-around'}}>
+                                {this.getList()}
+                            </div>
+                        </Card.Body>
+                    </Card>
+                    <WhiteSpace size="lg"/>
+                </WingBlank>
+                <WingBlank size="md">
+                    <WhiteSpace size="md"/>
+                    <Card>
+                        <Card.Header
+                            title="上季度排名"
+                        />
+                        <Card.Body>
+                            <div style={{background: 'white', display: 'flex', justifyContent: 'space-around'}}>
+                                {this.getList()}
+                            </div>
+                        </Card.Body>
+                    </Card>
+                    <WhiteSpace size="lg"/>
+                </WingBlank>
+
             </div>
         </div>)
     }

@@ -1,0 +1,91 @@
+.pkActiveBox{
+  width: 60px;
+  height: 60px;
+  position: fixed;
+  left: 600px;
+  top: 800px;
+  border-radius: 50%;
+  padding: 5px;
+  box-shadow:1px 0px 24px 1px rgba(0, 184, 255, 0.62);
+  background: rgb(0, 184, 255);
+  span{
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    font-size: 35px;
+    color: #fff;
+    text-align: center;
+    line-height: 46px;
+  }
+}
+.pkListItem{
+  display:flex;
+  justify-content:space-around;
+  align-item:center;
+  font-size:28px;
+  .initiate{
+    width:140px;
+    display:flex;
+    flex-direction: column;
+    justify-content:space-between;
+    .initiateName{
+      margin-bottom:10px
+    }
+  }
+  .dateWrap{
+    width:360px;
+    display:flex;
+    justify-content:space-around;
+    align-items: center;
+    .startDate{
+      overflow: hidden;
+      text-overflow:ellipsis;
+      white-space: nowrap;
+    }
+    .endDate{
+      overflow: hidden;
+      text-overflow:ellipsis;
+      white-space: nowrap;
+    }
+  }
+  .receive{
+    width:140px;
+    display:flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content:space-between;
+    .receiveName{
+      margin-bottom:10px
+    }
+  }
+}
+.pkInner{
+  height: 500px;
+  margin-bottom: 100px;
+  .pkDetailWrap{
+    width: 100%;
+
+    .pkUserName{
+      display: flex;
+      justify-content: flex-end;
+      .pkUserNameItem{
+        width: 22%;
+        text-align: center;
+        line-height: 40px;
+        height: 40px;
+      }
+    }
+    .pkDetailListWrap{
+      margin:20px 0;
+    }
+    .pkItemDetail{
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      .pkItem{
+        width: 33%;
+        text-align: center;
+      }
+    }
+  }
+}
