@@ -58,6 +58,16 @@ export const getSportDetail = (detailData) =>{
 export const cancelUploadState = () => ({
     type:constants.CANCEL_UPLOAD_STATE
 })
+
+/**
+ * @Description: 取消activity图片上传状态
+ * @author maxiaomin 
+ * @date 2019/3/27
+*/
+export const cancelUploadActivity = () => ({
+    type:constants.CANCEL_UPLOAD_ACTIVITY
+})
+
 /**
  * @Description: 获取用户权限
  * @author YanMing Liu
@@ -142,17 +152,17 @@ export const getAllUsers = () =>{
 /**
  * @Description: 获取活动类型接口
  * @author maxiaomin
- * @date 2019/3/26
+ * @date 2019/3/27
 */
 const changeActivityType = (result) => ({
-    type:constants.GET_ACTIVITY_TYPE,
+    type:constants.GET_ACTIVITY_TYPES,
     result
 })
 export const getActivityType = () =>{
     return (dispatch) =>{
-        req.get('/api/Parameter/ActivityCategory')
+        req.post('/api/Parameter/ActivityCategory')
         .then((res) => {
-            const result = res.poepleList;
+            const result = res.ActivityCategoryList;
             
             if(res.code === 1001){
                 dispatch(changeActivityType(result))
@@ -168,20 +178,18 @@ export const getActivityType = () =>{
 /**
  * @Description: 新建额外运动接口
  * @author maxiaomin
- * @date 2019/3/26
+ * @date 2019/3/27
 */
-const changeAdjustSport = (result) => ({
-    type:constants.GET_ACTIVITY_TYPE,
-    result
+const changeAdjustSport = () => ({
+    type:constants.ADD_ACTIVITY
 })
-export const addAdjustSport = () =>{
+export const addActivity = (activityData) =>{
     return (dispatch) =>{
-        req.get('/api/AdjustedData/AddAdjustedData')
+        axios.post('/api/AdjustedData/AddActivity',activityData)
         .then((res) => {
-            const result = res;
-            
-            if(res.code === 1001){
-                dispatch(changeAdjustSport(result))
+            const result = res.data;
+            if(result.IsSuccess){
+                dispatch(changeAdjustSport())
             }
         })
         .catch((res) => {
@@ -189,3 +197,28 @@ export const addAdjustSport = () =>{
         })
     }
 }
+
+/**
+ * @Description: 额外运动详情接口
+ * @author maxiaomin
+ * @date 2019/3/27
+*/
+const changeActivityDetail = (res) => ({
+    type:constants.CHANGE_ACTIVITY_DETAIL,
+    res
+})
+export const getActivityDetail = (detailData) =>{
+    return (dispatch) => {
+        req.post('/api/AdjustedData/ActivityModel',{
+            ActivityCode: detailData
+            })
+            .then((res)=>{
+                console.log(res);
+                dispatch(changeActivityDetail(res))
+            })
+            .catch((res)=>{
+                console.log(res)
+            })
+    }
+}
+

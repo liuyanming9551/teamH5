@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import {actionCreators} from './../store';
 import {Picker, DatePicker, ImagePicker, List, InputItem, Button, WingBlank, WhiteSpace, Icon, Toast} from 'antd-mobile';
 import {createForm} from 'rc-form';
 import {compressImage} from './../../../util/util';
-import {actionCreators} from './../store';
 
 const nowTimeStamp = Date.now();
 const now = new Date(nowTimeStamp);
@@ -55,6 +55,7 @@ class CreateAdjustment extends Component {
     componentDidMount () {
         this.props.getUsers();
         this.props.getActivityType();
+        // this.props.addActivity()
     }
 
     onChange = (files, type, index) => {
@@ -64,13 +65,7 @@ class CreateAdjustment extends Component {
         });
     };
     onAddImageClick = (e) => {
-        e.preventDefault();
-        this.setState({
-            files: this.state.files.concat({
-                url: 'https://zos.alipayobjects.com/rmsportal/hqQWgTXdrlmVVYi.jpeg',
-                id: '3',
-            }),
-        });
+        
     };
 
     onTabChange = (key) => {
@@ -80,29 +75,46 @@ class CreateAdjustment extends Component {
     // 确认
     handleConfirm = () => {
         let {files, selectedArr} =this.state;
-        let emptyTip = false;
+        let emptyName = false;
+        let emptyDistance = false;
+        let personCount = 0;
         if (selectedArr.length) {
+            personCount = selectedArr.length;
             selectedArr.map((it, i) => {
                 if (it[1] == undefined) {
-                    Toast.info('请输入调整距离', 1);
+                    emptyDistance = true;
                 }
             })
         } else {
-            emptyTip = true;
+            emptyName = true;
+            personCount = 0;
         }
         this.props.form.validateFields((err, values) => {
-            console.log("values", values)
+            // console.log("values", values)
+            const fieldsValue = this.props.form.getFieldsValue();
+            const activityDate = fieldsValue.activityDate.toISOString().slice(0, 10)
             if (!values.activityName) {
                 Toast.info('请输入活动名称', 1);
             } else if (!values.activityType) {
                 Toast.info('请选择活动类型', 1);
-            } else if (emptyTip) {
+            } else if (emptyName) {
                 Toast.info('请选择姓名', 1);
+            } else if (emptyDistance) {
+                Toast.info('请输入调整距离', 1);
             } else {
                 let formData = new FormData();
                 let list = [];
                 let count = 0;
-                formData.append('activityName',values.activityName);
+                formData.append('Creator',this.props.userCode);
+                formData.append('ActivityName',values.activityName);
+                formData.append('ActivityDate',activityDate);
+                formData.append('ActivityRemark',values.activityRemark);
+                formData.append('ParameterCode',values.activityType);
+                formData.append('PersonCount',personCount);
+                for (let i = 0; i < selectedArr.length; i++) {
+                    formData.append('UserCode'+(i+1), selectedArr[i][0]);
+                    formData.append('AdjustedDistance'+(i+1), selectedArr[i][1]);
+                }
                 let a = (file) => {
                     compressImage(file, (f) => {
                         list.push(f);
@@ -115,24 +127,40 @@ class CreateAdjustment extends Component {
                                 formData.append(`${index}`, element);
                             });
                             Toast.loading('上传中',0,null,true);
-                            // changeSport(formData);
+                            this.props.addActivity(formData);
                         }
                     })
                 }
                 if (files.length) {
                     Toast.loading('上传中', 10, () => {
+                        console.log('Load complete !!!');
                     })
                     a(files[0].file);
                 } else {
-                    // changeSport(formData);
+                    console.log(2)
+                    this.props.addActivity(formData);
                 }
             }
             
         });
     };
 
+    componentDidUpdate() {
+        const {activityUpload,cancelUploadActivity,history} = this.props;
+        console.log("history", history)
+        if(activityUpload){
+            Toast.success('上传成功!', 1);
+            this.onReset()
+            cancelUploadActivity()
+            setTimeout(() =>{
+                history.goBack();
+            },1000)
+        }
+    }
+
     // 重置
     onReset = () => {
+        console.log("onReset")
         this.props.form.resetFields();
         this.setState({
             files: [],
@@ -162,10 +190,8 @@ class CreateAdjustment extends Component {
 
     // 添加姓名
     selectNameOK = (v) => {
-        console.log("v", v)
         let { selectedArr } = this.state;
         for (var i = 0; i < selectedArr.length; i++) {
-            console.log('selectedArr[i][0]', selectedArr[i][0])
             if (selectedArr[i][0] == v) {
                 v = undefined;
                 Toast.info('该名称已存在', 1);
@@ -185,12 +211,13 @@ class CreateAdjustment extends Component {
         console.log("selectTypeOK", v)
         this.setState({
             activityType: v
+        }, () => {
+            console.log("this.state.activityType", this.state.activityType)
         })
     }
 
     // 删除
     deleteSelectName = (index) => {
-        console.log("index", index)
         let { selectedArr } = this.state;
         selectedArr.splice(index, 1);
         selectedArr = [...selectedArr];
@@ -201,12 +228,15 @@ class CreateAdjustment extends Component {
     };
 
     render() {     
-        const {allUsers} = this.props;
+        const {allUsers, allTypes} = this.props;
         let users = "";
-        if(allUsers){
+        let types = "";
+        if(allUsers) {
             users = allUsers.toJS();
         }
-        console.log("users", users)
+        if (allTypes) {
+            types = allTypes.toJS();
+        }
         const {getFieldProps} = this.props.form;
         const {type, files, selectedArr, activityType} = this.state;
         return (
@@ -234,7 +264,7 @@ class CreateAdjustment extends Component {
                         <List.Item>活动日期</List.Item>
                     </DatePicker>
                     <Picker 
-                        data={users} 
+                        data={types} 
                         cols={1} 
                         value={activityType}
                         {...getFieldProps('activityType')} 
@@ -284,9 +314,6 @@ class CreateAdjustment extends Component {
                     
                     <InputItem
                         clear
-                        onChange={(v) => {
-                            console.log('onChange', v);
-                        }}
                         moneyKeyboardWrapProps={moneyKeyboardWrapProps}
                         {...getFieldProps('activityRemark', {
                             initialValue: '',
@@ -311,16 +338,25 @@ class CreateAdjustment extends Component {
 }
 
 const mapState =  (state) => ({
+    userCode:state.getIn(['login','userCode']),
+    activityUpload:state.getIn(['sport','activityUpload']),
     sportDetailData:state.getIn(['sport','sportDetailData']),
-    allUsers: state.getIn(['sport', 'allUsers'])
+    allUsers: state.getIn(['sport', 'allUsers']),
+    allTypes: state.getIn(['sport', 'allTypes']),
 })
 
 const mapDispatch = (dispatch) => ({
-    getUsers(){
+    getUsers() {
         dispatch(actionCreators.getAllUsers())
     },
-    getActivityType(){
+    getActivityType() {
         dispatch(actionCreators.getActivityType())
+    },
+    addActivity(activityData) {
+        dispatch(actionCreators.addActivity(activityData))
+    },
+    cancelUploadActivity(){
+        dispatch(actionCreators.cancelUploadActivity())
     }
 })
 

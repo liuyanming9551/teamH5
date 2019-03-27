@@ -1,5 +1,6 @@
 import {fromJS} from "immutable";
 import * as constants from './constants';
+import { getAdjustSportList } from "./actionCreators";
 const defaultState = fromJS({
     sportUpload:false,
     sportDetailData:'',
@@ -7,7 +8,9 @@ const defaultState = fromJS({
     sportCheckList:[],
     isCheck:false,
     allUsers: [],
-    allTypes: []
+    allTypes: [],
+    activityDetailData: '',
+    activityUpload: false,
 })
 
 /**
@@ -68,15 +71,44 @@ const cancelCheckedState = (state) => {
     return state.set('isCheck',false)
 }
 
+// 获取所有人员
 const getAllUsers = (state, action) => {
     return state.merge({
         allUsers:fromJS(action.result)
     })
 }
 
+// 获取活动类型
 const getAllTypes = (state, action) => {
     return state.merge({
-        allUsers:fromJS(action.result)
+        allTypes:fromJS(action.result)
+    })
+}
+
+/**
+ * @Description: 判断activity是否上传成功
+ * @author maxiaomin
+ * @date 2019/3/27
+*/
+const changeUploadActivity = (state) =>{
+    return state.merge({
+        activityUpload:fromJS(true)
+    })
+}
+/**
+ * @Description: 取消activity图片上传状态
+ * @author maxiaomin
+ * @date 2019/3/27
+*/
+const cancelUploadActivity = (state) =>{
+    return state.set('activityUpload',false)
+}
+
+// 查看活动详情
+const changeActivity = (state, action) => {
+    console.log("action", action)
+    return state.merge({
+        activityDetailData:fromJS(action.res)
     })
 }
 
@@ -98,8 +130,14 @@ export default (state = defaultState,action) => {
             return cancelCheckedState(state);
         case constants.GET_ALL_USERS:
             return getAllUsers(state, action);
-        case constants.GET_ACTIVITY_TYPE:
-            return getAllTypes(state, action)
+        case constants.GET_ACTIVITY_TYPES:
+            return getAllTypes(state, action);
+        case constants.CHANGE_ACTIVITY_DETAIL:
+            return changeActivity(state, action);
+        case constants.CANCEL_UPLOAD_ACTIVITY:
+            return cancelUploadActivity(state);
+        case constants.CHANGE_UPLOAD_ACTIVITY:
+            return changeUploadActivity(state);
         default:
             return state;
     }

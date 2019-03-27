@@ -9,8 +9,7 @@ const Item = List.Item;
 class adjustmentDetail extends Component{
      componentDidMount(){
          const dataCode = this.props.match.params.code;
-         const {changeSportList} = this.props;
-         changeSportList(dataCode)
+         this.props.getActivityDetail(dataCode);
      }
      getCheckState(auditStatus) {
          switch (auditStatus) {
@@ -27,50 +26,37 @@ class adjustmentDetail extends Component{
          }
      }
     render(){
-         const {sportDetailData} = this.props;
-         let detailData = ''
-         let imgList = ''
-         if(sportDetailData){
-             detailData  = Map(sportDetailData);
-             imgList = detailData.get('RunDataImgList').toJS();
-         }
+        const {activityDetailData} = this.props;
+        let detailData = ''
+        let imgList = ''
+        if(activityDetailData){
+            detailData  = Map(activityDetailData);
+            imgList = detailData.get('ActivityImgList').toJS();
+        }
+        console.log("detailData", detailData)
         return (
             <div className="adjustDetail">
                 <div className="detailTop">
                     <p className="detailTitle">
-                        <span className="detailName">爬凤凰山</span>
-                        <span>参加人数：3人</span>
-                        <span>2019-03-25</span>
+                        <span className="detailName">{detailData ? detailData.get('ActivityName') : ''}</span>
+                        <span>参加人数：{detailData ? detailData.get('Number') : ''}人</span>
+                        <span>{detailData ? detailData.get('ActivityDate') : ''}</span>
                     </p>
                     <p>
-                        在一个阳光明媚、晴空万里的周末，小伙伴们相约一起去爬凤凰山。
+                        {detailData ? detailData.get('ActivityRemark') : ''}
                     </p>
                 </div>
                 <div className="detailPerson">
-                    <p>
-                        <span>李丽&nbsp;</span>
-                        <span>20km</span>
-                    </p>
-                    <p>
-                        <span>马晓敏&nbsp;</span>
-                        <span>20km</span>
-                    </p>
-                    <p>
-                        <span>李丽&nbsp;</span>
-                        <span>20km</span>
-                    </p>
-                    <p>
-                        <span>马晓敏&nbsp;</span>
-                        <span>20km</span>
-                    </p>
-                    <p>
-                        <span>刘艳明&nbsp;</span>
-                        <span>20km</span>
-                    </p>
-                    <p>
-                        <span>李丽&nbsp;</span>
-                        <span>20km</span>
-                    </p>
+                    {
+                        detailData ? detailData.get('AdjustedDataList').map((item, index) => {
+                            return (
+                                <p>
+                                    <span>{item ? item.get('UserName') : ''}&nbsp;</span>
+                                    <span>{item ? item.get('AdjustedDistance') : ''}km</span>
+                                </p>
+                            )
+                        }) : null
+                    }
                 </div>
                 <WhiteSpace size='lg' />
                 <div className="imgViewList">
@@ -98,12 +84,12 @@ class adjustmentDetail extends Component{
     }
 }
 const mapStateToProps =  (state) => ({
-    sportDetailData:state.getIn(['sport','sportDetailData'])
+    activityDetailData: state.getIn(['sport', 'activityDetailData'])
 })
 const mapDispatchToProps = (dispatch) => ({
-    changeSportList(detailData){
-        dispatch(actionCreators.getSportDetail(detailData))
+    getActivityDetail(detailData){
+        dispatch(actionCreators.getActivityDetail(detailData))
     }
 })
 
-export default connect(mapStateToProps,mapDispatchToProps)(adjustmentDetail)
+export default connect(mapStateToProps,mapDispatchToProps)(adjustmentDetail);

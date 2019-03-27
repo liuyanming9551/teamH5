@@ -21,7 +21,7 @@ import ViewSport from './pages/Sport/mySport/viewMySport';
 import CreateSport from './pages/Sport/mySport/createSport';
 import SearchSport from './pages/Sport/mySport/searchSport';
 import CreateAdjustment from './pages/Sport/adjustment/createAdjustment';
-import adjustmentDetail from './pages/Sport/adjustment/adjustmentDetail';
+import AdjustmentDetail from './pages/Sport/adjustment/adjustmentDetail';
 import CheckDetail from './pages/Sport/sportCheck/checkDetail';
 //team
 import Team from './route/team';
@@ -96,7 +96,7 @@ export default class Router extends Component{
                         <Route exact path="/sport/searchSport" component={SearchSport} />
                         <Route exact path="/sport/extrasport" component={ExtraSport} />
                         <Route exact path="/sport/createAdjustment" component={CreateAdjustment} />
-                        <Route exact path="/sport/adjustmentDetail" component={adjustmentDetail} />
+                        <Route exact path="/sport/adjustmentDetail/:code" component={AdjustmentDetail} />
                         <Route exact path="/sport/check" component={SportCheck} />
                         <Route exact path="/sport/checkDetail/:code" component={CheckDetail} />
                         <Route exact path="/login" component={Login} />

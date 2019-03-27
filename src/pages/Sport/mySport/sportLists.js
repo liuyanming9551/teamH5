@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import * as req from '../../../request'
+import * as req from '../../../request';
 import ReactDOM from 'react-dom';
 import {PullToRefresh, ListView, Toast, List, Badge, Modal} from 'antd-mobile';
 import {connect} from 'react-redux';

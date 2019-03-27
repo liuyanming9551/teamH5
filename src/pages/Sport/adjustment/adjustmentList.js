@@ -1,10 +1,13 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
+import {actionCreators} from './../store';
 import {PullToRefresh, ListView, Toast, List, Badge, Modal} from 'antd-mobile';
 import ReactDOM from 'react-dom';
 import "./index.less";
 import axios from "axios";
+import * as req from '../../../request';
+import {baseUrl} from './../../../request';
 import Qs from 'qs';
 const operation = Modal.operation;
 class AdjustmentList extends React.Component {
@@ -14,7 +17,7 @@ class AdjustmentList extends React.Component {
             rowHasChanged: (row1, row2) => row1 !== row2,
         });
         this.state = {
-            couponList: [],
+            activityList: [],
             pageNo: 0,
             pageSize: 20, // 分页size
             totalPage: 0, // 总页数初始化
@@ -25,42 +28,43 @@ class AdjustmentList extends React.Component {
             height: document.documentElement.clientHeight,
         };
     }
-    // componentDidMount(){
-    //     const hei = this.state.height - ReactDOM.findDOMNode(this.lv).offsetTop - 50;
-    //     this.requestCouponsList();
-    //     this.setState({
-    //         height:hei
-    //     })
-    // }
+    componentDidMount(){
+        // this.props.getActivityList()
+        this.getActivityList();
+        // const hei = this.state.height - ReactDOM.findDOMNode(this.lv).offsetTop - 50;
+        // this.requestCouponsList();
+        // this.setState({
+        //     height:hei
+        // })
+    }
 
     // 获取列表
-    requestCouponsList() {
+    getActivityList() {
         let dataInfo = {
-            RunDateNum:0,
-            UserCode:"B7AF1D6B-964A-4EDB-9F02-5324F71CDBEE",
-            AuditStatus:4,
-            PageIndex:this.state.pageNo,
-            PageSize:this.state.pageSize
+            // RunDateNum:0,
+            // UserCode:"B7AF1D6B-964A-4EDB-9F02-5324F71CDBEE",
+            // AuditStatus:4,
+            // PageIndex:this.state.pageNo,
+            // PageSize:this.state.pageSize
+            ActivityDateNum: 0,
+            ParameterCode: ''
         }
-        axios({
-            method:"post",
-            url:"/api/RunData/MyMotionData",
-            data:Qs.stringify(dataInfo)
-        }).then((res)=>{
-            let result = res.data;
-            let couponList = [...this.state.couponList, ...result.PageList];
+        req.post('/api/AdjustedData/ActivityList', dataInfo).then((res) => {
+            let activityList = [...this.state.activityList, ...res];
+            console.log(activityList)
             this.setState({
                 isShowContent: true,
-                pageNo: this.state.pageNo +1,
-                couponList: couponList,
-                dataSource: this.state.dataSource.cloneWithRows(couponList), // 数据源dataSource
-                totalPage:2,
+                pageNo: this.state.pageNo + 1,
+                activityList: activityList,
+                dataSource: this.state.dataSource.cloneWithRows(activityList), // 数据源dataSource
+                // totalPage:Math.ceil(res.TotalNumber/this.state.pageSize),
                 refreshing: false,
                 isLoading: false,
             }, () => {
                 Toast.hide();
             });
-        }).catch((res)=>{
+        }).catch((res) => {
+
 
         })
 
@@ -72,9 +76,9 @@ class AdjustmentList extends React.Component {
         this.setState({
             pageNo: 0,
             totalPage: 0,
-            couponList: [],
+            activityList: [],
         },()=>{
-            this.requestCouponsList();
+            this.getActivityList();
         })
     };
 
@@ -87,31 +91,39 @@ class AdjustmentList extends React.Component {
         this.setState({
             isLoading: true,
         },()=>{
-            this.requestCouponsList()
+            this.getActivityList()
         });
     };
     render() {
         const {rightControl} = this.props.rightControl;
-        console.log("rightControl", this.props.rightControl)
+        console.log("dataSource", this.state.dataSource)
         const row =  (rowData, sectionID, rowID) => {
+            console.log("rowData", rowData)
             return (
-                <div key={rowID} style={{margin:'10px 0',background:'#fff'}}>
-                    <List className="my-list" style={{textAlign: 'center'}}>
-                        <List.Item>
-                            <Badge text={0} style={{marginLeft: "12px",width:'100%'}}>
-                                <div style={{width: '80vw'}}>
-                                    <div style={{marginBottom:'10px',overflow:'hidden'}}>
-                                        <span className="ad-name">丽丽</span>
-                                        <span className="ad-time">2019-8-8</span>
+                <div key={rowID}>
+                    <div className="list-wrap">
+                        <List className="my-list" style={{textAlign: 'center'}}>
+                            <Link to={`/sport/adjustmentDetail/${rowData.ActivityCode}`}>
+                                <List.Item>
+                                    <div className="list-content">
+                                        <p>
+                                            <span className="ad-name">{rowData.ActivityName}</span>
+                                            <span className="ad-time">参加人数：{rowData.Number}人</span>
+                                        </p>
+                                        <p className="list-discription">
+                                            {rowData.ActivityRemark}
+                                        </p>
+                                        <p>
+                                            {rowData.ActivityDate}
+                                        </p>
                                     </div>
-                                    <div style={{overflow:'hidden'}}>
-                                        <span className="ad-state">待审核 ：<span>9km</span></span>
-                                        <span className="ad-number">原因 ：<span>爬上爬上爬</span></span>
+                                    <div className="list-img">
+                                        <img src={`${baseUrl}/${rowData.ImgUrl}`} />
                                     </div>
-                                </div>
-                            </Badge>
-                        </List.Item>
-                    </List>
+                                </List.Item>
+                            </Link>
+                        </List>
+                    </div>
                 </div>
             );
         } ;
@@ -151,7 +163,7 @@ class AdjustmentList extends React.Component {
                     }
                     
                 </div>
-                <div className="list-wrap">
+                {/* <div className="list-wrap">
                     <List className="my-list" style={{textAlign: 'center'}}>
                         <Link to="/sport/adjustmentDetail">
                             <List.Item>
@@ -173,8 +185,8 @@ class AdjustmentList extends React.Component {
                             </List.Item>
                         </Link>
                     </List>
-                </div>
-                {/* <ListView
+                </div> */}
+                <ListView
                     key={1}
                     ref={el => this.lv = el}
                     dataSource={this.state.dataSource}
@@ -185,16 +197,16 @@ class AdjustmentList extends React.Component {
                         height: this.state.height,
                     }}
                     renderRow={row}
-
+                    initialListSize={13}
                     distanceToRefresh='20'
                     pullToRefresh={<PullToRefresh
                         refreshing={this.state.refreshing}
                         onRefresh={this.onRefresh}
                     />}
                     onEndReached={this.onEndReached}
-                    onEndReachedThreshold={30}
+                    onEndReachedThreshold={100}
                     pageSize={this.state.pageSize}
-                /> */}
+                />
             </div>
 
         );
@@ -202,11 +214,14 @@ class AdjustmentList extends React.Component {
 }
 
 const mapState = (state) => ({
-    rightControl:state.getIn(['sport','rightControl'])
+    userCode:state.getIn(['login','userCode']),
+    rightControl: state.getIn(['sport', 'rightControl']),
 })
+
 const mapDispatch = (dispatch) => ({
-    // changeSportControl(userCode){
-    //     dispatch(actionCreators.getSportControl(userCode))
+    // getActivityList(){
+    //     dispatch(actionCreators.getActivityList())
     // }
 })
+
 export default connect(mapState,mapDispatch)(AdjustmentList);
