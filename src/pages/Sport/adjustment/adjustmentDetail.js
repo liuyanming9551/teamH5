@@ -62,7 +62,7 @@ class adjustmentDetail extends Component{
                 <div className="imgViewList">
                     <WingBlank>
                         {
-                            imgList?imgList.map(function (item,index) {
+                            imgList ? imgList.map(function (item,index) {
                                 return (
                                     <Zmage key={item.ImgUrl}
                                            src={`${baseUrl}/${item.ImgUrl}`}

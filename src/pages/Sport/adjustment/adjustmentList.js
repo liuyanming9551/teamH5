@@ -51,7 +51,7 @@ class AdjustmentList extends React.Component {
         }
         req.post('/api/AdjustedData/ActivityList', dataInfo).then((res) => {
             let activityList = [...this.state.activityList, ...res];
-            console.log(activityList)
+            // console.log(activityList)
             this.setState({
                 isShowContent: true,
                 pageNo: this.state.pageNo + 1,
@@ -96,9 +96,7 @@ class AdjustmentList extends React.Component {
     };
     render() {
         const {rightControl} = this.props.rightControl;
-        console.log("dataSource", this.state.dataSource)
         const row =  (rowData, sectionID, rowID) => {
-            console.log("rowData", rowData)
             return (
                 <div key={rowID}>
                     <div className="list-wrap">

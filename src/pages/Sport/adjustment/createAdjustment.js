@@ -52,7 +52,6 @@ class CreateAdjustment extends Component {
             files: [],
             selectedArr: [],
             activityType: [],
-    
         }
     }
 
@@ -78,7 +77,7 @@ class CreateAdjustment extends Component {
     // 确认
     handleConfirm = () => {
         const {userCode, addActivity} = this.props;
-        let {files, selectedArr} =this.state;
+        let {files, selectedArr, activityType} =this.state;
         let emptyName = false;
         let emptyDistance = false;
         let personCount = 0;
@@ -105,6 +104,8 @@ class CreateAdjustment extends Component {
                 Toast.info('请选择姓名', 1);
             } else if (emptyDistance) {
                 Toast.info('请输入调整距离', 1);
+            } else if (!values.activityRemark) {
+                Toast.info('请输入活动内容', 1);
             } else {
                 let formData = new FormData();
                 let list = [];
@@ -135,11 +136,15 @@ class CreateAdjustment extends Component {
                         }
                     })
                 }
-                if (files.length) {
-                    Toast.loading('上传中', 1, () => {
-                        console.log('Load complete !!!');
-                    })
-                    a(files[0].file);
+                if (activityType[0] == "998dc186-d237-431e-a6d5-4f7249d65356") {
+                    if (files.length) {
+                        Toast.loading('上传中', 1, () => {
+                            console.log('Load complete !!!');
+                        })
+                        a(files[0].file);
+                    } else {
+                        Toast.info('请选择图片', 1);
+                    }
                 } else {
                     addActivity(formData);
                 }
@@ -165,6 +170,7 @@ class CreateAdjustment extends Component {
         this.props.form.resetFields();
         this.setState({
             files: [],
+            selectedArr: []
         })
     }
 
@@ -221,11 +227,8 @@ class CreateAdjustment extends Component {
 
     // 选择类型
     selectTypeOK = (v) => {
-        console.log("selectTypeOK", v)
         this.setState({
             activityType: v
-        }, () => {
-            console.log("this.state.activityType", this.state.activityType)
         })
     }
 
@@ -332,16 +335,20 @@ class CreateAdjustment extends Component {
                         {...getFieldProps('activityRemark', {
                             initialValue: '',
                         })}
-                    >备注</InputItem>
+                    >活动内容</InputItem>
                 </List>
-                <ImagePicker
-                    files={files}
-                    onChange={(files) => {this.onImageChange(files)}}
-                    onImageClick={(index, fs) => console.log(index, fs)}
-                    selectable={files.length < 9}
-                    multiple={true}
-                    onAddImageClick={() => {this.onAddImageClick()}}
-                />
+                {
+                    activityType[0] == "998dc186-d237-431e-a6d5-4f7249d65356" ? (
+                        <ImagePicker
+                            files={files}
+                            onChange={(files) => {this.onImageChange(files)}}
+                            onImageClick={(index, fs) => console.log(index, fs)}
+                            selectable={files.length < 9}
+                            multiple={true}
+                            onAddImageClick={() => {this.onAddImageClick()}}
+                        />
+                    ) : null
+                }
                 <List.Item>
                     <Button size="small" inline style={{ width:"46%", marginRight: "20px" }} onClick={() => {this.onReset()}}>重置</Button>
                     <Button type="primary" size="small" inline style={{ width:"46%" }} onClick={() => {this.handleConfirm()}}>确认</Button>
