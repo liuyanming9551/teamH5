@@ -3,7 +3,9 @@ import * as constants from './constants';
 const defaultState = fromJS({
     pkPeopleList:[],
     createPkSuccess:'',
-    pkDetail:''
+    pkDetail:'',
+    acceptPk:'',
+    rejectPk:''
 })
 /**
  * @Description:获取可PK人的列表
@@ -41,6 +43,38 @@ const changePkDetail = (state,action) =>{
         pkDetail:fromJS(action.pkDetail)
     })
 }
+/**
+ * @Description: acceptPk 变为true,意为接受PK
+ * @author YanMing Liu
+ * @date 2019/3/28
+*/
+const acceptPkState = (state) => {
+    return state.set('acceptPk',true)
+}
+/**
+ * @Description: acceptPk 变为false
+ * @author YanMing Liu
+ * @date 2019/3/28
+ */
+const cancelPkStateSuccess = (state) => {
+    return state.set('acceptPk',false)
+}
+/**
+ * @Description: rejectPk 变为true,意为拒绝PK
+ * @author YanMing Liu
+ * @date 2019/3/28
+*/
+const rejectPkState = (state) =>{
+    return state.set('rejectPk',true)
+}
+/**
+ * @Description: rejectPk 变为false
+ * @author YanMing Liu
+ * @date 2019/3/28
+*/
+const cancelPkStateReject = (state) => {
+    return state.set('rejectPk',false)
+}
 export default (state = defaultState,action) => {
     switch (action.type) {
         case constants.CHANGE_PK_PEOPLE:
@@ -50,7 +84,15 @@ export default (state = defaultState,action) => {
         case constants.CANCEL_CREATE_PK_SUCCESS:
             return cancelCreatePkSuccess(state);
         case constants.CHANGE_PK_DETAIL:
-            return changePkDetail(state,action)
+            return changePkDetail(state,action);
+        case constants.CHANGE_PK_STATE_SUCCESS:
+            return acceptPkState(state);
+        case constants.CANCEL_PK_STATE_SUCCESS:
+            return cancelPkStateSuccess(state);
+        case constants.CHANGE_PK_STATE_REJECT:
+            return rejectPkState(state);
+        case constants.CANCEL_PK_STATE_REJECT:
+            return cancelPkStateReject(state);
         default :
             return state;
     }

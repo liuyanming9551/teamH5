@@ -7,9 +7,21 @@ import {baseUrl} from "../../request";
 
 const goldImgList = ['gold1','gold2','gold3']
 class Home extends PureComponent {
-    getList(){
-        const {rankList} = this.props;
-        const newList = rankList.toJS();
+    getList(type){
+        let newList = ''
+        if(type === 'lastWeek'){
+            const {rankList} = this.props;
+            newList = rankList.toJS();
+        }else if(type === 'thisMonth'){
+            const {thisMonthRank} = this.props;
+            newList = thisMonthRank.toJS();
+        }else if(type === 'thisQuarter'){
+            const {thisQuarterRank} = this.props;
+            newList = thisQuarterRank.toJS();
+        }else if(type === 'lastQuarter'){
+            const {lastQuarterRank} = this.props;
+            newList = lastQuarterRank.toJS();
+        }
         const pageList = [];
         if(newList.length){
             for(let i = 0;i<3;i++){
@@ -27,7 +39,11 @@ class Home extends PureComponent {
         )
     }
     componentDidMount() {
-        this.props.getRankData();
+        const {getRankData,getThisMonthRank,getThisQuarterRank,getLastQuarterRank} = this.props;
+        getRankData();
+        getThisMonthRank();
+        getThisQuarterRank();
+        getLastQuarterRank();
     }
     render() {
         const {rankList} = this.props;
@@ -45,7 +61,7 @@ class Home extends PureComponent {
                         />
                         <Card.Body>
                             <div style={{background: 'white', display: 'flex', justifyContent: 'space-around'}}>
-                                {this.getList()}
+                                {this.getList('lastWeek')}
                             </div>
                         </Card.Body>
                     </Card>
@@ -59,7 +75,7 @@ class Home extends PureComponent {
                         />
                         <Card.Body>
                             <div style={{background: 'white', display: 'flex', justifyContent: 'space-around'}}>
-                                {this.getList()}
+                                {this.getList('thisMonth')}
                             </div>
                         </Card.Body>
                     </Card>
@@ -73,7 +89,7 @@ class Home extends PureComponent {
                         />
                         <Card.Body>
                             <div style={{background: 'white', display: 'flex', justifyContent: 'space-around'}}>
-                                {this.getList()}
+                                {this.getList('thisQuarter')}
                             </div>
                         </Card.Body>
                     </Card>
@@ -87,7 +103,7 @@ class Home extends PureComponent {
                         />
                         <Card.Body>
                             <div style={{background: 'white', display: 'flex', justifyContent: 'space-around'}}>
-                                {this.getList()}
+                                {this.getList('lastQuarter')}
                             </div>
                         </Card.Body>
                     </Card>
@@ -100,11 +116,23 @@ class Home extends PureComponent {
 }
 
 const mapStateToprops = (state) => ({
-    rankList: state.getIn(['home', 'sportRank'])
+    rankList: state.getIn(['home', 'sportRank']),
+    thisMonthRank:state.getIn(['home','thisMonthRank']),
+    thisQuarterRank:state.getIn(['home','thisQuarterRank']),
+    lastQuarterRank:state.getIn(['home','lastQuarterRank']),
 })
 const mapDispatchToProps = (dispatch) => ({
     getRankData(){
         dispatch(actionCreators.getRankData())
+    },
+    getThisMonthRank(){
+        dispatch(actionCreators.getThisMonthRank())
+    },
+    getThisQuarterRank(){
+        dispatch(actionCreators.getThisQuarterRank())
+    },
+    getLastQuarterRank(){
+        dispatch(actionCreators.getLastQuarterRank())
     }
 })
 export default connect(mapStateToprops, mapDispatchToProps)(Home);

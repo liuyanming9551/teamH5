@@ -1,62 +1,72 @@
-.pkActiveBox{
-  width: 60px;
-  height: 60px;
-  position: fixed;
-  left: 600px;
-  top: 800px;
-  border-radius: 50%;
-  padding: 5px;
-  box-shadow:1px 0px 24px 1px rgba(0, 184, 255, 0.62);
-  background: rgb(0, 184, 255);
-  span{
-    display: inline-block;
-    width: 100%;
-    height: 100%;
-    font-size: 35px;
-    color: #fff;
-    text-align: center;
-    line-height: 46px;
-  }
-}
-.pkListItem{
-  display:flex;
-  justify-content:space-around;
-  align-item:center;
-  font-size:28px;
-  .initiate{
-    width:140px;
-    display:flex;
-    flex-direction: column;
-    justify-content:space-between;
-    .initiateName{
-      margin-bottom:10px
+.listview-wrap{
+  position: relative;
+  .pkActiveBox{
+    width: 60px;
+    height: 60px;
+    position: fixed;
+    left: 600px;
+    top: 800px;
+    border-radius: 50%;
+    padding: 5px;
+    box-shadow:1px 0px 24px 1px rgba(0, 184, 255, 0.62);
+    background: rgb(0, 184, 255);
+    span{
+      display: inline-block;
+      width: 100%;
+      height: 100%;
+      font-size: 35px;
+      color: #fff;
+      text-align: center;
+      line-height: 46px;
     }
   }
-  .dateWrap{
-    width:360px;
+  .pkListItem{
     display:flex;
     justify-content:space-around;
-    align-items: center;
-    .startDate{
-      overflow: hidden;
-      text-overflow:ellipsis;
-      white-space: nowrap;
+    align-item:center;
+    font-size:28px;
+    .initiate{
+      width:140px;
+      display:flex;
+      flex-direction: column;
+      justify-content:center;
     }
-    .endDate{
-      overflow: hidden;
-      text-overflow:ellipsis;
-      white-space: nowrap;
+    .dateWrap{
+      width:360px;
+      display:flex;
+      justify-content:space-around;
+      align-items: center;
+      .startDate{
+        overflow: hidden;
+        text-overflow:ellipsis;
+        white-space: nowrap;
+      }
+      .endDate{
+        overflow: hidden;
+        text-overflow:ellipsis;
+        white-space: nowrap;
+      }
+    }
+    .receive{
+      width:140px;
+      display:flex;
+      flex-direction: column;
+      align-items: flex-end;
+      justify-content:space-between;
+      .receiveName{
+        margin-bottom:10px
+      }
     }
   }
-  .receive{
-    width:140px;
-    display:flex;
-    flex-direction: column;
-    align-items: flex-end;
-    justify-content:space-between;
-    .receiveName{
-      margin-bottom:10px
-    }
+
+  .selectInfoWrap{
+    width: 100%;
+    height:700px;
+    background: pink;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 999;
   }
 }
 .pkInner{
@@ -64,7 +74,6 @@
   margin-bottom: 100px;
   .pkDetailWrap{
     width: 100%;
-
     .pkUserName{
       display: flex;
       justify-content: flex-end;

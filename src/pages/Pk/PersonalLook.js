@@ -1,5 +1,5 @@
 import React from "react";
-import {Button, List, Pagination,Icon , TextareaItem, WhiteSpace, WingBlank} from 'antd-mobile';
+import {Button, List, Pagination, Icon, TextareaItem, WhiteSpace, WingBlank, Toast} from 'antd-mobile';
 import {connect} from 'react-redux';
 import {Map} from "immutable";
 import {actionCreators} from './store';
@@ -16,22 +16,45 @@ class PersonalLook extends React.Component {
         }
     }
     componentDidMount() {
-        const pkCode = this.props.match.params.code;
+        const {pkCode,pkAccept} = this.props.location.query;
         const { changePkDetail,changePkState } =this.props;
+        console.log(pkAccept)
         const parmas = {
             PKCode:pkCode,
             PKAccept:1
         }
-        changePkState(parmas)
+        if(pkAccept === 0){
+            changePkState(parmas)
+        }
+
         changePkDetail(pkCode)
     }
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        const {acceptPk,history,cancelPkStateSuccess,cancelPkStateReject,rejectPk} = this.props;
+        if(acceptPk){
+            Toast.success('请开始你们的表演!', 1);
+            cancelPkStateSuccess()
+            setTimeout(() =>{
+                history.goBack();
+            },1000)
+        }
+        if(rejectPk){
+            Toast.success('来日再战!', 1);
+            cancelPkStateReject()
+            setTimeout(() =>{
+                history.goBack();
+            },1000)
+        }
+    }
+
     onPageBtn = (index) =>{
         this.setState({
             page:index
         })
     }
     handleReject = () => {
-        const pkCode = this.props.match.params.code;
+        const {pkCode} = this.props.location.query;
         const { changePkState } =this.props;
         const parmas = {
             PKCode:pkCode,
@@ -40,7 +63,7 @@ class PersonalLook extends React.Component {
         changePkState(parmas)
     }
     handleAccept = () =>{
-        const pkCode = this.props.match.params.code;
+        const {pkCode} = this.props.location.query;
         const { changePkState } =this.props;
         const parmas = {
             PKCode:pkCode,
@@ -72,14 +95,15 @@ class PersonalLook extends React.Component {
         const {userCode,pkDetail} = this.props;
         const {page} = this.state;
         let pkDetailData = '';
-        let isOwn = true;
+        let isOwn = false;
         let isPKList = false;
         if(pkDetail){
             pkDetailData = Map(pkDetail);
-            if(pkDetailData.get('PKB') === userCode && pkDetailData.get('PKStatus') === 0){
+            console.log(pkDetailData.get('PKB'),userCode,pkDetailData.get('PKStatus'))
+            if(pkDetailData.get('PKB') === userCode && (pkDetailData.get('PKAccept') === 0 || pkDetailData.get('PKAccept') === 1)){
                 isOwn = true;
             }
-            if(pkDetailData.get('PKStatus') !== 0){
+            if(pkDetailData.get('PKAccept') === 2){
                 isPKList = true;
             }
         }
@@ -120,7 +144,7 @@ class PersonalLook extends React.Component {
                     {pkDetailList}
                     <Pagination total={Math.ceil(newList.length/5)}
                                 className="custom-pagination-with-icon"
-                                current={1}
+                                current={Math.ceil(newList.length/5)===0 ? 0 : 1}
                                 onChange={this.onPageBtn}
                                 locale={locale}
                     />
@@ -132,15 +156,16 @@ class PersonalLook extends React.Component {
     getPkState(pkStatus) {
         switch (pkStatus) {
             case 0:
-                return "未开始"
+                return "未读"
             case 1:
-                return "已开始"
+                return "已读"
             case 2:
-                return "已结束"
+                return "接受"
+            case 3:
+                return "拒绝"
             default:
                 return "出错了"
         }
-
     }
     render() {
         const {pkDetail} = this.props;
@@ -164,7 +189,7 @@ class PersonalLook extends React.Component {
                         title={'PK奖励'}
                     />
                     <WhiteSpace size='md'/>
-                    <Item extra={pkDetailData?this.getPkState(pkDetailData.get('PKStatus')):''}>PK状态</Item>
+                    <Item extra={pkDetailData?this.getPkState(pkDetailData.get('PKAccept')):''}>状态</Item>
                 </List>
                 {this.getDetailArea()}
 
@@ -174,15 +199,21 @@ class PersonalLook extends React.Component {
 }
 const mapState = (state) =>({
     pkDetail:state.getIn(['pk','pkDetail']),
-    userCode:state.getIn(['login','userCode'])
+    userCode:state.getIn(['login','userCode']),
+    acceptPk:state.getIn(['pk','acceptPk'])
 })
 const mapDispatch = (dispatch) =>({
     changePkDetail(pkCode){
         dispatch(actionCreators.getPkDetail(pkCode))
     },
     changePkState(pkState){
-        dispatch(actionCreators.changePkState(pkState))
+        dispatch(actionCreators.getPkDate(pkState))
+    },
+    cancelPkStateSuccess(){
+        dispatch(actionCreators.cancelPkStateSuccess())
+    },
+    cancelPkStateReject(){
+        dispatch(actionCreators.cancelPkStateReject())
     }
-
 })
 export default connect(mapState,mapDispatch)(PersonalLook);

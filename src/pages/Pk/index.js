@@ -25,6 +25,7 @@ class Pk extends Component {
             dataSource,
             isLoading: false, // 是否显示加载状态
             height: document.documentElement.clientHeight,
+            selectShows:false
         };
     }
 
@@ -116,40 +117,30 @@ class Pk extends Component {
                 return "出错了"
         }
     }
-    getPkResult(pKResult,name1,name2){
-        switch (pKResult) {
-            case 0:
-                return "未出结果"
-            case 1:
-                return `${name1}胜利`
-            case 2:
-                return `${name2}胜利`
-            case 3:
-                return "平局"
-            default:
-                return "出错了"
-        }
-    }
+
     row = (rowData, sectionID, rowID) => {
-        console.log(rowData, sectionID, rowID)
+        let queryInfo = {pkCode:rowData.PKCode,pkAccept:rowData.PKAccept};
+        let path = {
+            pathname:'/pk/personallook',
+            query:queryInfo,
+        }
         return (
             <div key={rowID} style={{margin: '10px 0', background: '#fff'}}>
                 <List>
-                    <Link to={`/pk/personallook/${rowData.PKCode}`}>
+                    <Link to={path}>
                         <List.Item arrow="horizontal">
                             <Badge>
                                 <div className='pkListItem'>
                                     <div className='initiate'>
-                                        <div className='initiateName'>{rowData.PKAName}</div>
-                                        <div className='initiateState'>{this.getPkState(rowData.PKStatus)}</div>
+                                        <div className='initiateName'>{rowData.PKBName}</div>
                                     </div>
                                     <div className='dateWrap'>
                                         <span className='startDate'>{rowData.StartDate}</span>
                                         <span className='endDate'>{rowData.EndDate}</span>
                                     </div>
                                     <div className='receive'>
-                                        <div className='receiveName'>{rowData.PKBName}</div>
-                                        <div className='receiveState'>{rowData.PKStatus===0?this.getPkAccept(rowData.PKAccept):this.getPkResult(rowData.PKResult,rowData.PKAName,rowData.PKBName)}</div>
+                                        <div className='receiveName'>{rowData.PKAName}</div>
+                                        <div className='receiveState'>{this.getPkAccept(rowData.PKAccept)}</div>
                                     </div>
                                 </div>
                             </Badge>
@@ -160,9 +151,12 @@ class Pk extends Component {
         );
     };
     render() {
-
+        const {selectShows} = this.state;
         return (
             <div className="listview-wrap">
+                <div className='selectInfoWrap' style={selectShows?{'display':'block'}:{'display':'none'}}>
+
+                </div>
                 <div className="pkActiveBox">
                     <span className='iconfont icon-bianji' onClick={() => operation([
                         {
@@ -172,7 +166,11 @@ class Pk extends Component {
                         },
                         {
                             text: '筛选', onPress: () => {
-                                this.props.location.history.push('/pk/personalselect')
+                               this.setState({
+                                   selectShows:true
+                               },() =>{
+                                   console.log(this.state.selectShows)
+                               })
                             }
                         },
                     ])}
@@ -210,6 +208,8 @@ const mapState = (state) => ({
 
 })
 const mapDispatch = (dispatch) => ({
-
+    changeSelectShows(){
+        dispatch()
+    }
 })
 export default connect(mapState, mapDispatch)(Pk);

@@ -71,10 +71,38 @@ export const getPkDetail = (pkCode) =>{
  * @author YanMing Liu
  * @date 2019/3/27
 */
-export const changePkState = (pkState) => {
+const changePkState = () =>({
+    type:constants.CHANGE_PK_STATE_SUCCESS
+})
+const rejectPkState = () =>({
+    type:constants.CHANGE_PK_STATE_REJECT
+})
+export const getPkDate = (pkState) => {
     return (dispatch) => {
         req.post('/api/PK/UpdatePKAccept',pkState).then((res) =>{
-
+            if(res.code === 1001){
+                if(res.state === 2){
+                    dispatch(changePkState())
+                }else {
+                    dispatch(rejectPkState())
+                }
+            }
         })
     }
 }
+/**
+ * @Description: 取消 PK 接受状态
+ * @author YanMing Liu
+ * @date 2019/3/28
+*/
+export const cancelPkStateSuccess = () =>({
+    type:constants.CANCEL_PK_STATE_SUCCESS
+})
+/**
+ * @Description: 取消 pk 拒绝状态
+ * @author YanMing Liu
+ * @date 2019/3/28
+*/
+export const cancelPkStateReject = () =>({
+    type:constants.CANCEL_PK_STATE_REJECT
+})
