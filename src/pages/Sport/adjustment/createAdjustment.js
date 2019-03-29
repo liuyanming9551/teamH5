@@ -270,7 +270,7 @@ class CreateAdjustment extends Component {
                     >活动名称</InputItem>
                     <DatePicker
                         mode="date"
-                        title="Select Date"
+                        title="选择日期"
                         extra="Optional"
                         value={this.state.date}
                         onChange={date => this.setState({date})}
