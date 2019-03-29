@@ -44,7 +44,7 @@ const Item = List.Item;
                     <Item extra={detailData?this.getCheckState(detailData.get("AuditStatus")):''}>审核状态</Item>
                     <Item>上传图片</Item>
                 </List>
-                <WhiteSpace size='lg' />
+                <WhiteSpace size='sm' />
                 <div className="imgViewList">
                     <WingBlank>
                         {

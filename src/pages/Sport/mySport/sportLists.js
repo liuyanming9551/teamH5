@@ -31,8 +31,9 @@ class SportList extends Component {
         })
         this.requestCouponsList();
     }
-
-
+    componentWillUnmount() {
+        operation().close();
+    }
     // 获取列表
     requestCouponsList() {
         const {userCode} = this.props;
