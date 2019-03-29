@@ -129,7 +129,7 @@ class PersonalLook extends React.Component {
                 <div style={isOwn?{display:'block'}:{display:'none'}}>
                     <WhiteSpace size='lg'/>
                     <WingBlank size='lg' style={{overflow: "hidden"}}>
-                        <Button type="ghost" size="small" inline style={{float: "left", width: "48%"}} onClick={this.handleReject}>拒绝</Button>
+                        <Button type="warning" size="small" inline style={{float: "left", width: "48%"}} onClick={this.handleReject}>拒绝</Button>
                         <Button type="primary" size="small" inline style={{float: "right", width: "48%"}} onClick={this.handleAccept}>接受</Button>
                     </WingBlank>
                 </div>

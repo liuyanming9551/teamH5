@@ -236,7 +236,7 @@ class CreateSport extends Component {
                 />
                 <WhiteSpace size='lg'/>
                 <WingBlank size='lg' style={{overflow: "hidden"}}>
-                    <Button size="small" inline style={{float: "left", width: "48%"}} onClick={this.onReset}>重置</Button>
+                    <Button type='ghost' size="small" inline style={{float: "left", width: "48%"}} onClick={this.onReset}>重置</Button>
                     <Button type="primary" size="small" inline style={{float: "right", width: "48%"}} onClick={this.handleConfirm}>确认</Button>
                 </WingBlank>
             </div>
