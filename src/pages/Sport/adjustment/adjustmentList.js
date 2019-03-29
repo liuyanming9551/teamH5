@@ -19,7 +19,7 @@ class AdjustmentList extends React.Component {
         this.state = {
             activityList: [],
             pageNo: 1,
-            pageSize: 20, // 分页size
+            pageSize: 10, // 分页size
             totalPage: 0, // 总页数初始化
             isShowContent: false, // 控制页面再数据请求后显示
             refreshing: false, // 是否显示刷新状态
@@ -71,9 +71,8 @@ class AdjustmentList extends React.Component {
 
     // 下拉刷新
     onRefresh = () => {
-        Toast.loading();
         this.setState({
-            pageNo: 0,
+            pageNo: 1,
             totalPage: 0,
             activityList: [],
         },()=>{
@@ -83,7 +82,7 @@ class AdjustmentList extends React.Component {
 
     // 加载更多
     onEndReached = () => {
-        if (this.state.isLoading || (this.state.totalPage < this.state.pageNo +1)) {
+        if (this.state.isLoading || (this.state.totalPage < this.state.pageNo)) {
             Toast.hide();
             return;
         }
@@ -97,30 +96,28 @@ class AdjustmentList extends React.Component {
         const {rightControl} = this.props.rightControl;
         const row =  (rowData, sectionID, rowID) => {
             return (
-                <div key={rowID}>
-                    <div className="list-wrap">
-                        <List className="my-list" style={{textAlign: 'center'}}>
-                            <Link to={`/sport/adjustmentDetail/${rowData.ActivityCode}`}>
-                                <List.Item>
-                                    <div className="list-content">
-                                        <p>
-                                            <span className="act-name">{rowData.ActivityName}</span>
-                                            <span className="act-number">参加人数：{rowData.Number}人</span>
-                                        </p>
-                                        <p className="act-discription">
-                                            {rowData.ActivityRemark}
-                                        </p>
-                                        <p className="act-date">
-                                            {rowData.ActivityDate}
-                                        </p>
-                                    </div>
-                                    <div className="list-img">
-                                        <img src={`${baseUrl}/${rowData.ImgUrl}`} />
-                                    </div>
-                                </List.Item>
-                            </Link>
-                        </List>
-                    </div>
+                <div className="list-wrap" key={rowID}>
+                    <List className="my-list" style={{textAlign: 'center'}}>
+                        <Link to={`/sport/adjustmentDetail/${rowData.ActivityCode}`}>
+                            <List.Item>
+                                <div className="list-content">
+                                    <p>
+                                        <span className="act-name">{rowData.ActivityName}</span>
+                                        <span className="act-number">参加人数：{rowData.Number}人</span>
+                                    </p>
+                                    <p className="act-discription">
+                                        {rowData.ActivityRemark}
+                                    </p>
+                                    <p className="act-date">
+                                        {rowData.ActivityDate}
+                                    </p>
+                                </div>
+                                <div className="list-img">
+                                    <img src={`${baseUrl}/${rowData.ImgUrl}`} />
+                                </div>
+                            </List.Item>
+                        </Link>
+                    </List>
                 </div>
             );
         } ;
@@ -194,7 +191,7 @@ class AdjustmentList extends React.Component {
                         height: this.state.height,
                     }}
                     renderRow={row}
-                    initialListSize={13}
+                    initialListSize={10}
                     distanceToRefresh='20'
                     pullToRefresh={<PullToRefresh
                         refreshing={this.state.refreshing}
