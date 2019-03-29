@@ -39,10 +39,12 @@ class adjustmentDetail extends Component{
                 <div className="detailTop">
                     <p className="detailTitle">
                         <span className="detailName">{detailData ? detailData.get('ActivityName') : ''}</span>
-                        <span>参加人数：{detailData ? detailData.get('Number') : ''}人</span>
-                        <span>{detailData ? detailData.get('ActivityDate') : ''}</span>
                     </p>
-                    <p>
+                    <p className="detailNumber">
+                        <span style={{marginRight: '30px'}}>{detailData ? detailData.get('ActivityDate') : ''}</span>
+                        <span>参加人数：{detailData ? detailData.get('Number') : ''}人</span>
+                    </p>
+                    <p className="detailContent">
                         {detailData ? detailData.get('ActivityRemark') : ''}
                     </p>
                 </div>
@@ -58,20 +60,19 @@ class adjustmentDetail extends Component{
                         }) : null
                     }
                 </div>
-                <WhiteSpace size='lg' />
                 <div className="imgViewList">
                     <WingBlank>
                         {
                             imgList ? imgList.map(function (item,index) {
                                 return (
                                     <Zmage key={item.ImgUrl}
-                                           src={`${baseUrl}/${item.ImgUrl}`}
-                                           controller={{
-                                               // 关闭按钮
-                                               close: true,
-                                               // 缩放按钮
-                                               zoom: true
-                                           }}
+                                        src={`${baseUrl}/${item.ImgUrl}`}
+                                        controller={{
+                                            // 关闭按钮
+                                            close: true,
+                                            // 缩放按钮
+                                            zoom: true
+                                        }}
                                     />
                                 )
                             }):''

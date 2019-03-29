@@ -18,7 +18,7 @@ class AdjustmentList extends React.Component {
         });
         this.state = {
             activityList: [],
-            pageNo: 0,
+            pageNo: 1,
             pageSize: 20, // 分页size
             totalPage: 0, // 总页数初始化
             isShowContent: false, // 控制页面再数据请求后显示
@@ -29,7 +29,6 @@ class AdjustmentList extends React.Component {
         };
     }
     componentDidMount(){
-        // this.props.getActivityList()
         this.getActivityList();
         // const hei = this.state.height - ReactDOM.findDOMNode(this.lv).offsetTop - 50;
         // this.requestCouponsList();
@@ -44,20 +43,20 @@ class AdjustmentList extends React.Component {
             // RunDateNum:0,
             // UserCode:"B7AF1D6B-964A-4EDB-9F02-5324F71CDBEE",
             // AuditStatus:4,
-            // PageIndex:this.state.pageNo,
-            // PageSize:this.state.pageSize
+            PageIndex:this.state.pageNo,
+            PageSize:this.state.pageSize,
             ActivityDateNum: 0,
             ParameterCode: ''
         }
         req.post('/api/AdjustedData/ActivityList', dataInfo).then((res) => {
-            let activityList = [...this.state.activityList, ...res];
+            let activityList = [...this.state.activityList, ...res.PageList];
             // console.log(activityList)
             this.setState({
                 isShowContent: true,
                 pageNo: this.state.pageNo + 1,
                 activityList: activityList,
                 dataSource: this.state.dataSource.cloneWithRows(activityList), // 数据源dataSource
-                // totalPage:Math.ceil(res.TotalNumber/this.state.pageSize),
+                totalPage:Math.ceil(res.TotalNumber/this.state.pageSize),
                 refreshing: false,
                 isLoading: false,
             }, () => {
