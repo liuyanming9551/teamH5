@@ -22,19 +22,18 @@ class AdjustmentList extends React.Component {
             pageSize: 10, // 分页size
             totalPage: 0, // 总页数初始化
             isShowContent: false, // 控制页面再数据请求后显示
-            refreshing: false, // 是否显示刷新状态
+            refreshing: true, // 是否显示刷新状态
             dataSource,
             isLoading: false, // 是否显示加载状态
             height: document.documentElement.clientHeight,
         };
     }
     componentDidMount(){
+        const hei = this.state.height - ReactDOM.findDOMNode(this.lv).offsetTop - 50;
+        this.setState({
+            height:hei
+        })
         this.getActivityList();
-        // const hei = this.state.height - ReactDOM.findDOMNode(this.lv).offsetTop - 50;
-        // this.requestCouponsList();
-        // this.setState({
-        //     height:hei
-        // })
     }
 
     // 获取列表
@@ -43,10 +42,10 @@ class AdjustmentList extends React.Component {
             // RunDateNum:0,
             // UserCode:"B7AF1D6B-964A-4EDB-9F02-5324F71CDBEE",
             // AuditStatus:4,
+            ActivityDateNum: 0,
+            ParameterCode: '',
             PageIndex:this.state.pageNo,
             PageSize:this.state.pageSize,
-            ActivityDateNum: 0,
-            ParameterCode: ''
         }
         req.post('/api/AdjustedData/ActivityList', dataInfo).then((res) => {
             let activityList = [...this.state.activityList, ...res.PageList];
@@ -100,21 +99,23 @@ class AdjustmentList extends React.Component {
                     <List className="my-list" style={{textAlign: 'center'}}>
                         <Link to={`/sport/adjustmentDetail/${rowData.ActivityCode}`}>
                             <List.Item>
-                                <div className="list-content">
-                                    <p>
-                                        <span className="act-name">{rowData.ActivityName}</span>
-                                        <span className="act-number">参加人数：{rowData.Number}人</span>
-                                    </p>
-                                    <p className="act-discription">
-                                        {rowData.ActivityRemark}
-                                    </p>
-                                    <p className="act-date">
-                                        {rowData.ActivityDate}
-                                    </p>
-                                </div>
-                                <div className="list-img">
-                                    <img src={`${baseUrl}/${rowData.ImgUrl}`} />
-                                </div>
+                                <Badge text={0} style={{marginLeft: "12px"}}>
+                                    <div className="list-content">
+                                        <p>
+                                            <span className="act-name">{rowData.ActivityName}</span>
+                                            <span className="act-number">参加人数：{rowData.Number}人</span>
+                                        </p>
+                                        <p className="act-discription">
+                                            {rowData.ActivityRemark}
+                                        </p>
+                                        <p className="act-date">
+                                            {rowData.ActivityDate}
+                                        </p>
+                                    </div>
+                                    <div className="list-img">
+                                        <img src={`${baseUrl}/${rowData.ImgUrl}`} />
+                                    </div>
+                                </Badge>
                             </List.Item>
                         </Link>
                     </List>
@@ -141,11 +142,6 @@ class AdjustmentList extends React.Component {
                         />
                         ) : (
                             <span className="iconfont icon-bianji" onClick={() => operation([
-                                {
-                                    text: '新建', onPress: () => {
-                                        this.props.location.history.push('/sport/createAdjustment')
-                                    }
-                                },
                                 {
                                     text: '筛选', onPress: () => {
                                         this.props.location.history.push('/sport/searchSport')
