@@ -104,7 +104,7 @@ class CreateAdjustment extends Component {
                 Toast.info('请选择姓名', 1);
             } else if (emptyDistance) {
                 Toast.info('请输入调整距离', 1);
-            } else if (!values.activityRemark) {
+            } else if (!values.activityContent) {
                 Toast.info('请输入活动内容', 1);
             } else {
                 let formData = new FormData();
@@ -113,7 +113,7 @@ class CreateAdjustment extends Component {
                 formData.append('Creator',userCode);
                 formData.append('ActivityName',values.activityName);
                 formData.append('ActivityDate',activityDate);
-                formData.append('ActivityRemark',values.activityRemark);
+                formData.append('ActivityRemark',values.activityContent);
                 formData.append('ParameterCode',values.activityType);
                 formData.append('PersonCount',personCount);
                 for (let i = 0; i < selectedArr.length; i++) {
@@ -332,7 +332,7 @@ class CreateAdjustment extends Component {
                     <InputItem
                         clear
                         moneyKeyboardWrapProps={moneyKeyboardWrapProps}
-                        {...getFieldProps('activityRemark', {
+                        {...getFieldProps('activityContent', {
                             initialValue: '',
                         })}
                     >活动内容</InputItem>
