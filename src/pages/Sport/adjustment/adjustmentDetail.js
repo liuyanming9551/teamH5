@@ -41,7 +41,7 @@ class adjustmentDetail extends Component{
                         <span className="detailName">{detailData ? detailData.get('ActivityName') : ''}</span>
                     </p>
                     <p className="detailNumber">
-                        <span style={{marginRight: '30px'}}>{detailData ? detailData.get('ActivityDate') : ''}</span>
+                        <span>{detailData ? detailData.get('ActivityDate') : ''}</span>
                         <span>参加人数：{detailData ? detailData.get('Number') : ''}人</span>
                     </p>
                     <p className="detailContent">

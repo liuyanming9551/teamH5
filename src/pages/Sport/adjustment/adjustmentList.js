@@ -104,13 +104,13 @@ class AdjustmentList extends React.Component {
                                 <List.Item>
                                     <div className="list-content">
                                         <p>
-                                            <span className="ad-name">{rowData.ActivityName}</span>
-                                            <span className="ad-time">参加人数：{rowData.Number}人</span>
+                                            <span className="act-name">{rowData.ActivityName}</span>
+                                            <span className="act-number">参加人数：{rowData.Number}人</span>
                                         </p>
-                                        <p className="list-discription">
+                                        <p className="act-discription">
                                             {rowData.ActivityRemark}
                                         </p>
-                                        <p>
+                                        <p className="act-date">
                                             {rowData.ActivityDate}
                                         </p>
                                     </div>
@@ -144,6 +144,11 @@ class AdjustmentList extends React.Component {
                         />
                         ) : (
                             <span className="iconfont icon-bianji" onClick={() => operation([
+                                {
+                                    text: '新建', onPress: () => {
+                                        this.props.location.history.push('/sport/createAdjustment')
+                                    }
+                                },
                                 {
                                     text: '筛选', onPress: () => {
                                         this.props.location.history.push('/sport/searchSport')

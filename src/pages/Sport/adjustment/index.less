@@ -1,33 +1,37 @@
+// 额外调整列表
 .list-wrap {
   .my-list {
     overflow: hidden;
-    .ad-name{
-      margin-right: 80px;
-      color: #666666;
-      font-size: 0.3rem;
-      font-weight: 600;
-    }
-    .ad-number,.ad-time{
-      float: right;
-      width: 50%;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      font-size: 0.25rem;
-    }
-    p {
-      font-size: 0.25rem;
-      line-height: 0.3rem;
-    }
     .list-content {
       overflow: hidden;
       float: left;
       width: 70vw;
       padding-right: 0.2rem;
-      .list-discription {
+      p {
+        font-size: 0.25rem;
+        line-height: 0.3rem;
+      }
+      .act-name{
+        margin-right: 80px;
+        font-size: 0.3rem;
+        font-weight: 600;
+      }
+      .act-number{
+        float: right;
+        width: 50%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-size: 0.22rem;
+        color: #666666;
+      }
+      .act-discription {
         width: 70vw;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
+      }
+      .act-date {
+        color: #666666;
       }
     }
     .list-img {
@@ -77,14 +81,11 @@
   }
 }
 
-// 调整详情
+// 额外调整详情
 .adjustDetail {
   .detailTop {
     overflow: hidden;
     padding: 0 0.2rem;
-    background: #efefef;
-    border-bottom: 1px solid #dddddd;
-    border-top: 1px solid #dddddd;
     p {
       margin: 20px;
     }
@@ -98,34 +99,59 @@
     }
     .detailNumber {
       display: flex;
-      justify-content: flex-end;
+      justify-content: space-between;
       span {
-        font-size: 0.25rem;
+        font-size: 0.24rem;
+        color: #666666;
       }
     }
     .detailContent {
-      font-size: 0.3rem;
+      font-size: 0.28rem;
+      line-height: 0.4rem;
     }
   }
   .detailPerson {
     overflow: hidden;
     padding: 15px 30px;
+    border-bottom: 1px solid #dddddd;
+    border-top: 1px solid #dddddd;
     p {
       float: left;
       margin: 10px 15px;
       padding-left: 15px;
       width: 180px;
       height: 50px;
-      border: 1px solid #888888;
+      border: 1px solid #cccccc;
       line-height: 50px;
     }
   }
   .imgViewList {
+    display: flex;
+    justify-content: space-around;
+    padding-top: 10px;
     img {
       object-fit: cover;
-      width: 50%;
-      height: 3rem;
-      margin: 0;
+      width: 30%;
+    }
+    .am-wingblank.am-wingblank-lg {
+      margin-right: 0.2rem;
+    }
+  }
+}
+
+// 额外调整新建
+.create-activity {
+  position: relative;
+  .date-picker-list {
+    background: #ffffff;
+  }
+  .btn-group {
+    .btn-reset {
+      width: 46%;
+      margin-right: 20px;
+    }
+    .btn-confirm {
+      width: 46%;
     }
   }
 }

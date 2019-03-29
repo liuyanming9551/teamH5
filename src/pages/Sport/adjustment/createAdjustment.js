@@ -257,8 +257,8 @@ class CreateAdjustment extends Component {
         const {getFieldProps} = this.props.form;
         const {type, files, selectedArr, activityType} = this.state;
         return (
-            <div style={{position: "relative"}}>
-                <List className="date-picker-list" style={{backgroundColor: 'white'}}>
+            <div className="create-activity">
+                <List className="date-picker-list">
                     <InputItem
                         placeholder="请输入活动名称"
                         clear
@@ -349,9 +349,9 @@ class CreateAdjustment extends Component {
                         />
                     ) : null
                 }
-                <List.Item>
-                    <Button size="small" inline style={{ width:"46%", marginRight: "20px" }} onClick={() => {this.onReset()}}>重置</Button>
-                    <Button type="primary" size="small" inline style={{ width:"46%" }} onClick={() => {this.handleConfirm()}}>确认</Button>
+                <List.Item className="btn-group">
+                    <Button size="small" inline className="btn-reset" onClick={() => {this.onReset()}}>重置</Button>
+                    <Button type="primary" size="small" inline className="btn-confirm" onClick={() => {this.handleConfirm()}}>确认</Button>
                 </List.Item>
             </div>
         );
