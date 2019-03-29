@@ -1,18 +1,20 @@
 import React, {Component} from 'react';
 import {TabBar} from 'antd-mobile';
-export default class Footer extends Component {
+import {withRouter} from "react-router-dom";
+
+class Footer extends Component {
 
     render() {
-        const {children,location} =this.props;
-        console.log(children)
-        const {pathname} = location.location;
+        console.log('渲染')
+        const {children,history,location} =this.props;
+        const {pathname} = location;
         return (
             <div style={{position: 'fixed', height: '100%', width: '100%', top: 0}}>
-
                 <TabBar
                     unselectedTintColor="#949494"
                     tintColor="#33A3F4"
                     barTintColor="white"
+                    prerenderingSiblingsNumber={0}
                 >
                     <TabBar.Item
                         title="首页"
@@ -34,12 +36,13 @@ export default class Footer extends Component {
                         selected={pathname === '/'}
 
                         onPress={() => {
-                            location.history.push('/')
+                            history.push('/')
                         }}
                         data-seed="logId"
                     >
                         {children}
                     </TabBar.Item>
+
                     <TabBar.Item
                         icon={<div className="iconfont icon-yundong-2" style={{
                             width: '22px',
@@ -60,12 +63,13 @@ export default class Footer extends Component {
                         key="Sport"
                         selected={pathname === '/sport'}
                         onPress={() => {
-                            location.history.push('/sport')
+                            history.push('/sport')
                         }}
                         data-seed="logId1"
                     >
                         {children}
                     </TabBar.Item>
+
                     <TabBar.Item
                         icon={
                             <div className="iconfont icon-icon_pk" style={{
@@ -87,11 +91,12 @@ export default class Footer extends Component {
                         key="Pk"
                         selected={pathname === '/pk'}
                         onPress={() => {
-                            location.history.push('/pk')
+                            history.push('/pk')
                         }}
                     >
                         {children}
                     </TabBar.Item>
+
                     <TabBar.Item
                         icon={
                             <div className="iconfont icon-tuanduihezuo" style={{
@@ -113,7 +118,7 @@ export default class Footer extends Component {
                         key="Team"
                         selected={pathname === '/team'}
                         onPress={() => {
-                            location.history.push('/team')
+                            history.push('/team')
                         }}
                     >
                         {children}
@@ -135,7 +140,7 @@ export default class Footer extends Component {
                         key="My"
                         selected={pathname === '/my'}
                         onPress={() => {
-                            location.history.push('/my')
+                            history.push('/my')
                         }}
                     >
                         {children}
@@ -145,3 +150,4 @@ export default class Footer extends Component {
         )
     }
 }
+export default withRouter(Footer)

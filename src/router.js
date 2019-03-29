@@ -9,7 +9,6 @@ import My from './route/my';
 import ChangeDetail from './pages/My/useInfo/changeDetail';
 //PK
 import Pk from './route/pk';
-//import Pk from './pages/Pk/index';
 import Newpersonalpk from "./pages/Pk/Newpersonalpk";
 import Personalselect from "./pages/Pk/Personalselect";
 import PersonalLook from "./pages/Pk/PersonalLook";
@@ -85,7 +84,7 @@ export default class Router extends Component{
                         <Route exact path="/" component={Home} />
                         <Route exact path="/my" component={My} />
                         <Route exact path="/my/changeDetail" component={ChangeDetail} />
-                        <Route exact path="/pk" component={Pk} />
+                        <Route exact path="/pk" component={Pk} />>
                         <Route exact path="/pk/newpersonalpk" component={Newpersonalpk} />
                         <Route exact path="/pk/personalselect" component={Personalselect} />
                         <Route exact path="/pk/personallook" component={PersonalLook} />

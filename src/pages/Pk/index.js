@@ -1,10 +1,9 @@
 import React, {PureComponent} from 'react';
 import * as req from '../../request';
-import {Link} from "react-router-dom";
+import {Link,withRouter} from "react-router-dom";
 import {Modal, List, Badge, ListView, Toast, PullToRefresh} from 'antd-mobile';
 import ReactDOM from "react-dom";
 import {connect} from 'react-redux';
-import { withRouter } from "react-router";
 import './index.less';
 const operation = Modal.operation;
 class PkList extends PureComponent {
@@ -27,13 +26,14 @@ class PkList extends PureComponent {
         };
     }
     componentDidMount() {
-        console.log(this.props)
         const hei = this.state.height - ReactDOM.findDOMNode(this.lv2).offsetTop - 50;
         this.setState({
             height: hei
         })
         this.requestCouponsList();
+
     }
+
     //获取列表
     requestCouponsList() {
         let dataInfo = {
@@ -45,7 +45,6 @@ class PkList extends PureComponent {
         }
         req.post('/api/PK/PersonalPKList', dataInfo).then((res) => {
             let couponList = [...this.state.couponList, ...res.PageList];
-            console.log(couponList)
             this.setState({
                 isShowContent: false,
                 pageNo: this.state.pageNo + 1,
@@ -58,7 +57,6 @@ class PkList extends PureComponent {
                 Toast.hide();
             });
         }).catch((res) => {
-            console.log(res)
 
         })
 
@@ -117,7 +115,6 @@ class PkList extends PureComponent {
 
 
     render() {
-        console.log("渲染")
         const {selectShows} = this.state;
         const row = (rowData, sectionID, rowID) => {
             console.log(rowData)
@@ -188,7 +185,6 @@ class PkList extends PureComponent {
                     style={{
                         height: this.state.height
                     }}
-                    useBodyScroll={false}
                     renderRow={row}
                     initialListSize={13}
                     distanceToRefresh='20'
