@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import {Map} from "immutable";
 import { List, WhiteSpace, TextareaItem,Button,WingBlank ,Toast} from 'antd-mobile';
+import {withRouter} from "react-router-dom";
 import "./index.less"
 import {actionCreators} from "../store";
 class ChangeDetail extends Component {
@@ -105,4 +106,4 @@ const mapDispatch = (dispatch) => ({
         dispatch(actionCreators.cancelDetailState())
     }
 })
-export default connect(mapState,mapDispatch)(ChangeDetail);
+export default connect(mapState,mapDispatch)(withRouter(ChangeDetail));

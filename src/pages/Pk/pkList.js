@@ -1,13 +1,12 @@
-import React, {PureComponent} from 'react';
+import React, {Component} from 'react';
 import * as req from '../../request';
 import {Link} from "react-router-dom";
 import {Modal, List, Badge, ListView, Toast, PullToRefresh} from 'antd-mobile';
 import ReactDOM from "react-dom";
 import {connect} from 'react-redux';
-import { withRouter } from "react-router";
 import './index.less';
 const operation = Modal.operation;
-class PkList extends PureComponent {
+class PkList extends Component {
     constructor(props) {
         super(props);
         const dataSource = new ListView.DataSource({
@@ -26,8 +25,8 @@ class PkList extends PureComponent {
             selectShows:false
         };
     }
+
     componentDidMount() {
-        console.log(this.props)
         const hei = this.state.height - ReactDOM.findDOMNode(this.lv2).offsetTop - 50;
         this.setState({
             height: hei
@@ -121,11 +120,10 @@ class PkList extends PureComponent {
         const {selectShows} = this.state;
         const row = (rowData, sectionID, rowID) => {
             console.log(rowData)
-            let queryInfo = {pkCode:rowData.PKCode,pkAccept:rowData.PKAccept,pkAcceptName:rowData.PKB};
+            let queryInfo = {pkCode:rowData.PKCode,pkAccept:rowData.PKAccept};
             let path = {
                 pathname:'/pk/personallook',
-                query:queryInfo
-
+                query:queryInfo,
             }
             return (
                 <div key={rowID} style={{margin: '10px 0', background: '#fff'}}>
@@ -135,14 +133,14 @@ class PkList extends PureComponent {
                                 <Badge>
                                     <div className='pkListItem'>
                                         <div className='initiate'>
-                                            <div className='initiateName'>{rowData.PKAName}</div>
+                                            <div className='initiateName'>{rowData.PKBName}</div>
                                         </div>
                                         <div className='dateWrap'>
                                             <span className='startDate'>{rowData.StartDate}</span>
                                             <span className='endDate'>{rowData.EndDate}</span>
                                         </div>
                                         <div className='receive'>
-                                            <div className='receiveName'>{rowData.PKBName}</div>
+                                            <div className='receiveName'>{rowData.PKAName}</div>
                                             <div className='receiveState'>{this.getPkAccept(rowData.PKAccept)}</div>
                                         </div>
                                     </div>
@@ -162,7 +160,7 @@ class PkList extends PureComponent {
                     <span className='iconfont icon-bianji' onClick={() => operation([
                         {
                             text: '新建', onPress: () => {
-                                this.props.history.push('/pk/newpersonalpk')
+                                this.props.location.history.push('/pk/newpersonalpk')
                             }
                         },
                         {
@@ -214,4 +212,4 @@ const mapDispatch = (dispatch) => ({
         dispatch()
     }
 })
-export default connect(mapState, mapDispatch)(withRouter(PkList));
+export default connect(mapState, mapDispatch)(PkList);

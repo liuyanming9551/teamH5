@@ -74,7 +74,6 @@ class Sport extends Component {
                                         <Link to='/sport/mySport'>
                                             <div className="sportLinkIcon iconfont icon-yundong3"></div>
                                         </Link>
-
                                         <div className="sportLinksLabel">我的运动</div>
                                     </div>
                                     <div className="sportLinkItem">

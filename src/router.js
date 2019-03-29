@@ -9,6 +9,7 @@ import My from './route/my';
 import ChangeDetail from './pages/My/useInfo/changeDetail';
 //PK
 import Pk from './route/pk';
+//import Pk from './pages/Pk/index';
 import Newpersonalpk from "./pages/Pk/Newpersonalpk";
 import Personalselect from "./pages/Pk/Personalselect";
 import PersonalLook from "./pages/Pk/PersonalLook";

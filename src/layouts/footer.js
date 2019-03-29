@@ -4,6 +4,7 @@ export default class Footer extends Component {
 
     render() {
         const {children,location} =this.props;
+        console.log(children)
         const {pathname} = location.location;
         return (
             <div style={{position: 'fixed', height: '100%', width: '100%', top: 0}}>
@@ -33,7 +34,7 @@ export default class Footer extends Component {
                         selected={pathname === '/'}
 
                         onPress={() => {
-                            this.props.location.history.push('/')
+                            location.history.push('/')
                         }}
                         data-seed="logId"
                     >
@@ -59,7 +60,7 @@ export default class Footer extends Component {
                         key="Sport"
                         selected={pathname === '/sport'}
                         onPress={() => {
-                            this.props.location.history.push('/sport')
+                            location.history.push('/sport')
                         }}
                         data-seed="logId1"
                     >
@@ -86,7 +87,7 @@ export default class Footer extends Component {
                         key="Pk"
                         selected={pathname === '/pk'}
                         onPress={() => {
-                            this.props.location.history.push('/pk')
+                            location.history.push('/pk')
                         }}
                     >
                         {children}
@@ -112,7 +113,7 @@ export default class Footer extends Component {
                         key="Team"
                         selected={pathname === '/team'}
                         onPress={() => {
-                            this.props.location.history.push('/team')
+                            location.history.push('/team')
                         }}
                     >
                         {children}
@@ -134,7 +135,7 @@ export default class Footer extends Component {
                         key="My"
                         selected={pathname === '/my'}
                         onPress={() => {
-                            this.props.location.history.push('/my')
+                            location.history.push('/my')
                         }}
                     >
                         {children}

@@ -16,17 +16,17 @@ class PersonalLook extends React.Component {
         }
     }
     componentDidMount() {
-        const {pkCode,pkAccept} = this.props.location.query;
-        const { changePkDetail,changePkState } =this.props;
+        const {pkCode,pkAccept,pkAcceptName} = this.props.location.query;
+        const { changePkDetail,changePkState,userCode } =this.props;
         console.log(pkAccept)
         const parmas = {
             PKCode:pkCode,
             PKAccept:1
         }
-        if(pkAccept === 0){
+        console.log(pkAcceptName,userCode)
+        if(pkAccept === 0 && pkAcceptName === userCode){
             changePkState(parmas)
         }
-
         changePkDetail(pkCode)
     }
 
@@ -122,7 +122,6 @@ class PersonalLook extends React.Component {
                         </div>
                     )
                 }
-
             }
         }
         return(
@@ -192,7 +191,6 @@ class PersonalLook extends React.Component {
                     <Item extra={pkDetailData?this.getPkState(pkDetailData.get('PKAccept')):''}>状态</Item>
                 </List>
                 {this.getDetailArea()}
-
             </div>
         )
     }
@@ -200,7 +198,8 @@ class PersonalLook extends React.Component {
 const mapState = (state) =>({
     pkDetail:state.getIn(['pk','pkDetail']),
     userCode:state.getIn(['login','userCode']),
-    acceptPk:state.getIn(['pk','acceptPk'])
+    acceptPk:state.getIn(['pk','acceptPk']),
+    rejectPk:state.getIn(['pk','rejectPk'])
 })
 const mapDispatch = (dispatch) =>({
     changePkDetail(pkCode){

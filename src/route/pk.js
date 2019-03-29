@@ -1,12 +1,12 @@
 import React,{Component} from 'react';
-import Main from './../layouts/main';
-import PkContent from './../pages/Pk/index';
+import Main from '../layouts/main';
+import PkContent from '../pages/Pk/loadable';
 export default class Pk extends Component{
     render(){
-        let propsData = this.props;
+        let location = this.props;
         return(
-            <Main location = {propsData}>
-                <PkContent location = {propsData} />
+            <Main location = {location}>
+                <PkContent />
             </Main>
         )
     }

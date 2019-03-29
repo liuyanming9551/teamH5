@@ -83,7 +83,8 @@ export const getPkDate = (pkState) => {
             if(res.code === 1001){
                 if(res.state === 2){
                     dispatch(changePkState())
-                }else {
+                }
+                if(res.state === 3) {
                     dispatch(rejectPkState())
                 }
             }

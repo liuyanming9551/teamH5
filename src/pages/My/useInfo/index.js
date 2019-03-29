@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { List, Card, WingBlank, WhiteSpace, Button, Carousel,Tag } from 'antd-mobile';
 import {Map} from "immutable";
 import {connect} from 'react-redux';
+import {withRouter} from "react-router-dom";
 import "./index.less";
 import {actionCreators} from "../store";
 const Item = List.Item;
@@ -17,8 +18,8 @@ class UserInfo extends Component {
 
     }
     changeDetailInfo = () =>{
-        const {location} = this.props;
-        location.history.push('/my/changeDetail');
+        const {history} = this.props;
+        history.push('/my/changeDetail');
     }
     render() {
         const {userInformation,userModel,cardInfo} = this.props;
@@ -196,4 +197,4 @@ const mapDispatch = (dispatch) => ({
         dispatch(actionCreators.getMysportInfo(sportParam));
     }
 })
-export default connect(mapState,mapDispatch)(UserInfo);
+export default connect(mapState,mapDispatch)(withRouter(UserInfo));

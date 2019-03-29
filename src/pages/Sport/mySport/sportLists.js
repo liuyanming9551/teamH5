@@ -15,7 +15,7 @@ class SportList extends Component {
         this.state = {
             couponList: [],
             pageNo: 1,
-            pageSize: 13, // 分页size
+            pageSize: 20, // 分页size
             totalPage: 0, // 总页数初始化
             isShowContent: false, // 控制页面再数据请求后显示
             refreshing: true, // 是否显示刷新状态
@@ -117,7 +117,9 @@ class SportList extends Component {
         }
     }
     render() {
+        console.log("渲染")
         const row = (rowData, sectionID, rowID) => {
+            console.log(rowData)
             return (
                 <div key={rowID} style={{margin: '10px 0', background: '#fff'}}>
                     <List className="my-list" style={{textAlign: 'center'}}>
