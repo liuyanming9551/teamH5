@@ -132,7 +132,13 @@ class CreateAdjustment extends Component {
                                 formData.append(`${index}`, element);
                             });
                             Toast.loading('上传中',1,null,true);
-                            addActivity(formData);
+                            addActivity(formData, (result) => {
+                                if (result.IsSuccess) {
+                                    Toast.success('上传成功!', 1);
+                                } else {
+                                    Toast.fail('上传失败!', 1);
+                                }
+                            });
                         }
                     })
                 }
@@ -146,7 +152,13 @@ class CreateAdjustment extends Component {
                         Toast.info('请选择图片', 1);
                     }
                 } else {
-                    addActivity(formData);
+                    addActivity(formData, (result) => {
+                        if (result.IsSuccess) {
+                            Toast.success('上传成功!', 1);
+                        } else {
+                            Toast.fail('上传失败!', 1);
+                        }
+                    });
                 }
             }
             
@@ -349,10 +361,15 @@ class CreateAdjustment extends Component {
                         />
                     ) : null
                 }
-                <List.Item className="btn-group">
-                    <Button size="small" inline className="btn-reset" onClick={() => {this.onReset()}}>重置</Button>
+                <WhiteSpace size='lg'/>
+                <WingBlank size='lg' style={{overflow: "hidden"}}>
+                    <Button type="ghost" size="small" inline style={{float: "left", width: "40%"}} onClick={this.onReset}>重置</Button>
+                    <Button type="primary" size="small" inline style={{float: "right", width: "40%"}} onClick={this.handleConfirm}>确认</Button>
+                </WingBlank>
+                {/* <List.Item className="btn-group">
+                    <Button type="ghost" size="small" inline className="btn-reset" onClick={() => {this.onReset()}}>重置</Button>
                     <Button type="primary" size="small" inline className="btn-confirm" onClick={() => {this.handleConfirm()}}>确认</Button>
-                </List.Item>
+                </List.Item> */}
             </div>
         );
     }
@@ -373,8 +390,8 @@ const mapDispatch = (dispatch) => ({
     getActivityType() {
         dispatch(actionCreators.getActivityType())
     },
-    addActivity(activityData) {
-        dispatch(actionCreators.addActivity(activityData))
+    addActivity(activityData, callback) {
+        dispatch(actionCreators.addActivity(activityData, callback))
     },
     cancelUploadActivity(){
         dispatch(actionCreators.cancelUploadActivity())

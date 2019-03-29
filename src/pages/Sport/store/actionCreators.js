@@ -1,30 +1,29 @@
 import axios from 'axios';
 import * as req from '../../../request'
 import * as constants from './constants';
+
 /**
  * @Description: 用户上传运动数据接口
  * @author YanMing Liu
  * @date 2019/3/13
 */
-const changeUploadState = () => ({
-    type:constants.CHANGE_UPLOAD_STATE
-})
-export const addSport = (sportData) =>{
-    return (dispatch) =>{
-        axios.post('/api/RunData/AddRunDataRunDataImg',sportData)
+
+export function addSport(sportData, callback) {
+    return (dispatch) => {
+        axios.post('/api/RunData/AddRunDataRunDataImg', sportData)
         .then((res) => {
             const result = res.data;
-            if(result.IsSuccess){
-                dispatch(changeUploadState())
-            }
+          if(result.IsSuccess){
+            dispatch({
+              type: constants.CHANGE_UPLOAD_STATE,
+            });
+          }
+          callback && callback(result)
         })
         .catch((res) => {
-
         })
     }
-}
-
-
+  }
 
 /**
  * @Description: 用户查看运动详情
@@ -180,23 +179,40 @@ export const getActivityType = () =>{
  * @author maxiaomin
  * @date 2019/3/27
 */
-const changeUploadActivity = () => ({
-    type:constants.CHANGE_UPLOAD_ACTIVITY
-})
-export const addActivity = (activityData) =>{
-    return (dispatch) =>{
-        axios.post('/api/AdjustedData/AddActivity',activityData)
+// const changeUploadActivity = () => ({
+//     type:constants.CHANGE_UPLOAD_ACTIVITY
+// })
+// export const addActivity = (activityData, callback) =>{
+//     return (dispatch) =>{
+//         axios.post('/api/AdjustedData/AddActivity',activityData)
+//         .then((res) => {
+//             const result = res.data;
+//             if(result.IsSuccess){
+//                 dispatch(changeUploadActivity())
+//             }
+//         })
+//         .catch((res) => {
+
+//         })
+//     }
+// }
+
+export function addActivity(activityData, callback) {
+    return (dispatch) => {
+        axios.post('/api/AdjustedData/AddActivity', activityData)
         .then((res) => {
             const result = res.data;
-            if(result.IsSuccess){
-                dispatch(changeUploadActivity())
-            }
+          if(result.IsSuccess){
+            dispatch({
+              type: constants.CHANGE_UPLOAD_ACTIVITY
+            });
+          }
+          callback && callback(result)
         })
         .catch((res) => {
-
         })
     }
-}
+  }
 
 /**
  * @Description: 额外运动详情接口

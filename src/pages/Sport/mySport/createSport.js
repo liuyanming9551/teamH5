@@ -53,21 +53,18 @@ class CreateSport extends Component {
         RunTimeLong = Number(RunTimeLong).toFixed(2);
         RunDistance = Number(RunDistance).toFixed(2)
         this.props.form.validateFields((err, values) => {
-            console.log(Number(RunTimeLong),Number(RunDistance))
+            // console.log(Number(RunTimeLong),Number(RunDistance))
             if (!RunTimeLong) {
-
                 Toast.info('请输入跑步时间', 1);
-
             }
             else if(Number(RunTimeLong) == 0){
-                Toast.info('跑步时间不能为0', 1);
+                Toast.info('请输入跑步时间', 1);
             }
             else if (!RunDistance) {
-                Toast.info('请输入公里数', 1);
-
+                Toast.info('请输入跑步距离', 1);
             }
             else if(Number(RunDistance) == 0){
-                Toast.info('公里数不能为0', 1);
+                Toast.info('请输入跑步距离', 1);
             } else {
                 let formData = new FormData();
                 let list = [];
@@ -89,7 +86,13 @@ class CreateSport extends Component {
                                 formData.append(`${index}`, element);
                             });
                             Toast.loading('上传中',1,null,true);
-                            changeSport(formData);
+                            changeSport(formData, (result) => {
+                                if (result.IsSuccess) {
+                                    Toast.success('上传成功!', 1);
+                                } else {
+                                    Toast.fail('上传失败!', 1);
+                                }
+                            });
                         }
                     })
                 }
@@ -99,7 +102,7 @@ class CreateSport extends Component {
                     })
                     a(files[0].file);
                 } else {
-                    changeSport(formData);
+                    Toast.info('请选择图片', 1);
                 }
             }
             
@@ -126,22 +129,36 @@ class CreateSport extends Component {
         })
     }
     onBlurTime = (val) => {
-        if (val) {
+        if (!val) {
+            // Toast.info('请输入跑步时间', 1);
+            return;
+        } else if (val == 0) {
+            Toast.info('跑步时间不能为零', 1);
+            this.setState({
+                RunTimeLong: ''
+            })
+        } else {
             this.setState({
                 RunTimeLong: Number(val).toFixed(2)
             })
         }
     }
     onBlurDistance = (val) => {
-        if (val) {
+        if (!val) {
+            // Toast.info('请输入跑步距离', 1);
+            return;
+        } else if (val == 0) {
+            Toast.info('跑步距离不能为零', 1);
+            this.setState({
+                RunDistance: ''
+            })
+        } else {
             this.setState({
                 RunDistance: Number(val).toFixed(2)
             })
-        }
+        }            
     }
     handleTimeChange = (value) => {
-        console.log("value", value)
-        console.log("type",typeof(value))
         if (value >= 1000) {
             value = 999
         } else {
@@ -231,8 +248,8 @@ const mapState = (state) => ({
     sportUpload:state.getIn(['sport','sportUpload'])
 })
 const mapDispatch = (dispatch) => ({
-    changeSport(sportData){
-        dispatch(actionCreators.addSport(sportData))
+    changeSport(sportData, callback){
+        dispatch(actionCreators.addSport(sportData, callback))
     },
     cancelUploadState(){
         dispatch(actionCreators.cancelUploadState())
