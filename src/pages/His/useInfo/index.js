@@ -77,6 +77,23 @@ class UserInfo extends Component {
                         </Card>
                         <WhiteSpace size="sm" />
                     </WingBlank>
+                    {/*<WingBlank size="md">*/}
+                        {/*<Card>*/}
+                            {/*<Card.Body>*/}
+                                {/*<div className='cardTitle'>*/}
+                                    {/*他人评价*/}
+                                {/*</div>*/}
+                                {/*<div className='evaluateBox'>*/}
+                                    {/*<span className='skill'>美丽（1）</span>*/}
+                                    {/*<span className='skill'>大方</span>*/}
+                                    {/*<span className='skill'>迷人</span>*/}
+                                    {/*<span className='skill'>with icon and inline</span>*/}
+                                    {/*<span className='skill'>完了,这个人废了（99999）</span>*/}
+                                {/*</div>*/}
+                            {/*</Card.Body>*/}
+                        {/*</Card>*/}
+                        {/*<WhiteSpace size="sm" />*/}
+                    {/*</WingBlank>*/}
                     <WingBlank size="md">
                         <Card>
                             <Card.Body>

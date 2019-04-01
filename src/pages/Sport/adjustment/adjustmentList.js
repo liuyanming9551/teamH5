@@ -123,7 +123,7 @@ class AdjustmentList extends React.Component {
             );
         } ;
         return (
-            <div>
+            <div className="adjustment-list">
                 <div className="activeBtn">
                     {
                         rightControl ? (
@@ -142,6 +142,11 @@ class AdjustmentList extends React.Component {
                         />
                         ) : (
                             <span className="iconfont icon-bianji" onClick={() => operation([
+                                {
+                                    text: '新建', onPress: () => {
+                                        this.props.location.history.push('/sport/createAdjustment')
+                                    }
+                                },
                                 {
                                     text: '筛选', onPress: () => {
                                         this.props.location.history.push('/sport/searchSport')
@@ -177,6 +182,7 @@ class AdjustmentList extends React.Component {
                     </List>
                 </div> */}
                 <ListView
+                    className="list-view"
                     key={1}
                     ref={el => this.lv = el}
                     dataSource={this.state.dataSource}
