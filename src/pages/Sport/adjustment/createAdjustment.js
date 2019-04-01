@@ -366,6 +366,7 @@ class CreateAdjustment extends Component {
                     <button type="ghost" size="small" inline style={{float: "left", width: "48%", height: "30px", border: "1px solid #108ee9", background: "none", borderRadius: "0.1rem", color: "#108ee9"}} onClick={this.onReset}>重置</button>
                     <Button type="primary" size="small" inline style={{float: "right", width: "48%"}} onClick={this.handleConfirm}>确认</Button>
                 </WingBlank>
+                <WhiteSpace size='lg'/>
             </div>
         );
     }

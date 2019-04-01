@@ -143,11 +143,6 @@ class AdjustmentList extends React.Component {
                         ) : (
                             <span className="iconfont icon-bianji" onClick={() => operation([
                                 {
-                                    text: '新建', onPress: () => {
-                                        this.props.location.history.push('/sport/createAdjustment')
-                                    }
-                                },
-                                {
                                     text: '筛选', onPress: () => {
                                         this.props.location.history.push('/sport/searchSport')
                                     }
