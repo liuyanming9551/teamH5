@@ -64,7 +64,7 @@ class AddUserInfo extends PureComponent{
         if (loginSuccess) {
             Toast.success('登录成功！', 1);
             setTimeout(function () {
-                history.push('/')
+                history.replace('/')
             },1000)
 
         }

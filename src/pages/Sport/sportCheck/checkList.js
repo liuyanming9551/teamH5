@@ -18,12 +18,13 @@ class SportCheck extends Component {
         let checkListData = '';
         if(sportCheckList){
             checkListData = sportCheckList.toJS();
+            console.log(checkListData)
         }
         return (
             <div>
                 <List className="my-list" style={{textAlign: 'center'}}>
                     {
-                        checkListData?checkListData.map((item,index) =>{
+                        checkListData.length?checkListData.map((item,index) =>{
                             return(
                                 <div className='checkListWrap' key={index}>
                                     <Link to={`/sport/checkDetail/${item.DataCode}`}>
@@ -48,7 +49,9 @@ class SportCheck extends Component {
                                     </Link>
                                 </div>
                             )
-                        }):''
+                        }):<div className='noData'>暂无数据...</div>
+
+
                     }
                 </List>
             </div>

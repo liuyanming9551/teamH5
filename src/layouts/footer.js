@@ -5,7 +5,6 @@ import {withRouter} from "react-router-dom";
 class Footer extends Component {
 
     render() {
-        console.log('渲染')
         const {children,history,location} =this.props;
         const {pathname} = location;
         return (

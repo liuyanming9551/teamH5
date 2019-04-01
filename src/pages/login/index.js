@@ -15,7 +15,7 @@ class Login extends PureComponent{
     }
     componentDidUpdate(prevProps, prevState, snapshot) {
         const {stateCode,history} = this.props;
-        console.log("stateCode===========>",stateCode)
+        console.log(history)
         if(stateCode){
             this.isLogin(stateCode,history)
         }
@@ -24,9 +24,9 @@ class Login extends PureComponent{
     isLogin(stateCode,history){
        switch (stateCode) {
            case 1001:
-               return history.push('/')
+               return history.replace('/')
            case 1004:
-               return history.push('/addUserInfo')
+               return history.replace('/addUserInfo')
            default:
                console.log("异常！！！！")
        }
