@@ -156,6 +156,7 @@ class SportList extends Component {
                     />
                 </div>
                 <ListView
+                    className="list-view"
                     key={1}
                     ref={el => this.lv = el}
                     dataSource={this.state.dataSource}
