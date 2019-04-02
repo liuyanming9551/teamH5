@@ -2961,6 +2961,11 @@ css-what@2.1, css-what@^2.1.2:
   resolved "https://registry.yarnpkg.com/css-what/-/css-what-2.1.2.tgz#c0876d9d0480927d7d4920dcd72af3595649554d"
   integrity sha512-wan8dMWQ0GUeF7DGEPVjhHemVW/vy6xUYmFzRY8RYqgA0JtXC9rJmbScBjqSu6dg9q0lwPQy6ZAmJVr3PPTvqQ==
 
+css3transform@^1.1.9:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/css3transform/-/css3transform-1.2.1.tgz#4585f6f2e06f0ec271242277c7d81e4395e021c4"
+  integrity sha512-wWfg+xBV3RfCFz+Io8XQcrTOctgMFT+zxJDLreDslEO1cpkwqH1ip7Ai+vbhpJ4utU1ll7GuLa4YD7Qbn3qI8A==
+
 cssdb@^4.3.0:
   version "4.3.0"
   resolved "https://registry.yarnpkg.com/cssdb/-/cssdb-4.3.0.tgz#2e1229900616f80c66ff2d568ea2b4f92db1c78c"
@@ -6488,6 +6493,11 @@ lodash.templatesettings@^4.0.0:
   dependencies:
     lodash._reinterpolate "~3.0.0"
 
+lodash.throttle@^4.1.1:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/lodash.throttle/-/lodash.throttle-4.1.1.tgz#c23e91b710242ac70c37f1e1cda9274cc39bf2f4"
+  integrity sha1-wj6RtxAkKscMN/HhzaknTMOb8vQ=
+
 lodash.uniq@^4.5.0:
   version "4.5.0"
   resolved "https://registry.yarnpkg.com/lodash.uniq/-/lodash.uniq-4.5.0.tgz#d0225373aeb652adc1bc82e4945339a842754773"
@@ -8784,6 +8794,15 @@ react-error-overlay@^5.1.4:
   version "5.1.4"
   resolved "https://registry.yarnpkg.com/react-error-overlay/-/react-error-overlay-5.1.4.tgz#88dfb88857c18ceb3b9f95076f850d7121776991"
   integrity sha512-fp+U98OMZcnduQ+NSEiQa4s/XMsbp+5KlydmkbESOw4P69iWZ68ZMFM5a2BuE0FgqPBKApJyRuYHR95jM8lAmg==
+
+react-imageslides@^1.2.6:
+  version "1.2.6"
+  resolved "https://registry.yarnpkg.com/react-imageslides/-/react-imageslides-1.2.6.tgz#f4bc88e8b75c17c356fa1e85b05f5a5cefca50e3"
+  integrity sha512-TMngIWXxtoB6rtqlEi3seZVJauzISf+Fzb9N7BMYYcMrHmKG7u9Us03vK4elXIGHkmGIG6PysEvAtWO1/W2SnQ==
+  dependencies:
+    classnames "^2.2.6"
+    css3transform "^1.1.9"
+    lodash.throttle "^4.1.1"
 
 react-is@^16.7.0, react-is@^16.8.2:
   version "16.8.3"

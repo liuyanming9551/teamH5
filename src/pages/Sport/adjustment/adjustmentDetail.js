@@ -1,12 +1,17 @@
 import React,{Component} from 'react';
-import { List,WhiteSpace,WingBlank } from 'antd-mobile';
+import { WingBlank } from 'antd-mobile';
 import {connect} from 'react-redux';
 import {actionCreators} from './../store';
 import {Map} from 'immutable';
 import {baseUrl} from './../../../request';
-import Zmage from 'react-zmage';
-const Item = List.Item;
+import ImageSlides from 'react-imageslides';
 class adjustmentDetail extends Component{
+    constructor(props){
+        super(props)
+        this.state = {
+            isOpen: false
+        }
+    }
      componentDidMount(){
          const dataCode = this.props.match.params.code;
          this.props.getActivityDetail(dataCode);
@@ -25,13 +30,27 @@ class adjustmentDetail extends Component{
                  return "出错了"
          }
      }
+    handleOpen = () => {
+        this.setState({
+            isOpen: true,
+        });
+    };
+    handleClose = () => {
+        this.setState({
+            isOpen: false,
+        });
+    };
     render(){
         const {activityDetailData} = this.props;
-        let detailData = ''
-        let imgList = ''
+        let detailData = '';
+        let imgList = '';
+        let newImgList = [];
         if(activityDetailData){
             detailData  = Map(activityDetailData);
-            imgList = detailData.get('ActivityImgList').toJS();
+            imgList = detailData.get('ActivityImgArray').toJS();
+            imgList.forEach((item) => {
+                newImgList.push(`${baseUrl}/${item}`)
+            })
         }
         console.log("detailData", detailData)
         return (
@@ -62,22 +81,18 @@ class adjustmentDetail extends Component{
                 </div>
                 <div className="imgViewList">
                     <WingBlank>
+                        <ImageSlides images={newImgList?newImgList:''} isOpen={this.state.isOpen} onClose={this.handleClose} />
                         {
-                            imgList ? imgList.map(function (item,index) {
+
+                            newImgList?newImgList.map((item) =>{
                                 return (
-                                    <Zmage key={item.ImgUrl}
-                                        src={`${baseUrl}/${item.ImgUrl}`}
-                                        controller={{
-                                            // 关闭按钮
-                                            close: true,
-                                            // 缩放按钮
-                                            zoom: true
-                                        }}
+                                    <img key={item}
+                                         src={item}
+                                         onClick={this.handleOpen}
                                     />
                                 )
                             }):''
                         }
-
                     </WingBlank>
                 </div>
             </div>
@@ -92,5 +107,4 @@ const mapDispatchToProps = (dispatch) => ({
         dispatch(actionCreators.getActivityDetail(detailData))
     }
 })
-
 export default connect(mapStateToProps,mapDispatchToProps)(adjustmentDetail);

@@ -1,13 +1,18 @@
 import React,{Component} from 'react';
-import {Checkbox, List, WhiteSpace, WingBlank, Button, Toast} from 'antd-mobile';
+import {List, WhiteSpace, WingBlank, Button, Toast} from 'antd-mobile';
 import {connect} from 'react-redux';
 import {baseUrl} from './../../../request';
-import Zmage from 'react-zmage';
 import {actionCreators} from "../store";
 import {Map} from "immutable";
+import ImageSlides from 'react-imageslides';
 const Item = List.Item;
-const AgreeItem = Checkbox.AgreeItem;
 class CheckDetail extends Component{
+    constructor(props){
+        super(props)
+        this.state = {
+            isOpen: false
+        }
+    }
     componentDidMount() {
         const dataCode = this.props.match.params.code;
         const {getCheckDetail} = this.props;
@@ -32,15 +37,28 @@ class CheckDetail extends Component{
             },true)
         }
     }
-
+    handleOpen = () => {
+        this.setState({
+            isOpen: true,
+        });
+    };
+    handleClose = () => {
+        this.setState({
+            isOpen: false,
+        });
+    };
 
     render(){
         const {sportDetailData} = this.props;
-        let detailData = ''
-        let imgList = ''
+        let detailData = '';
+        let imgList = '';
+        let newImgList = [];
         if(sportDetailData){
             detailData  = Map(sportDetailData);
-            imgList = detailData.get('RunDataImgList').toJS();
+            imgList = detailData.get('RunDataImgArray').toJS();
+            imgList.forEach((item) => {
+                newImgList.push(`${baseUrl}/${item}`)
+            })
         }
         return (
             <div>
@@ -55,14 +73,18 @@ class CheckDetail extends Component{
                 <WhiteSpace size='lg' />
                 <div className="imgViewList">
                     <WingBlank>
+                        <ImageSlides images={newImgList?newImgList:''} isOpen={this.state.isOpen} onClose={this.handleClose} />
                         {
-                            imgList?imgList.map(function (item,index) {
+
+                            newImgList?newImgList.map((item) =>{
                                 return (
-                                    <Zmage key={item.ImgUrl} src={`${baseUrl}/${item.ImgUrl}`} />
+                                    <img key={item}
+                                         src={item}
+                                         onClick={this.handleOpen}
+                                    />
                                 )
                             }):''
                         }
-
                     </WingBlank>
                 </div>
                 <div className='activeWrap'>

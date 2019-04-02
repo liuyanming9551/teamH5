@@ -4,13 +4,20 @@ import {connect} from 'react-redux';
 import {actionCreators} from './../store';
 import {Map} from 'immutable';
 import {baseUrl} from './../../../request';
-import Zmage from 'react-zmage';
+import ImageSlides from 'react-imageslides';
 const Item = List.Item;
- class ViewMySport extends Component{
+class ViewMySport extends Component{
+     constructor(props){
+         super(props)
+         this.state = {
+             isOpen: false
+         }
+     }
      componentDidMount(){
          const dataCode = this.props.match.params.code;
          const {changeSportList} = this.props;
          changeSportList(dataCode)
+
      }
      getCheckState(auditStatus) {
          switch (auditStatus) {
@@ -26,13 +33,28 @@ const Item = List.Item;
                  return "出错了"
          }
      }
+    handleOpen = () => {
+        this.setState({
+            isOpen: true,
+        });
+    };
+    handleClose = () => {
+        this.setState({
+            isOpen: false,
+        });
+    };
     render(){
          const {sportDetailData} = this.props;
          let detailData = ''
          let imgList = ''
+         let newImgList = []
          if(sportDetailData){
              detailData  = Map(sportDetailData);
-             imgList = detailData.get('RunDataImgList').toJS();
+             imgList = detailData.get('RunDataImgArray').toJS();
+             imgList.forEach((item) => {
+                 newImgList.push(`${baseUrl}/${item}`)
+             })
+
          }
         return (
             <div>
@@ -47,22 +69,18 @@ const Item = List.Item;
                 <WhiteSpace size='sm' />
                 <div className="imgViewList">
                     <WingBlank>
+                        <ImageSlides images={newImgList?newImgList:''} isOpen={this.state.isOpen} onClose={this.handleClose} />
                         {
-                            imgList?imgList.map(function (item,index) {
+
+                            newImgList?newImgList.map((item) =>{
                                 return (
-                                    <Zmage key={item.ImgUrl}
-                                           src={`${baseUrl}/${item.ImgUrl}`}
-                                           controller={{
-                                               // 关闭按钮
-                                               close: true,
-                                               // 缩放按钮
-                                               zoom: true
-                                           }}
+                                    <img key={item}
+                                         src={item}
+                                         onClick={this.handleOpen}
                                     />
                                 )
                             }):''
                         }
-
                     </WingBlank>
                 </div>
             </div>
