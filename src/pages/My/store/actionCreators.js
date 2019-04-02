@@ -62,3 +62,41 @@ export const getMysportInfo = (userCode) =>{
         })
     }
 }
+
+// 获取我的荣誉列表
+// const getMyHonor = (res) => ({
+//     type: constants.GET_MY_HONOR,
+//     myHonor: res,
+// })
+
+// export const getMyHonorList = (userCode) =>{
+//     return (dispatch) => {
+//         req.post("/api/User/HonorBadge",userCode)
+//             .then((res) => {
+
+//                 dispatch(getMyHonor(res))
+//             })
+//             .catch((res) => {
+//                 console.log(res)
+//             })
+//     }
+// }
+
+// 获取我的荣誉列表
+export function getMyHonorList (userCode) {
+    return (dispatch) => {
+        req.post("/api/User/HonorBadge",userCode)
+        .then((res) => {
+            const result = res.data;
+            if(result.IsSuccess){
+                dispatch({
+                  type: constants.GET_MY_HONOR,
+                  myHonor: res
+                });
+              }
+        })
+        .catch((res) => {
+
+        })
+    }
+}

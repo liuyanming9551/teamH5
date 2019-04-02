@@ -131,7 +131,7 @@ class CreateAdjustment extends Component {
                             list.forEach((element,index) => {
                                 formData.append(`${index}`, element);
                             });
-                            Toast.loading('上传中',1,null,true);
+                            Toast.loading('上传中',3,null,true);
                             addActivity(formData, (result) => {
                                 if (result.IsSuccess) {
                                     Toast.success('上传成功!', 1);
@@ -144,7 +144,7 @@ class CreateAdjustment extends Component {
                 }
                 if (activityType[0] == "998dc186-d237-431e-a6d5-4f7249d65356") {
                     if (files.length) {
-                        Toast.loading('上传中', 1, () => {
+                        Toast.loading('上传中', 3, () => {
                             console.log('Load complete !!!');
                         })
                         a(files[0].file);

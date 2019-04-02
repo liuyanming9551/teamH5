@@ -4,7 +4,8 @@ const defaultState = fromJS({
     userInformation:"",
     isChangeSuccess:false,
     weekRank:'',
-    cardInfo:''
+    cardInfo:'',
+    myHonor: ''
 });
 const changeUserInfo = (state,action) => {
     return state.merge({
@@ -25,6 +26,13 @@ const changeCardInfo = (state,action) =>{
         cardInfo:fromJS(action.cardInfo)
     })
 }
+
+const changeMyHonor = (state,action) =>{
+    return state.merge({
+        myHonor:fromJS(action.myHonor)
+    })
+}
+
 export default (state = defaultState, action) => {
     switch(action.type) {
         case constants.GET_USER_INFORMATION:
@@ -35,6 +43,8 @@ export default (state = defaultState, action) => {
             return cancelDetailState(state);
         case constants.CHANGE_MY_SPORT_INFO:
             return changeCardInfo(state,action);
+            case constants.GET_MY_HONOR:
+            return changeMyHonor(state,action);
         default:
             return state;
     }

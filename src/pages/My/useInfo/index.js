@@ -5,6 +5,7 @@ import {connect} from 'react-redux';
 import {withRouter} from "react-router-dom";
 import "./index.less";
 import {actionCreators} from "../store";
+import {baseUrl} from "../../../request";
 const Item = List.Item;
 class UserInfo extends Component {
     state = {
@@ -22,7 +23,8 @@ class UserInfo extends Component {
         history.push('/my/changeDetail');
     }
     render() {
-        const {userInformation,userModel,cardInfo} = this.props;
+        const {userInformation,userModel,cardInfo, myHonor} = this.props;
+        console.log("myHonor", myHonor)
         let map = Map(userModel);
         let userInformationData = '';
         let userSkills = [];
@@ -160,20 +162,19 @@ class UserInfo extends Component {
                         </Card>
                         <WhiteSpace size="sm" />
                     </WingBlank>
-                    {/*<WingBlank size="md">*/}
-                        {/*<Card>*/}
-                            {/*<Card.Body>*/}
-                                {/*<div className='cardTitle'>*/}
-                                    {/*我的荣誉*/}
-                                {/*</div>*/}
-                                {/*<div className='evaluateBox'>*/}
-                                    {/*<img src=""/>*/}
-                                {/*</div>*/}
-                            {/*</Card.Body>*/}
-
-                        {/*</Card>*/}
-                        {/*<WhiteSpace size="sm" />*/}
-                    {/*</WingBlank>*/}
+                    <WingBlank size="md">
+                        <Card>
+                            <Card.Body>
+                                <div className='cardTitle'>
+                                    我的荣誉
+                                </div>
+                                <div className='evaluateBox'>
+                                    <img src={`${baseUrl}/termImg/honorGrade/grade01.jpg`}/>
+                                </div>
+                            </Card.Body>
+                        </Card>
+                        <WhiteSpace size="sm" />
+                    </WingBlank>
                 </footer>
             </div>
         )
@@ -183,7 +184,8 @@ const mapState = (state) => ({
     userCode:state.getIn(['login','userCode']),
     userInformation:state.getIn(['my','userInformation']),
     userModel:state.getIn(['login','userModel']),
-    cardInfo:state.getIn(['my','cardInfo'])
+    cardInfo:state.getIn(['my','cardInfo']),
+    myHonor:state.getIn(['my','myHonor'])
 })
 const mapDispatch = (dispatch) => ({
     getUserInfo(userCode){
@@ -195,6 +197,7 @@ const mapDispatch = (dispatch) => ({
         }
         dispatch(actionCreators.getUserInformation(param));
         dispatch(actionCreators.getMysportInfo(sportParam));
+        dispatch(actionCreators.getMyHonorList(param));
     }
 })
 export default connect(mapState,mapDispatch)(withRouter(UserInfo));
