@@ -18,7 +18,63 @@
             font-weight: 600;
         }
     }
-
+    .my-list {
+        overflow: hidden;
+        margin: 0 16px;
+        .am-list-header {
+            padding: 10px 0 10px;;
+            font-weight: 600;
+            font-size: 30px;
+            color: #333333;
+        }
+        .list-wrap {
+            padding: 10px 0;
+            padding-right: 25px;
+            overflow: hidden;
+            background: #ffffff;
+            p {
+                float: left;
+                margin: 10px 0;
+            }
+            .list-order {
+                margin: 0 10px;
+                width: 50px;
+                color: #666666;
+                text-align: center;
+                line-height: 100px;
+            }
+            .list-photo {
+                width: 80px;
+                height: 80px;
+                overflow: hidden;
+                img {
+                    width: 100%;
+                    object-fit: cover;
+                }
+            }
+            .list-info {
+                padding-left: 20px;
+                line-height: 40px;
+                .list-name {
+                    color: #333333;
+                }
+                .list-score {
+                    color: #666666;
+                    font-size: 24px;
+                }
+            }
+            .list-honor {
+                float: right;
+                width: 80px;
+                height: 80px;
+                overflow: hidden;
+                img {
+                    width: 100%;
+                    object-fit: cover;
+                }
+            }
+        }
+    }
 }
 .btnStyle{
     border-radius: 10px;

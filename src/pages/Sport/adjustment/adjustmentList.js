@@ -92,7 +92,7 @@ class AdjustmentList extends React.Component {
         });
     };
     render() {
-        const {rightControl} = this.props.rightControl;
+        const {rightControl} = this.props;
         const row =  (rowData, sectionID, rowID) => {
             return (
                 <div className="list-wrap" key={rowID}>

@@ -173,7 +173,7 @@ const mapDispatch = (dispatch) => ({
             Creator:userCode
         }
         dispatch(actionCreators.getUserInformation(param));
-        dispatch(actionCreators.getMysportInfo(sportParam));
+        // dispatch(actionCreators.getMysportInfo(sportParam));
     }
 })
 export default connect(mapState,mapDispatch)(UserInfo);

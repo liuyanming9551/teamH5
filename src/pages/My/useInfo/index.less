@@ -1,5 +1,6 @@
 .userInnerWrap {
     .userInner {
+        position: relative;
         background: rgba(14, 128, 210,1);
         display: flex;
         height: 220px;
@@ -21,7 +22,9 @@
             }
         }
         .changeDetail{
-            margin-left: 20px;
+            position: absolute;
+            top: 0.8rem;
+            right: 30px;
             padding: 10px;
             border-radius: 50px;
             border: 2px solid #ddd;
@@ -30,6 +33,21 @@
 
     }
     .ownDesc{
+        overflow: hidden;
+        .honorImgBox {
+            overflow-x: auto;
+            padding: 10px;
+            line-height: 2rem;
+            display: flex;
+            align-items: center;
+            img {
+                justify-content: space-between;
+                align-items: center;
+                width: 100%;
+                display: inline-block;
+                margin: 0 10px;
+            }
+        }
         .cardTitle{
             border-bottom: 1px solid #ddd;
             font-size: 28px;
@@ -50,10 +68,6 @@
                 font-size: 28px;
                 color: #666;
             }
-            img {
-                object-fit: cover;
-                width: 30%;
-              }
         }
         .rankTitle{
             font-size: 28px;

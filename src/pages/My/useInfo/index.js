@@ -24,21 +24,24 @@ class UserInfo extends Component {
     }
     render() {
         const {userInformation,userModel,cardInfo, myHonor} = this.props;
-        console.log("myHonor", myHonor)
+        let honorImgData = ['grade1', 'grade2', 'grade3', 'grade4', 'grade5', 'grade6', 'grade7']
         let map = Map(userModel);
         let userInformationData = '';
         let userSkills = [];
         let cardList = '';
         let cardInfoData = '';
+
         if(cardInfo){
             cardInfoData = Map(cardInfo);
             let cardToArray = cardInfoData.get('SportsStatistics');
             cardList = cardToArray.toJS();
         }
+
         if(userInformation){
             userInformationData = userInformation.toJS();
             userSkills = userInformationData.UserSkill?userInformationData.UserSkill.split(','):'';
         }
+
         return (
             <div className="userInnerWrap">
                 <header className="userInner">
@@ -48,7 +51,7 @@ class UserInfo extends Component {
                     <div className="userLabel">
                         <div className="userName">{userInformationData.UserName}</div>
                         <div className="userTitle">{map.get("position")}</div>
-                        <div className="company">北京易勤信息技术有限公司</div>
+                        <div className="company">{userInformationData.GroupName}</div>
                     </div>
                     <div className='changeDetail' onClick={this.changeDetailInfo}>修改资料</div>
                 </header>
@@ -166,11 +169,17 @@ class UserInfo extends Component {
                         <Card>
                             <Card.Body>
                                 <div className='cardTitle'>
-                                    我的荣誉
+                                    个人季度荣誉等级
                                 </div>
-                                <div className='evaluateBox'>
-                                    <img src={`${baseUrl}/termImg/honorGrade/grade01.jpg`}/>
-                                </div>
+                                {/* <div className='honorImgBox'>
+                                    {
+                                        honorImgData.map((item, i) => {
+                                            return (
+                                                <img src={`${baseUrl}/termImg/myhonorimg/${item}.png`} style={{filter: "grayscale(100%)", width: (50+ (i*8))+'px', height: (50+ (i*8))+'px'}} />
+                                            )
+                                        })
+                                    }
+                                </div> */}
                             </Card.Body>
                         </Card>
                         <WhiteSpace size="sm" />
