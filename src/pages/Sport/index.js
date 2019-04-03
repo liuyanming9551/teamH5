@@ -31,8 +31,6 @@ class Sport extends Component {
                         <Carousel
                             autoplay={true}
                             infinite
-                            // beforeChange={(from, to) => console.log(`slide from ${from} to ${to}`)}
-                            // afterChange={index => console.log('slide to', index)}
                         >
                             {this.state.data.map(val => (
                                 <a
@@ -72,7 +70,7 @@ class Sport extends Component {
                                 <div className="sportLinksBox">
                                     <div className="sportLinkItem">
                                         <Link to='/sport/mySport'>
-                                            <div className="sportLinkIcon iconfont icon-yundong3"></div>
+                                            <div className="sportLinkIcon iconfont icon-yundong3"/>
                                         </Link>
                                         <div className="sportLinksLabel">我的运动</div>
                                     </div>

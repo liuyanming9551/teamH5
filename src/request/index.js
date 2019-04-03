@@ -11,10 +11,17 @@ let sources = {};
  * @author YanMing Liu
  * @date 2019/3/15
 */
+//测试环境
 //const baseUrl = 'http://139.129.222.23:8021';
-    
-const baseUrl = 'http://10.168.1.138:5454';
-// const baseUrl = 'http://10.168.1.138:5656';
+//正式环境
+//const baseUrl = 'http://139.129.222.23:8031';
+
+const baseUrl = 'http://10.168.1.138:5656';
+
+//const baseUrl = 'http://10.26.12.217:8031';
+//const baseUrl = 'http://10.168.1.138:5454';
+//const baseUrl = 'http://10.168.1.115:8080';
+
 axios.defaults.baseURL = baseUrl;
 /**
  * @Description: 线上环境代码

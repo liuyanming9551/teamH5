@@ -4,6 +4,7 @@ import {Link,withRouter} from "react-router-dom";
 import {Modal, List, Badge, ListView, Toast, PullToRefresh} from 'antd-mobile';
 import ReactDOM from "react-dom";
 import {connect} from 'react-redux';
+import { CSSTransition } from 'react-transition-group';
 import './index.less';
 const operation = Modal.operation;
 class PkList extends PureComponent {
@@ -22,7 +23,8 @@ class PkList extends PureComponent {
             dataSource,
             isLoading: false, // 是否显示加载状态
             height: document.documentElement.clientHeight,
-            selectShows:false
+            selectShows:false,
+            inProp:false
         };
     }
     componentDidMount() {
@@ -31,6 +33,7 @@ class PkList extends PureComponent {
             height: hei
         })
         this.requestCouponsList();
+        document.onclick=this.documentClick
 
     }
 
@@ -112,12 +115,23 @@ class PkList extends PureComponent {
                 return "出错了"
         }
     }
-
+    documentClick = (e) =>{
+        console.log(e)
+        console.log("点击document");
+    }
+    oneClick = (e) =>{
+        console.log(e)
+        const {inProp} = this.state;
+        //e.nativeEvent.stopImmediatePropagation();
+        console.log("点击筛选")
+        this.setState({
+            inProp:!inProp
+        })
+    }
 
     render() {
-        const {selectShows} = this.state;
+        const {inProp} = this.state;
         const row = (rowData, sectionID, rowID) => {
-            console.log(rowData)
             let queryInfo = {pkCode:rowData.PKCode,pkAccept:rowData.PKAccept,pkAcceptName:rowData.PKB};
             let path = {
                 pathname:'/pk/personallook',
@@ -152,9 +166,16 @@ class PkList extends PureComponent {
         };
         return (
             <div className="listview-wrap">
-                <div className='selectInfoWrap' style={selectShows?{'display':'block'}:{'display':'none'}}>
-
-                </div>
+                <CSSTransition
+                    in={inProp}
+                    timeout={300}
+                    unmountOnExit
+                    classNames="alert"
+                >
+                    <div className='selectInfoWrap'>
+                        删选功能
+                    </div>
+                </CSSTransition>
                 <div className="pkActiveBox">
                     <span className='iconfont icon-bianji' onClick={() => operation([
                         {
@@ -163,13 +184,7 @@ class PkList extends PureComponent {
                             }
                         },
                         {
-                            text: '筛选', onPress: () => {
-                                // this.setState({
-                                //     selectShows:true
-                                // },() =>{
-                                //     console.log(this.state.selectShows)
-                                // })
-                            }
+                            text: '筛选', onPress: this.oneClick
                         },
                     ])}
                     />
@@ -197,8 +212,6 @@ class PkList extends PureComponent {
                     onEndReachedThreshold={100}
                     pageSize={this.state.pageSize}
                 />
-
-
             </div>)
     }
 }
