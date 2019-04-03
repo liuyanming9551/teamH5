@@ -165,13 +165,13 @@ class UserInfo extends Component {
                         </Card>
                         <WhiteSpace size="sm" />
                     </WingBlank>
-                    <WingBlank size="md">
+                    {/* <WingBlank size="md">
                         <Card>
                             <Card.Body>
                                 <div className='cardTitle'>
                                     个人季度荣誉等级
                                 </div>
-                                {/* <div className='honorImgBox'>
+                                    <div className='honorImgBox'>
                                     {
                                         honorImgData.map((item, i) => {
                                             return (
@@ -179,11 +179,11 @@ class UserInfo extends Component {
                                             )
                                         })
                                     }
-                                </div> */}
+                                </div>
                             </Card.Body>
                         </Card>
                         <WhiteSpace size="sm" />
-                    </WingBlank>
+                    </WingBlank> */}
                 </footer>
             </div>
         )
