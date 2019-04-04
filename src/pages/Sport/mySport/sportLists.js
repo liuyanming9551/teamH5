@@ -118,7 +118,7 @@ class SportList extends Component {
         }
     }
     render() {
-        console.log("渲染")
+
         const row = (rowData, sectionID, rowID) => {
             console.log(rowData)
             return (

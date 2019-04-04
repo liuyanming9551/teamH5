@@ -18,7 +18,6 @@ class CheckDetail extends Component{
         const {getCheckDetail} = this.props;
         getCheckDetail(dataCode)
     }
-
     onActiveBtn = (state) =>{
         const dataCode = this.props.match.params.code;
         const {checkSportData} = this.props;
@@ -47,7 +46,6 @@ class CheckDetail extends Component{
             isOpen: false,
         });
     };
-
     render(){
         const {sportDetailData} = this.props;
         let detailData = '';
@@ -89,8 +87,8 @@ class CheckDetail extends Component{
                 </div>
                 <div className='activeWrap'>
                         <div className='activeGroup'>
-                            <Button type="primary" inline size="small" style={{ marginRight: '8px' }} onClick={() => this.onActiveBtn(1)}>通过</Button>
-                            <Button type="warning" inline size="small" style={{ marginRight: '8px' }} onClick={() => this.onActiveBtn(2)}>不通过</Button>
+                            <Button type="primary" inline size="small" style={{ marginRight: '30px' }} onClick={() => this.onActiveBtn(1)}>通过</Button>
+                            <Button type="warning" inline size="small" style={{ marginRight: '30px' }} onClick={() => this.onActiveBtn(2)}>不通过</Button>
                             <Button type="primary" inline size="small" className='query' onClick={() => this.onActiveBtn(3)}>疑问</Button>
                         </div>
                 </div>

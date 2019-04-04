@@ -110,7 +110,7 @@ class PersonalLook extends React.Component {
         const newList = pkDetailData?pkDetailData.get('PKDataList').toJS():'';
         const pkDetailList = [];
         if (newList.length) {
-            for (let i = (page - 1) * 5; i < page * 5; i++) {
+            for (let i = 0 ; i < newList.length ; i++) {
                 if(newList[i]){
                     pkDetailList.push(
                         <div key={newList[i].Id} className='pkDetailListWrap'>
@@ -141,12 +141,12 @@ class PersonalLook extends React.Component {
                         <span className='pkUserNameItem' style={{textAlign:'left'}}>{pkDetailData?pkDetailData.get('PKBName'):''}</span>
                     </div>
                     {pkDetailList}
-                    <Pagination total={Math.ceil(newList.length/5)}
-                                className="custom-pagination-with-icon"
-                                current={Math.ceil(newList.length/5)===0 ? 0 : 1}
-                                onChange={this.onPageBtn}
-                                locale={locale}
-                    />
+                    {/*<Pagination total={Math.ceil(newList.length/5)}*/}
+                                {/*className="custom-pagination-with-icon"*/}
+                                {/*current={Math.ceil(newList.length/5)===0 ? 0 : 1}*/}
+                                {/*onChange={this.onPageBtn}*/}
+                                {/*locale={locale}*/}
+                    {/*/>*/}
                 </div>
 
             </div>
@@ -179,8 +179,8 @@ class PersonalLook extends React.Component {
                     <Item extra={pkDetailData?pkDetailData.get('CreateTime'):''}>发起日期</Item>
                     <Item extra={pkDetailData?pkDetailData.get('EndDate'):''}>结束日期</Item>
                     <Item extra={pkDetailData?pkDetailData.get('PKBName'):''}>被挑战者</Item>
-
-                    <Item extra={pkDetailData?pkDetailData.get('AdjustedDistance'):''}>发起人运动量（公里）</Item>
+                    <Item extra={pkDetailData?pkDetailData.get('AdjustedDistance'):''}>挑战者运动量（公里）</Item>
+                    <Item extra={pkDetailData?pkDetailData.get('AdjustedDistance'):''}>被挑战者运动量（公里）</Item>
                     <TextareaItem
                         value={pkDetailData?pkDetailData.get('PKProfit'):''}
                         editable={false}
