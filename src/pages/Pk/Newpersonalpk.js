@@ -11,11 +11,7 @@ class Newpersonalpk extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            startDate: now,
-            endDate:now,
             nameValue:[]
-
-
         }
     }
     componentDidMount() {
@@ -78,7 +74,7 @@ class Newpersonalpk extends React.Component {
     }
 
     render() {
-
+        let minDate = new Date(new Date().getTime() + 24*60*60*1000);
         const { getFieldProps } = this.props.form;
         const {pkPeopleList} = this.props;
         let pkPeopleListData = '';
@@ -92,9 +88,9 @@ class Newpersonalpk extends React.Component {
                         mode="date"
                         title="选择日期"
                         extra="Optional"
-                        minDate={this.state.startDate}
+                        minDate={minDate}
                         {...getFieldProps('startValue', {
-                            initialValue: this.state.startDate,
+                            initialValue: minDate,
                         })}
                     >
                         <Item arrow="horizontal">开始日期</Item>
@@ -103,9 +99,9 @@ class Newpersonalpk extends React.Component {
                         mode="date"
                         title="选择日期"
                         extra="Optional"
-                        minDate={this.state.startDate}
+                        minDate={minDate}
                         {...getFieldProps('endValue', {
-                            initialValue: this.state.endDate,
+                            initialValue: minDate,
                         })}
                     >
                         <Item arrow="horizontal">结束日期</Item>

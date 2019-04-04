@@ -71,7 +71,7 @@ class adjustmentDetail extends Component{
                     {
                         detailData ? detailData.get('AdjustedDataList').map((item, index) => {
                             return (
-                                <p>
+                                <p key={index}>
                                     <span>{item ? item.get('UserName') : ''}&nbsp;</span>
                                     <span>{item ? item.get('AdjustedDistance') : ''}km</span>
                                 </p>

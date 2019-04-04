@@ -179,6 +179,8 @@ class CreateSport extends Component {
         })
     }
     render() {
+        let minDate = new Date(new Date().getTime() - 6*24*60*60*1000);
+        let maxDate = new Date(new Date());
         const {getFieldProps} = this.props.form;
         const {type, files, RunTimeLong, RunDistance} = this.state;
         return (
@@ -188,6 +190,8 @@ class CreateSport extends Component {
                         mode="date"
                         title="选择日期"
                         extra="Optional"
+                        minDate={minDate}
+                        maxDate={maxDate}
                         value={this.state.date}
                         {...getFieldProps('dp', {
                             initialValue: this.state.date,

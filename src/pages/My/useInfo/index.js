@@ -171,14 +171,18 @@ class UserInfo extends Component {
                                 <div className='cardTitle'>
                                     个人季度荣誉等级
                                 </div>
-                                    <div className='honorImgBox'>
-                                    {
-                                        honorImgData.map((item, i) => {
-                                            return (
-                                                <img src={`${baseUrl}/termImg/myhonorimg/${item}.png`} style={{filter: "grayscale(100%)", width: (50+ (i*8))+'px', height: (50+ (i*8))+'px'}} />
-                                            )
-                                        })
-                                    }
+                                <div style={{overflow: "hidden"}}>
+                                    <div style={{overflow: "auto"}}>
+                                        <div className='honorImgBox'>
+                                            {
+                                                honorImgData.map((item, i) => {
+                                                    return (
+                                                        <img src={`${baseUrl}/termImg/myhonorimg/${item}.png`} style={{filter: "grayscale(100%)", width: (50+ (i*10))+'px', height: (50+ (i*8))+'px'}} />
+                                                    )
+                                                })
+                                            }
+                                        </div>
+                                    </div>
                                 </div>
                             </Card.Body>
                         </Card>

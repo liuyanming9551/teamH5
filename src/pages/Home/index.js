@@ -75,17 +75,19 @@ class Home extends PureComponent {
                 <List renderHeader={() => '排行榜'} className="my-list">
                     <Link to={`/sport/adjustmentDetail/${rowData.ActivityCode}`}>
                         <div className="list-wrap">
-                            <p className="list-order iconfont icon-jinpai1" style={{fontSize: "24px"}}></p>
+                            <p className="list-order">
+                                <img src={`${baseUrl}/termImg/medalImgs/medal1.png`} />
+                            </p>
                             <p className="list-photo">
-                                <img src="https://zos.alipayobjects.com/rmsportal/dNuvNrtqUztHCwM.png"/>
+                                <img src="http://www.agri35.com/UploadFiles/img_0_2786531238_3176367074_26.jpg"/>
                             </p>
                             <p className="list-info">
                                 <span className="list-name">马晓敏</span> <br />
                                 <span className="list-score">胜3场&nbsp;负2场&nbsp;平1场 &nbsp; 点赞：5次</span>
                             </p>
-                            <p className="list-honor">
+                            {/* <p className="list-honor">
                                 <img src="https://zos.alipayobjects.com/rmsportal/dNuvNrtqUztHCwM.png"/>
-                            </p>
+                            </p> */}
                         </div>
                     </Link>
                 </List>
@@ -111,29 +113,44 @@ class Home extends PureComponent {
                         </Card>
                         <WhiteSpace size="lg"/>
                     </WingBlank>
-                    {/* <List renderHeader={() => '排行榜'} className="my-list">
+                    <List renderHeader={() => '排行榜'} className="my-list">
                         <Link to="/his">
                         <div className="list-wrap">
-                            <p className="list-order iconfont icon-jinpai1" style={{fontSize: "24px"}}></p>
+                            <p className="list-order">
+                                <img src={`${baseUrl}/termImg/medalImgs/medal1.png`} />
+                            </p>
                             <p className="list-photo">
-                                <img src="https://zos.alipayobjects.com/rmsportal/dNuvNrtqUztHCwM.png"/>
+                                <img src="http://www.agri35.com/UploadFiles/img_0_2786531238_3176367074_26.jpg"/>
                             </p>
                             <p className="list-info">
                                 <span className="list-name">马晓敏</span> <br />
                                 <span className="list-score">胜3场&nbsp;负2场&nbsp;平1场 &nbsp; 点赞：5次</span>
                             </p>
-                            <p className="list-honor">
+                            {/* <p className="list-honor">
                                 <img src="https://zos.alipayobjects.com/rmsportal/dNuvNrtqUztHCwM.png"/>
-                            </p>
+                            </p> */}
                         </div>
                         </Link>
-                    </List> */}
-                    {/* <ListView
+                        <div className="list-wrap">
+                            <p className="list-order">2</p>
+                            <p className="list-photo">
+                                <img src="http://pic.51yuansu.com/pic3/cover/00/63/25/589bdedf5475d_610.jpg"/>
+                            </p>
+                            <p className="list-info">
+                                <span className="list-name">马晓敏</span> <br />
+                                <span className="list-score">胜3场&nbsp;负2场&nbsp;平1场 &nbsp; 点赞：5次</span>
+                            </p>
+                            {/* <p className="list-honor">
+                                <img src="https://zos.alipayobjects.com/rmsportal/dNuvNrtqUztHCwM.png"/>
+                            </p> */}
+                        </div>
+                    </List>
+                    <ListView
                         className="list-view"
                         key={1}
                         dataSource={this.state.dataSource}
                         renderRow={row}
-                    /> */}
+                    />
                     {/* <WingBlank size="md">
                         <WhiteSpace size="md"/>
                         <Card>
