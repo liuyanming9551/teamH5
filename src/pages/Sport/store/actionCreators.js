@@ -238,3 +238,25 @@ export const getActivityDetail = (detailData) =>{
     }
 }
 
+/**
+ * @Description: 获取轮播图片
+ * @author maxiaomin
+ * @date 2019/4/8
+*/
+export function getBannerData(callback) {
+    return (dispatch) => {
+        req.post('/api/AdjustedData/RotationPicture')
+        .then((res) => {
+            console.log("getBannerData res", res)
+            dispatch({
+              type: constants.GET_BANNER_DATA,
+              data: res
+            });
+          callback && callback(res)
+        })
+        .catch((res) => {
+        })
+    }
+}
+
+

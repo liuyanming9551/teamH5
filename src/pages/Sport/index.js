@@ -20,9 +20,16 @@ class Sport extends Component {
         if(userCode){
             changeSportControl(userCode)
         }
+        this.props.getBannerData()
     }
     render() {
-        const {rightControl} =this.props;
+        const {rightControl, bannerData} =this.props;
+        console.log('bannerData', bannerData)
+        let data = [];
+        if (bannerData) {
+            data = bannerData.toJS()
+        }
+        console.log("data", data)
         return (
             <div className="sportPlane">
                  <header>
@@ -32,7 +39,7 @@ class Sport extends Component {
                             autoplay={true}
                             infinite
                         >
-                            {this.state.data.map(val => (
+                            {data.map(val => (
                                 <a
                                     key={val}
                                     href="javascript:;"
@@ -43,13 +50,13 @@ class Sport extends Component {
                                     }}
                                 >
                                     <img
-                                        src={`${baseUrl}/termImg/sport/${val}.jpg`}
+                                        src={`${baseUrl}/${val}`}
                                         alt=""
                                         style={{
                                             width: '100%',
                                             verticalAlign: 'top',
                                             borderRadius: "4px",
-                                            height: "140px"
+                                            height: "140px",
                                         }}
                                         onLoad={() => {
                                             // fire window resize event to change height
@@ -100,11 +107,15 @@ class Sport extends Component {
 }
 const mapState = (state) => ({
     userCode:state.getIn(['login','userCode']),
-    rightControl:state.getIn(['sport','rightControl'])
+    rightControl:state.getIn(['sport','rightControl']),
+    bannerData: state.getIn(['sport', 'bannerData'])
 })
 const mapDispatch = (dispatch) => ({
     changeSportControl(userCode){
         dispatch(actionCreators.getSportControl(userCode))
+    },
+    getBannerData () {
+        dispatch(actionCreators.getBannerData())
     }
 })
 export default connect(mapState,mapDispatch)(Sport);

@@ -11,6 +11,7 @@ const defaultState = fromJS({
     allTypes: [],
     activityDetailData: '',
     activityUpload: false,
+    bannerData: ''
 })
 
 /**
@@ -112,6 +113,13 @@ const changeActivity = (state, action) => {
     })
 }
 
+const changeBannerData = (state, action) => {
+    console.log("changeBannerData action", action)
+    return state.merge({
+        bannerData:fromJS(action.data)
+    })
+}
+
 export default (state = defaultState,action) => {
     switch (action.type) {
         case constants.CHANGE_DETAIL:
@@ -138,6 +146,8 @@ export default (state = defaultState,action) => {
             return cancelUploadActivity(state);
         case constants.CHANGE_UPLOAD_ACTIVITY:
             return changeUploadActivity(state);
+        case constants.GET_BANNER_DATA:
+            return changeBannerData(state, action);
         default:
             return state;
     }
