@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { List, Card, WingBlank, WhiteSpace, Button, Carousel,Tag, Modal } from 'antd-mobile';
+import { List, Card, WingBlank, WhiteSpace, Carousel, Modal } from 'antd-mobile';
 import {Map} from "immutable";
 import {connect} from 'react-redux';
 import {withRouter} from "react-router-dom";
@@ -9,9 +9,14 @@ import {baseUrl} from "../../../request";
 const Item = List.Item;
 const alert = Modal.alert;
 class UserInfo extends Component {
-    state = {
-        imgHeight: 100,
+    constructor(props) {
+        super(props)
+        this.state = {
+            imgHeight: 100,
+            modal: false,
+        }
     }
+
     componentDidMount() {
         const {userCode} = this.props;
         // simulate img loading
@@ -27,8 +32,31 @@ class UserInfo extends Component {
     // 确认删除
     confirmDelete = () => {
         console.log("confirmDelete")
-
     }
+
+    showModal = key => (e) => {
+        e.preventDefault(); // 修复 Android 上点击穿透
+        this.setState({
+            [key]: true,
+        });
+    }
+
+    onClose = key => () => {
+        this.setState({
+            [key]: false,
+        });
+    }
+
+    // onWrapTouchStart = (e) => {
+    //     // fix touch to scroll background page on iOS
+    //     if (!/iPhone|iPod|iPad/i.test(navigator.userAgent)) {
+    //         return;
+    //     }
+    //     const pNode = closest(e.target, '.am-modal-content');
+    //     if (!pNode) {
+    //         e.preventDefault();
+    //     }
+    // }
 
     render() {
         const {userInformation,userModel,cardInfo, myHonor} = this.props;
@@ -38,6 +66,8 @@ class UserInfo extends Component {
         let userSkills = [];
         let cardList = '';
         let cardInfoData = '';
+        let badge = '';
+        let EvaluateList = [];
 
         if(cardInfo){
             cardInfoData = Map(cardInfo);
@@ -48,6 +78,8 @@ class UserInfo extends Component {
         if(userInformation){
             userInformationData = userInformation.toJS();
             userSkills = userInformationData.UserSkill?userInformationData.UserSkill.split(','):'';
+            EvaluateList = userInformationData.EvaluateList;
+            badge = userInformationData.Badge;
         }
 
         return (
@@ -104,18 +136,24 @@ class UserInfo extends Component {
                                     他人评价
                                 </div>
                                 <div className='evaluateBox'>
-                                    <span className='skill'>
-                                        <i> </i>
-                                        <b 
-                                            className="iconfont icon-shanchu1"  
-                                            onClick={() =>
-                                                alert('是否删除？', '', [
-                                                    { text: '取消'},
-                                                    { text: '确定', onPress: () => {this.confirmDelete()} },
-                                                ])
-                                            }
-                                        ></b>
-                                    </span>
+                                    {
+                                        EvaluateList.map((item, index) => {
+                                            return (
+                                                <span className='skill' key={index}>
+                                                    <i> {item.EvaluateContent} </i>
+                                                    <b 
+                                                        className="iconfont icon-shanchu1"  
+                                                        onClick={() =>
+                                                            alert('是否删除？', '', [
+                                                                { text: '取消'},
+                                                                { text: '确定', onPress: () => {this.confirmDelete()} },
+                                                            ])
+                                                        }
+                                                    ></b>
+                                                </span>
+                                            )
+                                        })
+                                    }
                                 </div>
                             </Card.Body>
                         </Card>
@@ -180,19 +218,20 @@ class UserInfo extends Component {
                         </Card>
                         <WhiteSpace size="sm" />
                     </WingBlank>
-                    {/* <WingBlank size="md">
+                    <WingBlank size="md">
                         <Card>
                             <Card.Body>
                                 <div className='cardTitle'>
-                                    个人季度荣誉等级
+                                    <span>个人季度荣誉等级</span>
+                                    <span className="iconfont icon-tishi" onClick={this.showModal('modal')} style={{display: 'inline-block', fontSize: '14px', marginLeft: '10px'}}></span>
                                 </div>
-                                <div style={{overflow: "hidden"}}>
+                                <div className='evaluateBox'>
                                     <div style={{overflow: "auto"}}>
                                         <div className='honorImgBox'>
                                             {
                                                 honorImgData.map((item, i) => {
                                                     return (
-                                                        <img src={`${baseUrl}/termImg/myhonorimg/${item}.png`} style={{filter: "grayscale(100%)", width: (50+ (i*10))+'px', height: (50+ (i*8))+'px'}} />
+                                                        <img src={`${baseUrl}/termImg/myhonorimg/${item}.png`} style={i+1 <= badge ? { width: (50+ (i*10))+'px', height: (50+ (i*8))+'px'} : {filter: "grayscale(100%)", width: (50+ (i*10))+'px', height: (50+ (i*8))+'px'}} />
                                                     )
                                                 })
                                             }
@@ -202,8 +241,27 @@ class UserInfo extends Component {
                             </Card.Body>
                         </Card>
                         <WhiteSpace size="sm" />
-                    </WingBlank> */}
+                    </WingBlank>
                 </footer>
+                <Modal
+                    visible={this.state.modal}
+                    transparent
+                    maskClosable={false}
+                    onClose={this.onClose('modal')}
+                    title="荣誉等级获得条件"
+                    footer={[{ text: '关闭', onPress: () => { console.log('ok'); this.onClose('modal')(); } }]}
+                    // wrapProps={{ onTouchStart: this.onWrapTouchStart }}
+                    >
+                    <div style={{textAlign: 'left', paddingLeft: '20px'}}>
+                        青铜等级：20km，PK 1胜 <br />
+                        白银等级：50km，PK 3胜 <br />
+                        黄金等级：100km，PK 5胜 <br />
+                        铂金等级：200km，PK 10胜 <br />
+                        钻石等级：270km，PK 20胜 <br />
+                        大师等级：360km，PK 26胜 <br />
+                        王者等级：500km，PK 35胜 <br />
+                    </div>
+                </Modal>
             </div>
         )
     }

@@ -32,7 +32,6 @@ import AddUserInfo from "./pages/login/addUserInfo";
 
 // 查看他人信息
 import His from './route/his';
-import AddComment from './pages/His/useInfo/changeDetail';
 
 import store from './store';
 // const Loading = () => {
@@ -102,8 +101,7 @@ export default class Router extends Component{
                         <Route exact path="/sport/checkDetail/:code" component={CheckDetail} />
                         <Route exact path="/login" component={Login} />
                         <Route exact path="/addUserInfo" component={AddUserInfo} />
-                        <Route exact path="/his" component={His} />
-                        <Route exact path="/his/addComment" component={AddComment} />
+                        <Route exact path="/his/userInfo/index/:code" component={His} />
                     </Switch>
                 </BrowserRouter>
             </Provider>

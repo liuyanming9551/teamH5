@@ -13,3 +13,4 @@ export const CANCEL_UPLOAD_ACTIVITY = 'sport/CANCEL_UPLOAD_ACTIVITY';
 export const CHANGE_UPLOAD_ACTIVITY = 'sport/CHANGE_UPLOAD_ACTIVITY';
 export const GET_BANNER_DATA = 'sport/GET_BANNER_DATA';
 export const GET_MY_SPORT_CHART = 'sport/GET_MY_SPORT_CHART';
+export const DELETE_MY_SPORT = 'sport/DELETE_MY_SPORT';

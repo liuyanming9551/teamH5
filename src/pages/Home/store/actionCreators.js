@@ -74,3 +74,24 @@ export const getLastQuarterRank = () =>{
             })
     }
 }
+
+/**
+ * @Description: 排行榜列表
+ * @author maxiaomin
+ * @date 2019/4/9
+*/
+export function getRankingList() {
+    return (dispatch) => {
+        req.post('/api/User/RankingList')
+        .then((res) => {
+            console.log("res", res)
+            dispatch({
+                type: constants.GET_RANKING_LIST,
+                data: res
+            });
+        })
+        .catch((res) => {
+            console.log(res)
+        })
+    }
+}

@@ -1,10 +1,11 @@
 import React, {Component} from 'react';
 import * as req from '../../../request';
 import ReactDOM from 'react-dom';
-import {PullToRefresh, ListView, Toast, List, Badge, Modal} from 'antd-mobile';
+import {PullToRefresh, ListView, Toast, List, Badge, Modal, SwipeAction} from 'antd-mobile';
 import {connect} from 'react-redux';
 import "./index.less";
 import {Link} from "react-router-dom";
+import { actionCreators } from './../store';
 const operation = Modal.operation;
 class SportList extends Component {
     constructor(props) {
@@ -65,6 +66,22 @@ class SportList extends Component {
 
     }
 
+    // 删除
+    onDelete = (v) => {
+        const data = {
+            DataCode: v
+        };
+        this.props.deleteRunData(data, (res) => {
+            this.setState({
+                pageNo: 1,
+                totalPage: 0,
+                couponList: [],
+            }, () => {
+                this.requestCouponsList();
+            })
+        });
+    }
+
     // 下拉刷新
     onRefresh = () => {
         this.setState({
@@ -117,6 +134,7 @@ class SportList extends Component {
                 return "出错了"
         }
     }
+
     render() {
 
         const row = (rowData, sectionID, rowID) => {
@@ -124,16 +142,35 @@ class SportList extends Component {
             return (
                 <div key={rowID} style={{margin: '10px 0', background: '#fff'}}>
                     <List className="my-list" style={{textAlign: 'center'}}>
-                        <Link to={`/sport/viewSport/${rowData.DataCode}`}>
-                            <List.Item arrow="horizontal">
-                                <Badge text={0} style={{marginLeft: "12px"}}>
-                                    <span className={this.getCheckIcon(rowData.AuditStatus)}></span>
-                                    <span className='listTime'>{rowData.RunDate}</span>
-                                    <span className='listState'>{this.getCheckState(rowData.AuditStatus)}</span>
-                                    <span className='listNumber'>{rowData.RunDistance}KM</span>
-                                </Badge>
-                            </List.Item>
-                        </Link>
+                    <SwipeAction
+                                style={{ backgroundColor: 'gray' }}
+                                autoClose
+                                right={[
+                                    {
+                                        text: 'Cancel',
+                                        onPress: () => console.log('cancel'),
+                                        style: { backgroundColor: '#ddd', color: 'white' },
+                                    },
+                                    {
+                                        text: 'Delete',
+                                        onPress: () => {this.onDelete(rowData.DataCode)},
+                                        style: { backgroundColor: '#F4333C', color: 'white' },
+                                    },
+                                ]}
+                                    onOpen={() => console.log('global open')}
+                                    onClose={() => console.log('global close')}
+                                >
+                            <Link to={`/sport/viewSport/${rowData.DataCode}`}>
+                                <List.Item arrow="horizontal">
+                                    <Badge text={0} style={{marginLeft: "12px"}}>
+                                        <span className={this.getCheckIcon(rowData.AuditStatus)}></span>
+                                        <span className='listTime'>{rowData.RunDate}</span>
+                                        <span className='listState'>{this.getCheckState(rowData.AuditStatus)}</span>
+                                        <span className='listNumber'>{rowData.RunDistance}KM</span>
+                                    </Badge>
+                                </List.Item>
+                            </Link>
+                        </SwipeAction>
                     </List>
                 </div>
             );
@@ -186,5 +223,9 @@ class SportList extends Component {
 const mapState = (state) => ({
     userCode:state.getIn(['login','userCode'])
 })
-const mapDispatch = (dispatch) => ({})
+const mapDispatch = (dispatch) => ({
+    deleteRunData(data, callback) {
+        dispatch(actionCreators.deleteRunData(data, callback));
+    }
+})
 export default connect(mapState, mapDispatch)(SportList)

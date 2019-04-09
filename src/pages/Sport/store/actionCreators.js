@@ -278,3 +278,24 @@ export const getMySportChart = (userCode) =>{
         })
     }
 }
+
+/**
+ * @Description: 删除我的运动
+ * @author maxiaomin
+ * @date 2019/4/9
+*/
+export const deleteRunData = (data, callback) => {
+    return (dispatch) => {
+        req.post('/api/RunData/DeleteRunData', data)
+        .then((res) => {
+            if(res){
+                dispatch({
+                    type: constants.DELETE_MY_SPORT
+                });
+            }
+            callback && callback(res)
+        })
+        .catch((res) => {
+        })
+    }
+  }

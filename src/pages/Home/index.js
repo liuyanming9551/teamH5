@@ -61,38 +61,19 @@ class Home extends PureComponent {
         )
     }
     componentDidMount() {
-        const {getRankData,getThisMonthRank,getThisQuarterRank,getLastQuarterRank} = this.props;
+        const {getRankData,getThisMonthRank,getThisQuarterRank,getLastQuarterRank,getRankingList} = this.props;
         getRankData();
         getThisMonthRank();
         getThisQuarterRank();
         getLastQuarterRank();
+        getRankingList();
     }
     render() {
-        const {rankList} = this.props;
+        const {rankList, rankingList, userCode} = this.props;
+        const newrRankingList = rankingList.toJS()
         const newList = rankList.toJS();
-        const row =  (rowData, sectionID, rowID) => {
-            return (
-                <List renderHeader={() => '排行榜'} className="my-list">
-                    <Link to={`/sport/adjustmentDetail/${rowData.ActivityCode}`}>
-                        <div className="list-wrap">
-                            <p className="list-order">
-                                <img src={`${baseUrl}/termImg/medalImgs/medal1.png`} />
-                            </p>
-                            <p className="list-photo">
-                                <img src="http://www.agri35.com/UploadFiles/img_0_2786531238_3176367074_26.jpg"/>
-                            </p>
-                            <p className="list-info">
-                                <span className="list-name">马晓敏</span> <br />
-                                <span className="list-score">胜3场&nbsp;负2场&nbsp;平1场 &nbsp; 点赞：5次</span>
-                            </p>
-                            {/* <p className="list-honor">
-                                <img src="https://zos.alipayobjects.com/rmsportal/dNuvNrtqUztHCwM.png"/>
-                            </p> */}
-                        </div>
-                    </Link>
-                </List>
-            );
-        } ;
+        let honorImgData = ['grade1', 'grade2', 'grade3', 'grade4', 'grade5', 'grade6', 'grade7']
+
         return (
             <div>
                 <NoticeBar marqueeProps={{loop: true, style: {padding: '0 7.5px'}}}>
@@ -114,85 +95,41 @@ class Home extends PureComponent {
                         <WhiteSpace size="lg"/>
                     </WingBlank>
                     <List renderHeader={() => '排行榜'} className="my-list">
-                        <Link to="/his">
-                        <div className="list-wrap">
-                            <p className="list-order">
-                                <img src={`${baseUrl}/termImg/medalImgs/medal1.png`} />
-                            </p>
-                            <p className="list-photo">
-                                <img src="http://www.agri35.com/UploadFiles/img_0_2786531238_3176367074_26.jpg"/>
-                            </p>
-                            <p className="list-info">
-                                <span className="list-name">马晓敏</span> <br />
-                                <span className="list-score">胜3场&nbsp;负2场&nbsp;平1场 &nbsp; 点赞：5次</span>
-                            </p>
-                            {/* <p className="list-honor">
-                                <img src="https://zos.alipayobjects.com/rmsportal/dNuvNrtqUztHCwM.png"/>
-                            </p> */}
-                        </div>
-                        </Link>
-                        <div className="list-wrap">
-                            <p className="list-order">2</p>
-                            <p className="list-photo">
-                                <img src="http://pic.51yuansu.com/pic3/cover/00/63/25/589bdedf5475d_610.jpg"/>
-                            </p>
-                            <p className="list-info">
-                                <span className="list-name">马晓敏</span> <br />
-                                <span className="list-score">胜3场&nbsp;负2场&nbsp;平1场 &nbsp; 点赞：5次</span>
-                            </p>
-                            {/* <p className="list-honor">
-                                <img src="https://zos.alipayobjects.com/rmsportal/dNuvNrtqUztHCwM.png"/>
-                            </p> */}
-                        </div>
-                    </List>
-                    <ListView
-                        className="list-view"
-                        key={1}
-                        dataSource={this.state.dataSource}
-                        renderRow={row}
-                    />
-                    {/* <WingBlank size="md">
-                        <WhiteSpace size="md"/>
-                        <Card>
-                            <Card.Header
-                                title="本月运动总里程排名"
-                            />
-                            <Card.Body>
-                                <div style={{background: 'white', display: 'flex', justifyContent: 'space-around'}}>
-                                    {this.getList('thisMonth')}
-                                </div>
-                            </Card.Body>
-                        </Card>
-                        <WhiteSpace size="lg"/>
-                    </WingBlank>
-                    <WingBlank size="md">
-                        <WhiteSpace size="md"/>
-                        <Card>
-                            <Card.Header
-                                title="本季度运动总里程排名"
-                            />
-                            <Card.Body>
-                                <div style={{background: 'white', display: 'flex', justifyContent: 'space-around'}}>
-                                    {this.getList('thisQuarter')}
-                                </div>
-                            </Card.Body>
-                        </Card>
-                        <WhiteSpace size="lg"/>
-                    </WingBlank>
-                    <WingBlank size="md">
-                        <WhiteSpace size="md"/>
-                        <Card>
-                            <Card.Header
-                                title="上季度排名"
-                            />
-                            <Card.Body>
-                                <div style={{background: 'white', display: 'flex', justifyContent: 'space-around'}}>
-                                    {this.getList('lastQuarter')}
-                                </div>
-                            </Card.Body>
-                        </Card>
-                        <WhiteSpace size="lg"/>
-                    </WingBlank> */}              
+                        {
+                            newrRankingList.length ? newrRankingList.map((item, index) => {
+                                return(
+                                    <Link to={item.UserCode == userCode ? `/my` : `/his/userInfo/index/${item.UserCode}`} key={item.UserCode}>
+                                        <div className="list-wrap" >
+                                            {
+                                                index < 3 ? (
+                                                    <p className="list-order">
+                                                        <img src={`${baseUrl}/termImg/medalImgs/medal${item.Id}.png`} />
+                                                    </p>
+                                                ) : (
+                                                    <p className="list-order"> {item.Id} </p>
+                                                )
+                                            }
+                                            
+                                            <p className="list-photo">
+                                                <img src={item.avatar} />
+                                            </p>
+                                            <p className="list-info">
+                                                <span className="list-name">{item.UserName}</span> <br />
+                                                <span className="list-score">胜 {item.WIN} 场 &nbsp; 负 {item.Lose} 场 &nbsp; 点赞：{item.Praise} 次</span>
+                                            </p>
+                                            <p className="list-honor">
+                                                {
+                                                    item.Badge ? (
+                                                        <img src={`${baseUrl}/termImg/myhonorimg/grade${item.Badge}.png`} />
+                                                    ) : null
+                                                }
+                                            </p>
+                                        </div>
+                                    </Link>
+                                )
+                            }) : null
+                        }
+                    </List>             
                 </div>
             </div>
         )
@@ -204,6 +141,8 @@ const mapStateToprops = (state) => ({
     thisMonthRank:state.getIn(['home','thisMonthRank']),
     thisQuarterRank:state.getIn(['home','thisQuarterRank']),
     lastQuarterRank:state.getIn(['home','lastQuarterRank']),
+    rankingList: state.getIn(['home', 'rankingList']),
+    userCode: state.getIn(['login','userCode']),
 })
 const mapDispatchToProps = (dispatch) => ({
     getRankData(){
@@ -217,6 +156,9 @@ const mapDispatchToProps = (dispatch) => ({
     },
     getLastQuarterRank(){
         dispatch(actionCreators.getLastQuarterRank())
+    },
+    getRankingList() {
+        dispatch(actionCreators.getRankingList())
     }
 })
 export default connect(mapStateToprops, mapDispatchToProps)(Home);

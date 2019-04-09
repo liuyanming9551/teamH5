@@ -4,7 +4,8 @@ const defaultState = fromJS({
     sportRank:[],
     thisMonthRank:[],
     thisQuarterRank:[],
-    lastQuarterRank:[]
+    lastQuarterRank:[],
+    rankingList: []
 });
 
 export default (state = defaultState, action) => {
@@ -24,6 +25,10 @@ export default (state = defaultState, action) => {
         case constants.CHANGE_LAST_QUARTER_RANK:
             return state.merge({
                 lastQuarterRank:action.lastQuarterRank
+            })
+        case constants.GET_RANKING_LIST:
+            return state.merge({
+                rankingList:fromJS(action.data)
             })
         default:
             return state;
