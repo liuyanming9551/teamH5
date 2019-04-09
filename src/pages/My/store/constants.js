@@ -1,6 +1,6 @@
 export const GET_USER_INFORMATION = 'my/GET_USER_INFORMATION';
 export const CHANGE_USER_DETAIL = 'my/CHANGE_USER_DETAIL';
 export const CANCEL_DETAIL_STATE = 'my/CANCEL_DETAIL_STATE';
-// export const CHANGE_WEEK_RANK = 'my/CHANGE_WEEK_RANK';
 export const CHANGE_MY_SPORT_INFO = 'my/CHANGE_MY_SPORT_INFO';
 export const GET_MY_HONOR = 'my/GET_MY_HONOR';
+export const GET_GROUP_INFO = 'my/GET_GROUP_INFO';

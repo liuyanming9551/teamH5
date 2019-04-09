@@ -3,7 +3,7 @@ import {DatePicker, List, InputItem, ImagePicker, Button, WingBlank, Toast, Whit
 import {connect} from "react-redux";
 import {createForm} from 'rc-form';
 import {actionCreators} from './../store';
-import {compressImage} from './../../../util/util';
+import {compressImage,checkSpeed} from './../../../util/util';
 
 const nowTimeStamp = Date.now();
 const now = new Date(nowTimeStamp);
@@ -65,7 +65,10 @@ class CreateSport extends Component {
             }
             else if(Number(RunDistance) == 0){
                 Toast.info('请输入跑步距离', 1);
-            } else {
+            }else if(checkSpeed(RunDistance,RunTimeLong)<=4){
+                Toast.info('配速太低,请检查数据是否输入正确', 1);
+            }
+            else {
                 let formData = new FormData();
                 let list = [];
                 let count = 0;

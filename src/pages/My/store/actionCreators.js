@@ -100,3 +100,20 @@ export function getMyHonorList (userCode) {
         })
     }
 }
+
+//获取用户组
+const changeGroupInfo = (groupInfo) =>({
+    type: constants.GET_GROUP_INFO,
+    groupInfo
+})
+
+export const getGroup = () =>{
+    return (dispatch) =>{
+        req.post("/api/User/EnquiryGroup").then((res)=>{
+            let groupInfo = res.data;
+            dispatch(changeGroupInfo(groupInfo))
+        }).catch((res)=>{
+            console.log(res)
+        })
+    }
+}

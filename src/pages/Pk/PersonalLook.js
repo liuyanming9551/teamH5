@@ -99,25 +99,25 @@ class PersonalLook extends React.Component {
         let isPKList = false;
         if(pkDetail){
             pkDetailData = Map(pkDetail);
-            console.log(pkDetailData.get('PKB'),userCode,pkDetailData.get('PKStatus'))
-            if(pkDetailData.get('PKB') === userCode && (pkDetailData.get('PKAccept') === 0 || pkDetailData.get('PKAccept') === 1)){
+            console.log(pkDetailData.get('PKBUserCode'),userCode)
+            if(pkDetailData.get('PKBUserCode') === userCode && (pkDetailData.get('PKAccept') === 0 || pkDetailData.get('PKAccept') === 1)){
                 isOwn = true;
             }
             if(pkDetailData.get('PKAccept') === 2){
                 isPKList = true;
             }
         }
-        const newList = pkDetailData?pkDetailData.get('PKDataList').toJS():'';
+        const newList = pkDetailData?pkDetailData.get('PKData').toJS():'';
         const pkDetailList = [];
         if (newList.length) {
             for (let i = 0 ; i < newList.length ; i++) {
                 if(newList[i]){
                     pkDetailList.push(
-                        <div key={newList[i].Id} className='pkDetailListWrap'>
+                        <div key={newList[i].PKCode} className='pkDetailListWrap'>
                             <div className='pkItemDetail'>
-                                <span className='pkItem'>{newList[i].StatisticalDate}</span>
-                                <span className='pkItem'>{newList[i].PKADistance}</span>
-                                <span className='pkItem'>{newList[i].PKBDistance}</span>
+                                <span className='pkItem'>{newList[i].RunDate}</span>
+                                <span className='pkItem'>{newList[i].RunDistanceA}</span>
+                                <span className='pkItem'>{newList[i].RunDistanceB}</span>
                             </div>
                         </div>
                     )
@@ -136,9 +136,9 @@ class PersonalLook extends React.Component {
                 <div className='pkDetailWrap' style={isPKList?{display:'block'}:{display:'none'}}>
                     <WhiteSpace size='lg'/>
                     <div className='pkUserName'>
-                        <span className='pkUserNameItem' style={{textAlign:'right'}}>{pkDetailData?pkDetailData.get('PKAName'):''}</span>
+                        <span className='pkUserNameItem' style={{textAlign:'right'}}>{pkDetailData?pkDetailData.get('PKAUserName'):''}</span>
                         <span className={pkDetailData?this.getPkIcon(pkDetailData.get('PKResult')):''} style={{fontSize:'28px'}}></span>
-                        <span className='pkUserNameItem' style={{textAlign:'left'}}>{pkDetailData?pkDetailData.get('PKBName'):''}</span>
+                        <span className='pkUserNameItem' style={{textAlign:'left'}}>{pkDetailData?pkDetailData.get('PKBUserName'):''}</span>
                     </div>
                     {pkDetailList}
                     {/*<Pagination total={Math.ceil(newList.length/5)}*/}
@@ -175,12 +175,12 @@ class PersonalLook extends React.Component {
         return (
             <div>
                 <List>
-                    <Item extra={pkDetailData?pkDetailData.get('PKAName'):''}>发起人</Item>
-                    <Item extra={pkDetailData?pkDetailData.get('CreateTime'):''}>发起日期</Item>
+                    <Item extra={pkDetailData?pkDetailData.get('PKAUserName'):''}>发起人</Item>
+                    <Item extra={pkDetailData?pkDetailData.get('StartDate'):''}>发起日期</Item>
                     <Item extra={pkDetailData?pkDetailData.get('EndDate'):''}>结束日期</Item>
-                    <Item extra={pkDetailData?pkDetailData.get('PKBName'):''}>被挑战者</Item>
-                    <Item extra={pkDetailData?pkDetailData.get('AdjustedDistance'):''}>挑战者运动量（公里）</Item>
-                    <Item extra={pkDetailData?pkDetailData.get('AdjustedDistance'):''}>被挑战者运动量（公里）</Item>
+                    <Item extra={pkDetailData?pkDetailData.get('PKBUserName'):''}>被挑战者</Item>
+                    <Item extra={pkDetailData?pkDetailData.get('PKAAdjustedData'):''}>挑战者运动量（公里）</Item>
+                    <Item extra={pkDetailData?pkDetailData.get('PKBAdjustedData'):''}>被挑战者运动量（公里）</Item>
                     <TextareaItem
                         value={pkDetailData?pkDetailData.get('PKProfit'):''}
                         editable={false}

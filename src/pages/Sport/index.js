@@ -6,6 +6,7 @@ import {actionCreators} from './store';
 import "../../iconfont/common.css";
 import "./index.less"
 import {baseUrl} from "../../request";
+import MySportChart from './mySportChart';
 
 class Sport extends Component {
     constructor(props){
@@ -16,9 +17,10 @@ class Sport extends Component {
         imgHeight: 150,
     }
     componentDidMount() {
-        const {changeSportControl,userCode} =this.props;
+        const {changeSportControl,userCode,changeMySportChart} =this.props;
         if(userCode){
             changeSportControl(userCode)
+            changeMySportChart(userCode)
         }
     }
     render() {
@@ -93,6 +95,7 @@ class Sport extends Component {
                         </Card>
                         <WhiteSpace size="lg" />
                     </WingBlank>
+                    <MySportChart />
                 </footer>
             </div>
         )
@@ -105,6 +108,9 @@ const mapState = (state) => ({
 const mapDispatch = (dispatch) => ({
     changeSportControl(userCode){
         dispatch(actionCreators.getSportControl(userCode))
+    },
+    changeMySportChart(userCode){
+        dispatch(actionCreators.getMySportChart(userCode))
     }
 })
 export default connect(mapState,mapDispatch)(Sport);

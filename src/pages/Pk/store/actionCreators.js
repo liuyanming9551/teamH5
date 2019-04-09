@@ -57,7 +57,7 @@ const changePkDetail = (pkDetail) =>({
 })
 export const getPkDetail = (pkCode) =>{
     return (dispatch) => {
-        req.post('api/PK/PersonalPKDetails',{
+        req.post('/api/PK/PKDetails',{
             PKCode:pkCode
         }).then((res) => {
             if(res){
