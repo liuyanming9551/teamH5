@@ -37,18 +37,40 @@
             font-weight: 600;
             padding-bottom: 25px;
             margin-bottom: 10px;
+            position: relative;
+            .operation {
+                display: block;
+                position: absolute;
+                right: 0;
+                top: 0;
+                width: 100px;
+                height: 50px;
+                font-size: 30px;
+                color: #333;
+            }
         }
         .evaluateBox{
             display: flex;
             flex-wrap: wrap;
             padding: 10px;
             .skill{
+                position: relative;
                 padding:15px;
                 border:2px solid #ddd;
                 border-radius: 6px;
                 margin: 10px;
                 font-size: 28px;
                 color: #666;
+                i {
+                    font-style: normal;
+                }
+                b {
+                    position: absolute;
+                    right: -15px;
+                    top: -15px;
+                    font-size: 0.3rem;
+                    color: #888
+                }
             }
         }
         .rankTitle{

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { List, Card, WingBlank, WhiteSpace, Button, Carousel,Tag } from 'antd-mobile';
+import { List, Card, WingBlank, WhiteSpace, Button, Carousel,Tag, Modal } from 'antd-mobile';
 import {Map} from "immutable";
 import {connect} from 'react-redux';
 import {withRouter} from "react-router-dom";
@@ -7,6 +7,7 @@ import "./index.less";
 import {actionCreators} from "../store";
 import {baseUrl} from "../../../request";
 const Item = List.Item;
+const alert = Modal.alert;
 class UserInfo extends Component {
     state = {
         imgHeight: 100,
@@ -22,6 +23,13 @@ class UserInfo extends Component {
         const {history} = this.props;
         history.push('/my/changeDetail');
     }
+
+    // 确认删除
+    confirmDelete = () => {
+        console.log("confirmDelete")
+
+    }
+
     render() {
         const {userInformation,userModel,cardInfo, myHonor} = this.props;
         let honorImgData = ['grade1', 'grade2', 'grade3', 'grade4', 'grade5', 'grade6', 'grade7']
@@ -89,23 +97,30 @@ class UserInfo extends Component {
                         </Card>
                         <WhiteSpace size="sm" />
                     </WingBlank>
-                    {/*<WingBlank size="md">*/}
-                        {/*<Card>*/}
-                            {/*<Card.Body>*/}
-                                {/*<div className='cardTitle'>*/}
-                                    {/*他人评价*/}
-                                {/*</div>*/}
-                                {/*<div className='evaluateBox'>*/}
-                                    {/*<span className='skill'>美丽（1）</span>*/}
-                                    {/*<span className='skill'>大方</span>*/}
-                                    {/*<span className='skill'>迷人</span>*/}
-                                    {/*<span className='skill'>with icon and inline</span>*/}
-                                    {/*<span className='skill'>完了,这个人废了（99999）</span>*/}
-                                {/*</div>*/}
-                            {/*</Card.Body>*/}
-                        {/*</Card>*/}
-                        {/*<WhiteSpace size="sm" />*/}
-                    {/*</WingBlank>*/}
+                    <WingBlank size="md">
+                        <Card>
+                            <Card.Body>
+                                <div className='cardTitle'>
+                                    他人评价
+                                </div>
+                                <div className='evaluateBox'>
+                                    <span className='skill'>
+                                        <i> </i>
+                                        <b 
+                                            className="iconfont icon-shanchu1"  
+                                            onClick={() =>
+                                                alert('是否删除？', '', [
+                                                    { text: '取消'},
+                                                    { text: '确定', onPress: () => {this.confirmDelete()} },
+                                                ])
+                                            }
+                                        ></b>
+                                    </span>
+                                </div>
+                            </Card.Body>
+                        </Card>
+                        <WhiteSpace size="sm" />
+                    </WingBlank>
                     <WingBlank size="md">
                         <Card>
                             <Card.Body>

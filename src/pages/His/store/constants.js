@@ -1,1 +1,2 @@
-export const GET_USER_INFORMATION = 'his/GET_USER_INFORMATION';
+export const GET_HIS_INFO = 'his/GET_HIS_INFO';
+export const ADD_COMMENT = 'his/ADD_COMMENT';

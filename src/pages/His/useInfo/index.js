@@ -1,22 +1,49 @@
 import React, { Component } from "react";
-import { List, Card, WingBlank, WhiteSpace, Button, Carousel,Tag } from 'antd-mobile';
+import { List, Card, WingBlank, WhiteSpace, Button, Carousel,Modal } from 'antd-mobile';
 import {Map} from "immutable";
 import {connect} from 'react-redux';
+import {withRouter} from "react-router-dom";
 import "./index.less";
 import {actionCreators} from "../store";
 const Item = List.Item;
+const alert = Modal.alert;
 class UserInfo extends Component {
     state = {
         imgHeight: 100,
+        deleteVisible: false,
+        likeStatus: false,
+        commentData: [
+            {content: '美丽', like: 1},
+            {content: '可爱', like: 3},
+            {content: '大方', like: 5}
+        ]
     }
 
     componentDidMount() {
         const {userCode} = this.props;
-        this.props.getUserInfo(userCode)
+        this.props.getHisInfo(userCode)
+    }
+
+    // 点击添加评价
+    onAdd = () => {
+        const {history} = this.props;
+        history.push('/his/AddComment');
+    }
+
+    // 确认删除
+    confirmDelete = (index) => {
+        console.log("confirmDelete", index)
+
+    }
+
+    // 点击标签，点赞或取消
+    onItemClick = (index) => {
+        
     }
 
     render() {
-        const {userInformation,userModel,cardInfo} = this.props;
+        const {userInformation,userModel,cardInfo,userCode} = this.props;
+        const {deleteVisible, commentData} = this.state;
         let map = Map(userModel);
         let userInformationData = '';
         let userSkills = [];
@@ -28,6 +55,7 @@ class UserInfo extends Component {
             cardList = cardToArray.toJS();
         }
         if(userInformation){
+            console.log("userInformation", userInformation)
             userInformationData = userInformation.toJS();
             userSkills = userInformationData.UserSkill?userInformationData.UserSkill.split(','):'';
         }
@@ -40,7 +68,7 @@ class UserInfo extends Component {
                     <div className="userLabel">
                         <div className="userName">{userInformationData.UserName}</div>
                         <div className="userTitle">{map.get("position")}</div>
-                        <div className="company">北京易勤信息技术有限公司</div>
+                        <div className="company">{userInformationData.GroupName}</div>
                     </div>
                 </header>
                 <footer className="ownDesc">
@@ -77,23 +105,28 @@ class UserInfo extends Component {
                         </Card>
                         <WhiteSpace size="sm" />
                     </WingBlank>
-                    {/*<WingBlank size="md">*/}
-                        {/*<Card>*/}
-                            {/*<Card.Body>*/}
-                                {/*<div className='cardTitle'>*/}
-                                    {/*他人评价*/}
-                                {/*</div>*/}
-                                {/*<div className='evaluateBox'>*/}
-                                    {/*<span className='skill'>美丽（1）</span>*/}
-                                    {/*<span className='skill'>大方</span>*/}
-                                    {/*<span className='skill'>迷人</span>*/}
-                                    {/*<span className='skill'>with icon and inline</span>*/}
-                                    {/*<span className='skill'>完了,这个人废了（99999）</span>*/}
-                                {/*</div>*/}
-                            {/*</Card.Body>*/}
-                        {/*</Card>*/}
-                        {/*<WhiteSpace size="sm" />*/}
-                    {/*</WingBlank>*/}
+                    <WingBlank size="md">
+                        <Card>
+                            <Card.Body>
+                                <div className='cardTitle'>
+                                    <span>他人评价</span>
+                                    <span className="operation iconfont icon-add" onClick={() => {this.onAdd()}}> 添加</span>
+                                </div>
+                                <div className='evaluateBox'>
+                                    {
+                                        commentData.map((item, index) => {
+                                            return(
+                                                <span className='skill' key={index} onClick={() => {this.onItemClick(index)}}>
+                                                    {item.content} ({item.like})
+                                                </span>
+                                            )
+                                        })
+                                    }
+                                </div>
+                            </Card.Body>
+                        </Card>
+                        <WhiteSpace size="sm" />
+                    </WingBlank>
                     <WingBlank size="md">
                         <Card>
                             <Card.Body>
@@ -160,20 +193,15 @@ class UserInfo extends Component {
 }
 const mapState = (state) => ({
     userCode:state.getIn(['login','userCode']),
-    userInformation:state.getIn(['my','userInformation']),
-    userModel:state.getIn(['login','userModel']),
-    cardInfo:state.getIn(['my','cardInfo'])
+    userInformation:state.getIn(['his','userInformation']),
 })
 const mapDispatch = (dispatch) => ({
-    getUserInfo(userCode){
+    getHisInfo(userCode){
         let param = {
             UserCode:userCode
         }
-        let sportParam = {
-            Creator:userCode
-        }
-        dispatch(actionCreators.getUserInformation(param));
-        // dispatch(actionCreators.getMysportInfo(sportParam));
+        dispatch(actionCreators.getHisInfo(param));
     }
 })
-export default connect(mapState,mapDispatch)(UserInfo);
+
+export default connect(mapState,mapDispatch)(withRouter(UserInfo));

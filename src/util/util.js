@@ -106,3 +106,21 @@ export const compressImage = (file, success, error) => {
         error(e);
     }
 }
+/**
+ * @Description: 校验配速
+ * @augments: distance:距离,time:时间
+ * @author YanMing Liu
+ * @date 2019/4/4
+*/
+export const checkSpeed = (distance,time) => {
+    let timeArr = time.split('.');
+    const [minutes,seconds] = timeArr;
+    if(distance.length > 0 && minutes.length > 0 && seconds.length > 0) {
+        let speed = parseFloat(minutes) + parseFloat(seconds) / 60.0;
+        speed = speed / parseFloat(distance);
+        let speed_minutes = Math.floor(speed);
+        let speed_seconds = Math.floor((speed - speed_minutes) * 60.0);
+        return `${speed_minutes}.${speed_seconds}`;
+    }
+    return;
+}

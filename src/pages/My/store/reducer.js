@@ -5,7 +5,8 @@ const defaultState = fromJS({
     isChangeSuccess:false,
     weekRank:'',
     cardInfo:'',
-    myHonor: ''
+    myHonor: '',
+    groupInfo:''
 });
 const changeUserInfo = (state,action) => {
     return state.merge({
@@ -33,6 +34,16 @@ const changeMyHonor = (state,action) =>{
     })
 }
 
+/**
+ * @Description: 获取组信息
+ * @author YanMing Liu
+ * @date 2019/4/8
+*/
+const changeGroupData = (state,action) =>{
+    return state.merge({
+        groupInfo:fromJS(action.groupInfo)
+    })
+}
 export default (state = defaultState, action) => {
     switch(action.type) {
         case constants.GET_USER_INFORMATION:
@@ -43,8 +54,10 @@ export default (state = defaultState, action) => {
             return cancelDetailState(state);
         case constants.CHANGE_MY_SPORT_INFO:
             return changeCardInfo(state,action);
-            case constants.GET_MY_HONOR:
+        case constants.GET_MY_HONOR:
             return changeMyHonor(state,action);
+        case constants.GET_GROUP_INFO:
+            return changeGroupData(state,action)
         default:
             return state;
     }

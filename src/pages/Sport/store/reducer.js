@@ -11,7 +11,8 @@ const defaultState = fromJS({
     allTypes: [],
     activityDetailData: '',
     activityUpload: false,
-    bannerData: ''
+    bannerData: '',
+    mySportChartData:[]
 })
 
 /**
@@ -107,9 +108,18 @@ const cancelUploadActivity = (state) =>{
 
 // 查看活动详情
 const changeActivity = (state, action) => {
-    console.log("action", action)
     return state.merge({
         activityDetailData:fromJS(action.res)
+    })
+}
+/**
+ * @Description: 获取个人折线图数据
+ * @author YanMing Liu
+ * @date 2019/4/8
+*/
+const changeMySportChart = (state,action) => {
+    return state.merge({
+        mySportChartData:fromJS(action.chartData)
     })
 }
 
@@ -148,6 +158,8 @@ export default (state = defaultState,action) => {
             return changeUploadActivity(state);
         case constants.GET_BANNER_DATA:
             return changeBannerData(state, action);
+        case constants.GET_MY_SPORT_CHART:
+            return changeMySportChart(state,action)
         default:
             return state;
     }

@@ -260,3 +260,21 @@ export function getBannerData(callback) {
 }
 
 
+/**
+ * @Description: 个人折线图接口
+ * @author YanMing Liu
+ * @date 2019/4/8
+*/
+const changeMySportChart = (chartData) =>({
+    type:constants.GET_MY_SPORT_CHART,
+    chartData
+})
+export const getMySportChart = (userCode) =>{
+    return (dispatch) =>{
+        req.post('/api/RunData/MyLastExercise',{
+            UserCode:userCode
+        }).then((res)=>{
+            dispatch(changeMySportChart(res))
+        })
+    }
+}

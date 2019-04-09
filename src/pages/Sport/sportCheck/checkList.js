@@ -3,7 +3,6 @@ import {connect} from 'react-redux';
 import {List, Badge, ListView, Toast, PullToRefresh} from "antd-mobile";
 import "./index.less";
 import {Link} from "react-router-dom";
-import {actionCreators} from './../store';
 import ReactDOM from "react-dom";
 import * as req from "../../../request";
 
@@ -38,14 +37,12 @@ class SportCheck extends Component {
     requestCouponsList() {
         const {userCode} = this.props;
         let dataInfo = {
-            RunDateNum: 0,
             UserCode: userCode,
-            AuditStatus: 4,
             PageIndex: this.state.pageNo,
             PageSize: this.state.pageSize
         }
          //  /api/RunData/AuditList
-        req.post('/api/RunData/MyMotionData',dataInfo).then((res) => {
+        req.post('/api/RunData/AuditList',dataInfo).then((res) => {
             let couponList = [...this.state.couponList, ...res.PageList];
             console.log(couponList)
             this.setState({
@@ -75,7 +72,35 @@ class SportCheck extends Component {
             this.requestCouponsList();
         })
     };
-
+    getCheckState(auditStatus) {
+        switch (auditStatus) {
+            case 0:
+                return {
+                    value:"待审核",
+                    color:"#03a9f4"
+                }
+            case 1:
+                return {
+                    value:"通过",
+                    color:"#4caf50"
+                }
+            case 2:
+                return {
+                    value:"不通过",
+                    color:"#f44336"
+                }
+            case 3:
+                return {
+                    value:"疑问",
+                    color:"#ffc107"
+                }
+            default:
+                return {
+                    value:"",
+                    color:"#000000"
+                }
+        }
+    }
     // 加载更多
     onEndReached = () => {
         if (this.state.isLoading || (this.state.totalPage < this.state.pageNo)) {
@@ -96,17 +121,18 @@ class SportCheck extends Component {
                         <List.Item className='checkTitle'>
                             <span className="checkUser">{rowData.UserName}</span>
                             <span className="sportTips">当日已完成{rowData.DailyDistance}km</span>
+                            <span className='sportStatus' style={{color:this.getCheckState(rowData.AuditStatus).color}}>{this.getCheckState(rowData.AuditStatus).value}</span>
                         </List.Item>
                         <List.Item arrow="horizontal">
                             <Badge text={0}>
                                 <div className='checkInnerWrap'>
                                     <div className='checkLeft'>
                                         <div className="checkTime"> 时间 <span>{rowData.RunDate}</span></div>
-                                        <div className="checkKm">跑步距离：{rowData.RunDistance}km</div>
+                                        <div className="checkKm">距离：{rowData.RunDistance}km</div>
                                     </div>
                                     <div className='checkRight'>
-                                        <div className="checkDuring">跑步时间 ：<span>{rowData.RunTimeLong}分钟</span></div>
-                                        <div>跑步配速 ：<span>{rowData.RunSpeed}min/km</span></div>
+                                        <div className="checkDuring">时间 ：<span>{rowData.RunTimeLong}分钟</span></div>
+                                        <div>配速 ：<span>{rowData.RunSpeed}min/km</span></div>
                                     </div>
                                 </div>
                             </Badge>
@@ -148,9 +174,7 @@ const mapState = (state) => ({
     userCode:state.getIn(['login','userCode'])
 })
 const mapDispatch = (dispatch) =>({
-    // changeCheckList(userCode){
-    //     dispatch(actionCreators.getCheckList(userCode))
-    // },
+
 
 })
 export default connect(mapState,mapDispatch)(SportCheck)

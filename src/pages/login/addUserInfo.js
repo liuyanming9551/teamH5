@@ -7,18 +7,17 @@ import {connect} from "react-redux";
 class AddUserInfo extends PureComponent{
     constructor(props){
         super(props)
-        this.onChangeColor = this.onChangeColor.bind(this)
+        this.onChangeGroup = this.onChangeGroup.bind(this)
         this.getPresentation = this.getPresentation.bind(this)
         this.getSpeciality = this.getSpeciality.bind(this)
         this.btnSubmit = this.btnSubmit.bind(this)
     }
     state = {
-        cols: 1,
         groupValue: [],
         specialityValue:"",
         presentationValue:""
     };
-    onChangeColor = (group) => {
+    onChangeGroup = (group) => {
         console.log(group)
         this.setState({
             groupValue: group
@@ -79,7 +78,7 @@ class AddUserInfo extends PureComponent{
                     data={groupInfoData}
                     value={this.state.groupValue}
                     cols={1}
-                    onChange={this.onChangeColor}
+                    onChange={this.onChangeGroup}
                 >
                     <List.Item arrow="horizontal">请选择你所在的组</List.Item>
                 </Picker>
