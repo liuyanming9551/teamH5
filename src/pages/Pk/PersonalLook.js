@@ -1,26 +1,28 @@
 import React from "react";
-import {Button, List, Pagination, Icon, TextareaItem, WhiteSpace, WingBlank, Toast} from 'antd-mobile';
+import {Button, List, Pagination, Icon, TextareaItem, WhiteSpace, WingBlank, Toast,Modal} from 'antd-mobile';
 import {connect} from 'react-redux';
 import {Map} from "immutable";
 import {actionCreators} from './store';
 const Item = List.Item;
+const alert = Modal.alert;
 class PersonalLook extends React.Component {
     constructor(props) {
         super(props)
-        this.state= {
-            page:1
-        }
+
     }
     componentDidMount() {
-        const {pkCode,pkAccept,pkAcceptName} = this.props.location.query;
+        const {pkCode,pkAccept,pKAUserCode,pKBUserCode,rejectionTimes} = this.props.location.query;
         const { changePkDetail,changePkState,userCode } =this.props;
         console.log(pkAccept)
         const parmas = {
             PKCode:pkCode,
-            PKAccept:1
+            PKAccept:1,
+            RejectionTimes:rejectionTimes,
+            PKAUserCode:pKAUserCode,
+            PKBUserCode:pKBUserCode
         }
-        console.log(pkAcceptName,userCode)
-        if(pkAccept === 0 && pkAcceptName === userCode){
+        console.log(pKBUserCode,userCode)
+        if(pkAccept === 0 && pKBUserCode === userCode){
             changePkState(parmas)
         }
         changePkDetail(pkCode)
@@ -44,35 +46,44 @@ class PersonalLook extends React.Component {
         }
     }
 
-    onPageBtn = (index) =>{
-        this.setState({
-            page:index
-        })
-    }
+
     handleReject = () => {
-        const {pkCode} = this.props.location.query;
+        const {pkCode,pKAUserCode,pKBUserCode,rejectionTimes} = this.props.location.query;
         const { changePkState } =this.props;
         const parmas = {
             PKCode:pkCode,
-            PKAccept:3
+            PKAccept:3,
+            RejectionTimes:rejectionTimes,
+            PKAUserCode:pKAUserCode,
+            PKBUserCode:pKBUserCode
         }
-        changePkState(parmas)
+        if(rejectionTimes >= 3){
+            alert('拒绝超过3次，你将会被扣除2公里','确定拒绝?', [
+                { text: '取消', onPress: () => console.log('cancel') },
+                {
+                    text: '确定',
+                    onPress: () =>{
+                        changePkState(parmas)
+                    }
+
+                },
+            ])
+        }
+
+
     }
     handleAccept = () =>{
-        const {pkCode} = this.props.location.query;
+        const {pkCode,pKAUserCode,pKBUserCode,rejectionTimes} = this.props.location.query;
         const { changePkState } =this.props;
         const parmas = {
             PKCode:pkCode,
-            PKAccept:2
+            PKAccept:2,
+            RejectionTimes:rejectionTimes,
+            PKAUserCode:pKAUserCode,
+            PKBUserCode:pKBUserCode
         }
         changePkState(parmas)
     }
-    /*
-    * 1.只有自己进来查看详情才有 拒绝和接受 , 通过判断被挑战者的code 是不是当前人的code
-    * 2.pk状态所有人都可以看,但是PK状态为0的时候不显示,状态为 1,2的时候 显示
-    * 3.PK状态为1的时候显示vs图标,状态为2的时候显示 胜负平 3个状态的图标
-    *
-    * */
     getPkIcon(auditStatus) {
         switch (auditStatus) {
             case 0:
@@ -89,7 +100,6 @@ class PersonalLook extends React.Component {
     }
     getDetailArea(){
         const {userCode,pkDetail} = this.props;
-        const {page} = this.state;
         let pkDetailData = '';
         let isOwn = false;
         let isPKList = false;
@@ -137,12 +147,6 @@ class PersonalLook extends React.Component {
                         <span className='pkUserNameItem' style={{textAlign:'left'}}>{pkDetailData?pkDetailData.get('PKBUserName'):''}</span>
                     </div>
                     {pkDetailList}
-                    {/*<Pagination total={Math.ceil(newList.length/5)}*/}
-                                {/*className="custom-pagination-with-icon"*/}
-                                {/*current={Math.ceil(newList.length/5)===0 ? 0 : 1}*/}
-                                {/*onChange={this.onPageBtn}*/}
-                                {/*locale={locale}*/}
-                    {/*/>*/}
                 </div>
 
             </div>

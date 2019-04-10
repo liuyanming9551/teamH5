@@ -223,6 +223,10 @@ class PkList extends PureComponent {
             labelTips:"消息状态",
             dataList:[
                 {
+                    value:'全部',
+                    label:4
+                },
+                {
                     value:'未读',
                     label:0
                 },
@@ -237,16 +241,12 @@ class PkList extends PureComponent {
                 {
                     value:'拒绝',
                     label:3
-                },
-                {
-                    value:'全部',
-                    label:4
                 }
             ],
             id:2
         }]
         const row = (rowData, sectionID, rowID) => {
-            let queryInfo = {pkCode: rowData.PKCode, pkAccept: rowData.PKAccept, pkAcceptName: rowData.PKBUserCode};
+            let queryInfo = {pkCode: rowData.PKCode, pkAccept: rowData.PKAccept, pKAUserCode:rowData.PKAUserCode,pKBUserCode: rowData.PKBUserCode,rejectionTimes:rowData.RejectionTimes};
             let path = {
                 pathname: '/pk/personallook',
                 query: queryInfo

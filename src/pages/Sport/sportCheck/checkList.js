@@ -164,6 +164,10 @@ class SportCheck extends Component {
             labelTips:"状态",
             dataList:[
                 {
+                    value:'全部',
+                    label:4
+                },
+                {
                     value:'未审核',
                     label:0
                 },
@@ -178,10 +182,6 @@ class SportCheck extends Component {
                 {
                     value:'疑问',
                     label:3
-                },
-                {
-                    value:'全部',
-                    label:4
                 }
             ],
             id:2
