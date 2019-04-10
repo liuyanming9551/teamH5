@@ -4,7 +4,7 @@ import {Link, withRouter} from "react-router-dom";
 import {Modal, List, Badge, ListView, Toast, PullToRefresh} from 'antd-mobile';
 import ReactDOM from "react-dom";
 import {connect} from 'react-redux';
-import {CSSTransition} from 'react-transition-group';
+import Search from './../../component/search';
 import './index.less';
 
 const operation = Modal.operation;
@@ -25,9 +25,7 @@ class PkList extends PureComponent {
             dataSource,
             isLoading: false, // 是否显示加载状态
             height: document.documentElement.clientHeight,
-            selectShows: false,
-            inProp: false,
-
+            showMask:false
         };
     }
 
@@ -180,26 +178,74 @@ class PkList extends PureComponent {
 
 
     }
-
-    oneClick = () => {
-        const {inProp, selectShows} = this.state;
-        console.log(selectShows)
+    onClose = (msg) =>{
         this.setState({
-            inProp: !inProp,
-            selectShows: true
+            showMask:msg.showMask
         })
     }
-    onMaskClick = () => {
-        const {selectShows} = this.state;
-        console.log(selectShows)
-        this.setState({
-            selectShows: false
-        })
-    }
+    onConfirm = () =>{
 
+        console.log('我点击了确定')
+    }
+    onReset = () =>{
+
+        console.log('我点击了重置按钮')
+    }
+    onClickBtn = (options) =>{
+        // console.log(options)
+    }
     render() {
-        const {inProp, selectShows} = this.state;
-        console.log("selectShows==========>", selectShows)
+        const searchData = [{
+            labelTips:"日期区间",
+            dataList:[
+                {
+                    value:'未审核',
+                    label:0
+                },
+                {
+                    value:'已通过',
+                    label:1
+                },
+                {
+                    value:'未通过',
+                    label:2
+                },
+                {
+                    value:'疑问',
+                    label:3
+                }
+            ],
+            id:1
+        },{
+            labelTips:"日期区间2",
+            dataList:[
+                {
+                    value:'未审核1',
+                    label:0
+                },
+                {
+                    value:'已通过2',
+                    label:1
+                },
+                {
+                    value:'未通过3',
+                    label:2
+                },
+                {
+                    value:'疑问4',
+                    label:3
+                },
+                {
+                    value:'未通过5',
+                    label:2
+                },
+                {
+                    value:'疑问6',
+                    label:3
+                }
+            ],
+            id:2
+        }]
         const row = (rowData, sectionID, rowID) => {
             let queryInfo = {pkCode: rowData.PKCode, pkAccept: rowData.PKAccept, pkAcceptName: rowData.PKBUserName};
             let path = {
@@ -242,20 +288,14 @@ class PkList extends PureComponent {
         };
         return (
             <div className="listview-wrap">
-                {/*<div className='selectInner' style={selectShows?{display:'block'}:{display:'none'}} onClick={this.onMaskClick}>*/}
-                <CSSTransition
-                    in={inProp}
-                    timeout={300}
-                    unmountOnExit
-                    classNames="alert"
-                >
-                    <div className='selectInfoWrap'>
-                        <div>
-
-                        </div>
-                    </div>
-                </CSSTransition>
-                {/*</div>*/}
+                <Search
+                    data={searchData}
+                    showMask={this.state.showMask}
+                    onClose={this.onClose}
+                    onOk={this.onConfirm}
+                    onReset={this.onReset}
+                    onClickBtn={this.onClickBtn}
+                />
                 <div className="pkActiveBox">
                     <span className='iconfont icon-bianji' onClick={() => operation([
                         {
@@ -264,7 +304,11 @@ class PkList extends PureComponent {
                             }
                         },
                         {
-                            text: '筛选', onPress: this.oneClick
+                            text: '筛选', onPress: () =>{
+                                this.setState({
+                                    showMask:true
+                                })
+                            }
                         },
                     ])}
                     />
