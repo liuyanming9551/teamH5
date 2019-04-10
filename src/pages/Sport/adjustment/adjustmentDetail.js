@@ -9,7 +9,8 @@ class adjustmentDetail extends Component{
     constructor(props){
         super(props)
         this.state = {
-            isOpen: false
+            isOpen: false,
+            chooseImgIndex:0
         }
     }
      componentDidMount(){
@@ -30,9 +31,10 @@ class adjustmentDetail extends Component{
                  return "出错了"
          }
      }
-    handleOpen = () => {
+    handleOpen (index) {
         this.setState({
             isOpen: true,
+            chooseImgIndex:index+1
         });
     };
     handleClose = () => {
@@ -81,14 +83,14 @@ class adjustmentDetail extends Component{
                 </div>
                 <div className="imgViewList">
                     <WingBlank>
-                        <ImageSlides images={newImgList?newImgList:''} isOpen={this.state.isOpen} onClose={this.handleClose} />
+                        <ImageSlides images={newImgList?newImgList:''} index={this.state.chooseImgIndex} isOpen={this.state.isOpen} onClose={this.handleClose} />
                         {
 
-                            newImgList?newImgList.map((item) =>{
+                            newImgList?newImgList.map((item,index) =>{
                                 return (
                                     <img key={item}
                                          src={item}
-                                         onClick={this.handleOpen}
+                                         onClick={this.handleOpen.bind(this,index)}
                                     />
                                 )
                             }):''
