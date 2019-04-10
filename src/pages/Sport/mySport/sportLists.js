@@ -8,6 +8,7 @@ import {Link} from "react-router-dom";
 import { actionCreators } from './../store';
 import Search from './../../../component/search';
 const operation = Modal.operation;
+const alert = Modal.alert;
 class SportList extends Component {
     constructor(props) {
         super(props);
@@ -69,7 +70,7 @@ class SportList extends Component {
     }
 
     // 删除
-    onDelete = (v) => {
+    confirmDelete = (v) => {
         const data = {
             DataCode: v
         };
@@ -223,7 +224,10 @@ class SportList extends Component {
                                     },
                                     {
                                         text: '删除',
-                                        onPress: () => {this.onDelete(rowData.DataCode)},
+                                        onPress: () => alert('是否删除？', '', [
+                                            { text: '取消'},
+                                            { text: '确定', onPress: () => {this.confirmDelete(rowData.DataCode)} },
+                                        ]),
                                         style: { backgroundColor: '#F4333C', color: 'white' },
                                     },
                                 ]}
