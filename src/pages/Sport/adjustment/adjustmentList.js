@@ -46,7 +46,6 @@ class AdjustmentList extends Component {
         }
         req.post('/api/AdjustedData/ActivityList', dataInfo).then((res) => {
             let activityList = [...this.state.activityList, ...res.PageList];
-            // console.log(activityList)
             this.setState({
                 isShowContent: true,
                 pageNo: this.state.pageNo + 1,
@@ -198,29 +197,6 @@ class AdjustmentList extends Component {
                     }
                     
                 </div>
-                {/* <div className="list-wrap">
-                    <List className="my-list" style={{textAlign: 'center'}}>
-                        <Link to="/sport/adjustmentDetail">
-                            <List.Item>
-                                <div className="list-content">
-                                    <p>
-                                        <span className="ad-name">爬凤凰山</span>
-                                        <span className="ad-time">参加人数：3人</span>
-                                    </p>
-                                    <p className="list-discription">
-                                        在一个阳光明媚、晴空万里的周末，小伙伴们相约一起去爬凤凰山。
-                                    </p>
-                                    <p>
-                                        2019-03-21
-                                    </p>
-                                </div>
-                                <div className="list-img">
-                                    <img src="" />
-                                </div>
-                            </List.Item>
-                        </Link>
-                    </List>
-                </div> */}
                 <ListView
                     className="list-view"
                     key={1}

@@ -1,12 +1,11 @@
 import React, { Component } from "react";
-import { List, Card, WingBlank, WhiteSpace, Carousel, Modal } from 'antd-mobile';
+import { Card, WingBlank, WhiteSpace, Carousel, Modal } from 'antd-mobile';
 import {Map} from "immutable";
 import {connect} from 'react-redux';
 import {withRouter} from "react-router-dom";
 import "./index.less";
 import {actionCreators} from "../store";
 import {baseUrl} from "../../../request";
-const Item = List.Item;
 const alert = Modal.alert;
 class UserInfo extends Component {
     constructor(props) {
@@ -46,17 +45,6 @@ class UserInfo extends Component {
             [key]: false,
         });
     }
-
-    // onWrapTouchStart = (e) => {
-    //     // fix touch to scroll background page on iOS
-    //     if (!/iPhone|iPod|iPad/i.test(navigator.userAgent)) {
-    //         return;
-    //     }
-    //     const pNode = closest(e.target, '.am-modal-content');
-    //     if (!pNode) {
-    //         e.preventDefault();
-    //     }
-    // }
 
     render() {
         const {userInformation,userModel,cardInfo, myHonor} = this.props;
@@ -250,7 +238,6 @@ class UserInfo extends Component {
                     onClose={this.onClose('modal')}
                     title="荣誉等级获得条件"
                     footer={[{ text: '关闭', onPress: () => { console.log('ok'); this.onClose('modal')(); } }]}
-                    // wrapProps={{ onTouchStart: this.onWrapTouchStart }}
                     >
                     <div style={{textAlign: 'left', paddingLeft: '20px'}}>
                         青铜等级：20km，PK 1胜 <br />

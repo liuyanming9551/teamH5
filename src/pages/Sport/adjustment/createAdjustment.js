@@ -93,7 +93,6 @@ class CreateAdjustment extends Component {
             personCount = 0;
         }
         this.props.form.validateFields((err, values) => {
-            // console.log("values", values)
             const fieldsValue = this.props.form.getFieldsValue();
             const activityDate = fieldsValue.activityDate.toISOString().slice(0, 10)
             if (!values.activityName) {
