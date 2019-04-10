@@ -84,6 +84,13 @@ class UserInfo extends Component {
     // 提交评价
     onSubmit = () => {
         const {isEvaluatedCode, evaluaterCode, evaluateContent} = this.state;
+        const {hisInformation} = this.props;
+        let hisInfoData = '';
+        let evaluateList = [];
+        if(hisInformation){
+            hisInfoData = hisInformation.toJS();
+            evaluateList = hisInfoData.UserTable.EvaluateList;
+        }
         const params = {
             EvaluatedPerson: isEvaluatedCode,
             Evaluater: evaluaterCode,
@@ -93,15 +100,19 @@ class UserInfo extends Component {
             UserCode: isEvaluatedCode
         }
         if (evaluateContent) {
-            this.props.addComment(params, (res) => {
-                if (res.IsSuccess) {
-                    Toast.success('添加评价成功', 1);
-                } else {
-                    Toast.fail('添加评价失败', 1);
-                }
-                this.onClose()
-                this.props.getHisInfo(data);
-            });
+            if (evaluateList.length < 7) {
+                this.props.addComment(params, (res) => {
+                    if (res.IsSuccess) {
+                        Toast.success('添加评价成功', 1);
+                    } else {
+                        Toast.fail('添加评价失败', 1);
+                    }
+                    this.onClose()
+                    this.props.getHisInfo(data);
+                });
+            } else {
+                Toast.info('最多添加六条评价', 1);
+            }
         } else {
             Toast.info('评价内容不能为空', 1);
         }

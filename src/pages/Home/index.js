@@ -1,14 +1,11 @@
 import React, {PureComponent} from 'react';
 import {connect} from "react-redux";
 import {Link} from 'react-router-dom';
-import {NoticeBar, Card, WingBlank, WhiteSpace,Button, List, ListView} from 'antd-mobile';
+import {NoticeBar, Card, WingBlank, WhiteSpace, List, ListView} from 'antd-mobile';
 import {actionCreators} from './store';
 import "./index.less";
 import {baseUrl} from "../../request";
-import { width } from 'window-size';
 
-const Item = List.Item;
-const Brief = Item.Brief;
 const goldImgList = ['gold1','gold2','gold3']
 class Home extends PureComponent {
     constructor(props) {
