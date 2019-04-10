@@ -29,12 +29,13 @@ export const getAllUser = (userCode) => {
 const changeCreatePkSuccess = () =>({
     type:constants.CHANGE_CREATE_PK_SUCCESS
 })
-export const createPk = (pkInfo) => {
+export const createPk = (pkInfo,cb) => {
     return (dispatch) => {
         req.post('/api/PK/AddPK',pkInfo).then((res) =>{
-            if(res.IsSuccess === true){
+            if(res.code === 1001){
                 dispatch(changeCreatePkSuccess())
             }
+            cb && cb(res)
         })
     }
 }

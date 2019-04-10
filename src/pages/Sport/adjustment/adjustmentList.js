@@ -1,16 +1,14 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
-import {actionCreators} from './../store';
 import {PullToRefresh, ListView, Toast, List, Badge, Modal} from 'antd-mobile';
 import ReactDOM from 'react-dom';
 import "./index.less";
-import axios from "axios";
 import * as req from '../../../request';
 import {baseUrl} from './../../../request';
-import Qs from 'qs';
+import Search from './../../../component/search';
 const operation = Modal.operation;
-class AdjustmentList extends React.Component {
+class AdjustmentList extends Component {
     constructor(props) {
         super(props);
         const dataSource = new ListView.DataSource({
@@ -26,6 +24,7 @@ class AdjustmentList extends React.Component {
             dataSource,
             isLoading: false, // 是否显示加载状态
             height: document.documentElement.clientHeight,
+            showMask:false
         };
     }
     componentDidMount(){
@@ -37,12 +36,10 @@ class AdjustmentList extends React.Component {
     }
 
     // 获取列表
-    getActivityList() {
+    getActivityList(activityDateNum = 0) {
         let dataInfo = {
-            // RunDateNum:0,
-            // UserCode:"B7AF1D6B-964A-4EDB-9F02-5324F71CDBEE",
-            // AuditStatus:4,
-            ActivityDateNum: 0,
+
+            ActivityDateNum: activityDateNum,
             ParameterCode: '',
             PageIndex:this.state.pageNo,
             PageSize:this.state.pageSize,
@@ -91,7 +88,45 @@ class AdjustmentList extends React.Component {
             this.getActivityList()
         });
     };
+    onClose = (msg) =>{
+        this.setState({
+            showMask:msg.showMask
+        })
+    }
+    onConfirm = (options) =>{
+        const [pKDate] = options;
+        let searchData = pKDate?pKDate.label:pKDate;
+        this.setState({
+            pageNo: 1,
+            totalPage: 0,
+            couponList: [],
+        }, () => {
+            this.getActivityList(searchData);
+        })
+    }
     render() {
+        const searchData = [{
+            labelTips:"时间区间",
+            dataList:[
+                {
+                    value:'全部',
+                    label:0
+                },
+                {
+                    value:'本周内',
+                    label:1
+                },
+                {
+                    value:'本月内',
+                    label:2
+                },
+                {
+                    value:'本季度',
+                    label:3
+                }
+            ],
+            id:1
+        }]
         const {rightControl} = this.props;
         const row =  (rowData, sectionID, rowID) => {
             return (
@@ -124,6 +159,12 @@ class AdjustmentList extends React.Component {
         } ;
         return (
             <div className="adjustment-list">
+                <Search
+                    data={searchData}
+                    showMask={this.state.showMask}
+                    onClose={this.onClose}
+                    onOk={this.onConfirm}
+                />
                 <div className="activeBtn">
                     {
                         rightControl ? (
@@ -135,7 +176,9 @@ class AdjustmentList extends React.Component {
                                 },
                                 {
                                     text: '筛选', onPress: () => {
-                                        this.props.location.history.push('/sport/searchSport')
+                                        this.setState({
+                                            showMask:true
+                                        })
                                     }
                                 },
                             ])}
@@ -144,7 +187,9 @@ class AdjustmentList extends React.Component {
                             <span className="iconfont icon-bianji" onClick={() => operation([
                                 {
                                     text: '筛选', onPress: () => {
-                                        this.props.location.history.push('/sport/searchSport')
+                                        this.setState({
+                                            showMask:true
+                                        })
                                     }
                                 },
                             ])}
@@ -210,9 +255,7 @@ const mapState = (state) => ({
 })
 
 const mapDispatch = (dispatch) => ({
-    // getActivityList(){
-    //     dispatch(actionCreators.getActivityList())
-    // }
+
 })
 
 export default connect(mapState,mapDispatch)(AdjustmentList);

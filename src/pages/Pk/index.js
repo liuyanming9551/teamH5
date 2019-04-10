@@ -35,15 +35,13 @@ class PkList extends PureComponent {
             height: hei
         })
         this.requestCouponsList();
-
-
     }
 
     //获取列表
-    requestCouponsList() {
+    requestCouponsList(pKDate=0,pKAccept=4) {
         let dataInfo = {
-            PKDate: 0,
-            PKAccept: 4,
+            PKDate: pKDate,
+            PKAccept: pKAccept,
             PageIndex: this.state.pageNo,
             PageSize: this.state.pageSize
         }
@@ -183,71 +181,72 @@ class PkList extends PureComponent {
             showMask:msg.showMask
         })
     }
-    onConfirm = () =>{
-
-        console.log('我点击了确定')
-    }
-    onReset = () =>{
-
-        console.log('我点击了重置按钮')
-    }
-    onClickBtn = (options) =>{
-        // console.log(options)
+    onConfirm = (options) =>{
+        const [pKDate,pKAccept] = options;
+        let searchData = pKDate?pKDate.label:pKDate;
+        let searState = pKAccept?pKAccept.label:pKAccept;
+        this.setState({
+            pageNo: 1,
+            totalPage: 0,
+            couponList: [],
+        }, () => {
+            this.requestCouponsList(searchData,searState);
+        })
     }
     render() {
         const searchData = [{
-            labelTips:"日期区间",
+            labelTips:"时间区间",
             dataList:[
                 {
-                    value:'未审核',
+                    value:'全部',
                     label:0
                 },
                 {
-                    value:'已通过',
+                    value:'今天',
                     label:1
                 },
                 {
-                    value:'未通过',
+                    value:'本周内',
                     label:2
                 },
                 {
-                    value:'疑问',
+                    value:'本月内',
                     label:3
+                },
+                {
+                    value:'本季度',
+                    label:4
                 }
             ],
             id:1
         },{
-            labelTips:"日期区间2",
+            labelTips:"消息状态",
             dataList:[
                 {
-                    value:'未审核1',
+                    value:'未读',
                     label:0
                 },
                 {
-                    value:'已通过2',
+                    value:'已读',
                     label:1
                 },
                 {
-                    value:'未通过3',
+                    value:'接受',
                     label:2
                 },
                 {
-                    value:'疑问4',
+                    value:'拒绝',
                     label:3
                 },
                 {
-                    value:'未通过5',
-                    label:2
-                },
-                {
-                    value:'疑问6',
-                    label:3
+                    value:'全部',
+                    label:4
                 }
             ],
             id:2
         }]
         const row = (rowData, sectionID, rowID) => {
-            let queryInfo = {pkCode: rowData.PKCode, pkAccept: rowData.PKAccept, pkAcceptName: rowData.PKBUserName};
+            let queryInfo = {pkCode: rowData.PKCode, pkAccept: rowData.PKAccept, pkAcceptName: rowData.PKBUserCode};
             let path = {
                 pathname: '/pk/personallook',
                 query: queryInfo
@@ -293,8 +292,6 @@ class PkList extends PureComponent {
                     showMask={this.state.showMask}
                     onClose={this.onClose}
                     onOk={this.onConfirm}
-                    onReset={this.onReset}
-                    onClickBtn={this.onClickBtn}
                 />
                 <div className="pkActiveBox">
                     <span className='iconfont icon-bianji' onClick={() => operation([
@@ -340,7 +337,9 @@ class PkList extends PureComponent {
     }
 }
 
-const mapState = (state) => ({})
+const mapState = (state) => ({
+
+})
 const mapDispatch = (dispatch) => ({
     changeSelectShows() {
         dispatch()

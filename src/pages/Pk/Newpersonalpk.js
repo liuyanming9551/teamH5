@@ -57,7 +57,13 @@ class Newpersonalpk extends React.Component {
                 PKB:people,
                 PKProfit:wager
             }
-            createPkInfo(parmas)
+            createPkInfo(parmas,(res)=>{
+                if(res.code === 1001){
+
+                }else {
+                    Toast.fail(res.message,1);
+                }
+            })
         })
 
     }
@@ -144,8 +150,8 @@ const mapDispatch = (dispatch) =>({
     changeAllUser(userCode){
         dispatch(actionCreators.getAllUser(userCode))
     },
-    createPkInfo(pkInfo){
-        dispatch(actionCreators.createPk(pkInfo))
+    createPkInfo(pkInfo,callback){
+        dispatch(actionCreators.createPk(pkInfo,callback))
     },
     cancelCreatePkState(){
         dispatch(actionCreators.cancelCreatePkSuccess())

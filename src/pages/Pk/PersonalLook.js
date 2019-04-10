@@ -3,10 +3,6 @@ import {Button, List, Pagination, Icon, TextareaItem, WhiteSpace, WingBlank, Toa
 import {connect} from 'react-redux';
 import {Map} from "immutable";
 import {actionCreators} from './store';
-const locale = {
-    prevText: 'Prev',
-    nextText: 'Next',
-};
 const Item = List.Item;
 class PersonalLook extends React.Component {
     constructor(props) {

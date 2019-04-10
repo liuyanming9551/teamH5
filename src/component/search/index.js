@@ -10,24 +10,11 @@ class Search extends React.Component {
         this.state = {
             selectShows: false,
             inProp: false,
-            isActive:[]
+            isActive:[],
+            isSelectItem:[]
         }
     }
-
-    componentDidMount() {
-        const {data} = this.props;
-        const {isActive} = this.state;
-        let activeClass = [];
-        data.map((item,index)=>{
-            activeClass.push(`isActive${index}`)
-        })
-        this.setState({
-            isActive:[...isActive,...activeClass]
-        })
-    }
-
     componentWillReceiveProps = (nextProps) => {
-
         if (nextProps.showMask) {
             this.showMask()
         }
@@ -50,36 +37,37 @@ class Search extends React.Component {
             showMask: false
         })
     }
-    onActive = (e) => {
-        console.log(e)
-    }
+
     selectPlaneClick = (e) => {
         e.stopPropagation();
     }
     onReset = () => {
-        const {onReset} = this.props;
-        onReset()
+        this.setState({
+            isActive:[],
+            isSelectItem:[]
+        })
+
     }
     handleConfirm = () => {
+        const {isSelectItem} = this.state;
         const {onOk} = this.props;
         this.hideMask()
-        onOk()
+        onOk(isSelectItem)
     }
     getLabelValue = (options,index,itemOne) =>{
-        const {onClickBtn} = this.props;
-        onClickBtn(options)
-        if(itemOne)
+        const {isActive,isSelectItem} = this.state;
+        isActive[itemOne-1] = `${options.value}${index}`;
+        isSelectItem[itemOne-1] = options;
         this.setState({
-            isActive:`${options.value}${index}`
+            isActive,
+            isSelectItem
         })
-        console.log(options,index,itemOne)
     }
 
 
     render() {
         const {inProp, selectShows,isActive} = this.state;
         const {data} = this.props;
-        console.log(isActive)
         return (
             <div>
                 <div className='selectInner' style={selectShows ? {display: 'block'} : {display: 'none'}}
@@ -101,9 +89,10 @@ class Search extends React.Component {
                                                 <div className='searchOptions'>
                                                     {
                                                         itemOne.dataList.map((itemTwo,indexTwo) =>{
-                                                            return(
-                                                                <span key={indexTwo} onClick={()=>this.getLabelValue(itemTwo,indexTwo,itemOne.id)} className={isActive === `${itemTwo.value}${indexTwo}`?"active":""}>{itemTwo.value}</span>
-                                                            )
+                                                                return(
+                                                                    <span key={indexTwo} onClick={()=>this.getLabelValue(itemTwo,indexTwo,itemOne.id)} className={isActive[itemOne.id-1] === `${itemTwo.value}${indexTwo}`?"active":""}>{itemTwo.value}</span>
+
+                                                                )
                                                         })
                                                     }
                                                 </div>
@@ -130,5 +119,13 @@ class Search extends React.Component {
         )
     }
 }
-
+Search.defaultProps = {
+    data:[]
+};
+Search.propTypes = {
+    data:PropTypes.array,
+    showMask:PropTypes.bool,
+    onClose:PropTypes.func,
+    onOk:PropTypes.func,
+};
 export default Search
