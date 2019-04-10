@@ -139,7 +139,7 @@ class UserInfo extends Component {
                                         EvaluateList.map((item, index) => {
                                             return (
                                                 <span className='skill' key={index}>
-                                                    <i> {item.EvaluateContent} </i>
+                                                    <i> {item.EvaluateContent} ({item.LikeNum}) </i>
                                                     <b 
                                                         className="iconfont icon-shanchu1"  
                                                         onClick={() =>
