@@ -58,7 +58,7 @@ class UserInfo extends Component {
     }
 
     render() {
-        const {userInformation,userModel,cardInfo, myHonor} = this.props;
+        const {userInformation,userModel,cardInfo} = this.props;
         let honorImgData = ['grade1', 'grade2', 'grade3', 'grade4', 'grade5', 'grade6', 'grade7']
         let map = Map(userModel);
         let userInformationData = '';
@@ -230,7 +230,7 @@ class UserInfo extends Component {
                                             {
                                                 honorImgData.map((item, i) => {
                                                     return (
-                                                        <img key={i} src={`${baseUrl}/termImg/myhonorimg/${item}.png`} style={i+1 <= badge ? { width: (50+ (i*10))+'px', height: (50+ (i*8))+'px'} : {filter: "grayscale(100%)", width: (50+ (i*10))+'px', height: (50+ (i*8))+'px'}} />
+                                                        <img key={i} src={`${baseUrl}/termImg/myhonorimg/${item}.png`} style={i+1 <= badge ? { width: (50+ (i*10))+'px', height: (50+ (i*8))+'px'} : {filter: "grayscale(100%)", WebkitFilter: "grayscale(100%)", width: (50+ (i*10))+'px', height: (50+ (i*8))+'px'}} />
                                                     )
                                                 })
                                             }
