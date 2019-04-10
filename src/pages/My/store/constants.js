@@ -4,3 +4,4 @@ export const CANCEL_DETAIL_STATE = 'my/CANCEL_DETAIL_STATE';
 export const CHANGE_MY_SPORT_INFO = 'my/CHANGE_MY_SPORT_INFO';
 export const GET_MY_HONOR = 'my/GET_MY_HONOR';
 export const GET_GROUP_INFO = 'my/GET_GROUP_INFO';
+export const DELETE_EVALUATE = 'my/DELETE_EVALUATE';

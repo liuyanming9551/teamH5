@@ -64,25 +64,6 @@ export const getMysportInfo = (userCode) =>{
 }
 
 // 获取我的荣誉列表
-// const getMyHonor = (res) => ({
-//     type: constants.GET_MY_HONOR,
-//     myHonor: res,
-// })
-
-// export const getMyHonorList = (userCode) =>{
-//     return (dispatch) => {
-//         req.post("/api/User/HonorBadge",userCode)
-//             .then((res) => {
-
-//                 dispatch(getMyHonor(res))
-//             })
-//             .catch((res) => {
-//                 console.log(res)
-//             })
-//     }
-// }
-
-// 获取我的荣誉列表
 export function getMyHonorList (userCode) {
     return (dispatch) => {
         req.post("/api/User/HonorBadge",userCode)
@@ -114,6 +95,23 @@ export const getGroup = () =>{
             dispatch(changeGroupInfo(groupInfo))
         }).catch((res)=>{
             console.log(res)
+        })
+    }
+}
+
+// 删除评价
+export function deleteEvaluate (data, callback) {
+    return (dispatch) => {
+        req.post("/api/Evaluate/DeleteEvaluate", data)
+        .then((res) => {
+            dispatch({
+                type: constants.DELETE_EVALUATE,
+                data: res
+            });
+            callback && callback(res)
+        })
+        .catch((res) => {
+
         })
     }
 }

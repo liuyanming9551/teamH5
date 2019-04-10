@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Card, WingBlank, WhiteSpace, Carousel, Modal } from 'antd-mobile';
+import { Card, WingBlank, WhiteSpace, Carousel, Modal, Toast } from 'antd-mobile';
 import {Map} from "immutable";
 import {connect} from 'react-redux';
 import {withRouter} from "react-router-dom";
@@ -29,8 +29,19 @@ class UserInfo extends Component {
     }
 
     // 确认删除
-    confirmDelete = () => {
-        console.log("confirmDelete")
+    confirmDelete = (v) => {
+        const {userCode} = this.props;
+        const data = {
+            EvaluateCode: v
+        }
+        this.props.deleteEvaluate(data, (res) => {
+            if (res) {
+                Toast.success('删除成功', 1)
+            } else {
+                Toast.fail('删除失败', 1)
+            }
+            this.props.getUserInfo(userCode)
+        })
     }
 
     showModal = key => (e) => {
@@ -134,7 +145,7 @@ class UserInfo extends Component {
                                                         onClick={() =>
                                                             alert('是否删除？', '', [
                                                                 { text: '取消'},
-                                                                { text: '确定', onPress: () => {this.confirmDelete()} },
+                                                                { text: '确定', onPress: () => {this.confirmDelete(item.EvaluateCode)} },
                                                             ])
                                                         }
                                                     ></b>
@@ -271,6 +282,9 @@ const mapDispatch = (dispatch) => ({
         dispatch(actionCreators.getUserInformation(param));
         dispatch(actionCreators.getMysportInfo(sportParam));
         dispatch(actionCreators.getMyHonorList(param));
+    },
+    deleteEvaluate(data, callback) {
+        dispatch(actionCreators.deleteEvaluate(data, callback))
     }
 })
 export default connect(mapState,mapDispatch)(withRouter(UserInfo));
