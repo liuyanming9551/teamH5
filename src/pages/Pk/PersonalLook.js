@@ -48,8 +48,12 @@ class PersonalLook extends React.Component {
 
 
     handleReject = () => {
-        const {pkCode,pKAUserCode,pKBUserCode,rejectionTimes} = this.props.location.query;
-        const { changePkState } =this.props;
+        const {pkCode,pKAUserCode,pKBUserCode} = this.props.location.query;
+        const { changePkState,pkDetail } =this.props;
+        let rejectionTimes = '';
+        if(pkDetail){
+            rejectionTimes = Map(pkDetail).get('RejectionTimes')
+        }
         const parmas = {
             PKCode:pkCode,
             PKAccept:3,
@@ -59,7 +63,7 @@ class PersonalLook extends React.Component {
         }
         if(rejectionTimes >= 3){
             alert('拒绝超过3次，你将会被扣除2公里','确定拒绝?', [
-                { text: '取消', onPress: () => console.log('cancel') },
+                { text: '取消', onPress: () => {return false} },
                 {
                     text: '确定',
                     onPress: () =>{
@@ -68,13 +72,19 @@ class PersonalLook extends React.Component {
 
                 },
             ])
+        }else {
+            changePkState(parmas)
         }
 
 
     }
     handleAccept = () =>{
-        const {pkCode,pKAUserCode,pKBUserCode,rejectionTimes} = this.props.location.query;
-        const { changePkState } =this.props;
+        const {pkCode,pKAUserCode,pKBUserCode} = this.props.location.query;
+        const { changePkState,pkDetail } =this.props;
+        let rejectionTimes = '';
+        if(pkDetail){
+            rejectionTimes = Map(pkDetail).get('RejectionTimes')
+        }
         const parmas = {
             PKCode:pkCode,
             PKAccept:2,
@@ -179,8 +189,8 @@ class PersonalLook extends React.Component {
                     <Item extra={pkDetailData?pkDetailData.get('StartDate'):''}>发起日期</Item>
                     <Item extra={pkDetailData?pkDetailData.get('EndDate'):''}>结束日期</Item>
                     <Item extra={pkDetailData?pkDetailData.get('PKBUserName'):''}>被挑战者</Item>
-                    <Item extra={pkDetailData?pkDetailData.get('PKAAdjustedData'):''}>挑战者运动量（公里）</Item>
-                    <Item extra={pkDetailData?pkDetailData.get('PKBAdjustedData'):''}>被挑战者运动量（公里）</Item>
+                    <Item style={pkDetailData?pkDetailData.get('PKAAdjustedData')==="0"?{display:"none"}:{display:"block"}:{}} extra={pkDetailData?pkDetailData.get('PKAAdjustedData'):''}>挑战者运动量（公里）</Item>
+                    <Item style={pkDetailData?pkDetailData.get('PKBAdjustedData')==="0"?{display:"none"}:{display:"block"}:{}} extra={pkDetailData?pkDetailData.get('PKBAdjustedData'):''}>被挑战者运动量（公里）</Item>
                     <TextareaItem
                         value={pkDetailData?pkDetailData.get('PKProfit'):''}
                         editable={false}

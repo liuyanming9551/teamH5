@@ -59,6 +59,8 @@ class ViewMySport extends Component{
              })
 
          }
+         const{chooseImgIndex,isOpen} = this.state;
+         console.log(chooseImgIndex)
         return (
             <div>
                 <List  className="my-list">
@@ -72,7 +74,7 @@ class ViewMySport extends Component{
                 <WhiteSpace size='sm' />
                 <div className="imgViewList">
                     <WingBlank>
-                        <ImageSlides images={newImgList?newImgList:''} index={this.state.chooseImgIndex} isOpen={this.state.isOpen} onClose={this.handleClose} />
+                        <ImageSlides images={newImgList?newImgList:''} index={chooseImgIndex} isOpen={isOpen} onClose={this.handleClose} />
                         {
 
                             newImgList?newImgList.map((item,index) =>{
