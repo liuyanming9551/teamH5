@@ -71,6 +71,7 @@ class UserInfo extends Component {
         e.preventDefault(); // 修复 Android 上点击穿透
         this.setState({
             [key]: true,
+            evaluateContent: ''
         });
     }
 
