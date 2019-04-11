@@ -39,12 +39,13 @@ class ChangeDetail extends Component {
     }
     btnSubmit = () =>{
         const {changeUserDetail,userCode} = this.props;
-        const {introduceValue,skillValue, groupValue} = this.state;
+        const {introduceValue,skillValue} = this.state;
+        const [GroupId] = [...this.state.groupValue];
         let detailValue = {
             UserSkill:skillValue,
             UserSign:introduceValue,
             UserCode:userCode,
-            GroupId: groupValue
+            GroupId
         }
         changeUserDetail(detailValue)
     }
