@@ -27,11 +27,10 @@ class Sport extends Component {
     render() {
         const {rightControl, bannerData} =this.props;
         console.log('bannerData', bannerData)
-        let data = [];
-        if (bannerData) {
+        let data = ['termImg/sport/sport3.jpg'];
+        if (bannerData.size) {
             data = bannerData.toJS()
         }
-        console.log("data", data)
         return (
             <div className="sportPlane">
                  <header>
