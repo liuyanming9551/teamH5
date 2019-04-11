@@ -76,7 +76,6 @@ class ViewMySport extends Component{
                     <WingBlank>
                         <ImageSlides images={newImgList?newImgList:''} index={chooseImgIndex} isOpen={isOpen} onClose={this.handleClose} />
                         {
-
                             newImgList?newImgList.map((item,index) =>{
                                 return (
                                     <img key={item}
