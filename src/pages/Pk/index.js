@@ -25,7 +25,9 @@ class PkList extends PureComponent {
             dataSource,
             isLoading: false, // 是否显示加载状态
             height: document.documentElement.clientHeight,
-            showMask:false
+            showMask:false,
+            searchData: undefined,
+            searchStatus: undefined
         };
     }
 
@@ -66,17 +68,19 @@ class PkList extends PureComponent {
 
     // 下拉刷新
     onRefresh = () => {
+        const {searchData, searchStatus} = this.state;
         this.setState({
             pageNo: 1,
             totalPage: 0,
             couponList: [],
         }, () => {
-            this.requestCouponsList();
+            this.requestCouponsList(searchData, searchStatus);
         })
     };
 
     // 加载更多
     onEndReached = () => {
+        const {searchData, searchStatus} = this.state;
         if (this.state.isLoading || (this.state.totalPage < this.state.pageNo)) {
             Toast.hide();
             return;
@@ -84,7 +88,7 @@ class PkList extends PureComponent {
         this.setState({
             isLoading: true,
         }, () => {
-            this.requestCouponsList()
+            this.requestCouponsList(searchData, searchStatus)
         });
     };
 
@@ -183,14 +187,17 @@ class PkList extends PureComponent {
     }
     onConfirm = (options) =>{
         const [pKDate,pKAccept] = options;
-        let searchData = pKDate?pKDate.label:pKDate;
-        let searState = pKAccept?pKAccept.label:pKAccept;
+        let {searchData, searchStatus} = this.state;
+        searchData = pKDate?pKDate.label:pKDate;
+        searchStatus = pKAccept?pKAccept.label:pKAccept;
         this.setState({
             pageNo: 1,
             totalPage: 0,
             couponList: [],
+            searchData,
+            searchStatus
         }, () => {
-            this.requestCouponsList(searchData,searState);
+            this.requestCouponsList(searchData,searchStatus);
         })
     }
     render() {

@@ -24,7 +24,8 @@ class AdjustmentList extends Component {
             dataSource,
             isLoading: false, // 是否显示加载状态
             height: document.documentElement.clientHeight,
-            showMask:false
+            showMask: false,
+            searchData: undefined
         };
     }
     componentDidMount(){
@@ -66,17 +67,19 @@ class AdjustmentList extends Component {
 
     // 下拉刷新
     onRefresh = () => {
+        const {searchData} = this.state;
         this.setState({
             pageNo: 1,
             totalPage: 0,
             activityList: [],
         },()=>{
-            this.getActivityList();
+            this.getActivityList(searchData);
         })
     };
 
     // 加载更多
     onEndReached = () => {
+        const {searchData} = this.state;
         if (this.state.isLoading || (this.state.totalPage < this.state.pageNo)) {
             Toast.hide();
             return;
@@ -84,7 +87,7 @@ class AdjustmentList extends Component {
         this.setState({
             isLoading: true,
         },()=>{
-            this.getActivityList()
+            this.getActivityList(searchData)
         });
     };
     onClose = (msg) =>{
@@ -93,12 +96,14 @@ class AdjustmentList extends Component {
         })
     }
     onConfirm = (options) =>{
-        const [pKDate] = options;
-        let searchData = pKDate?pKDate.label:pKDate;
+        const [adjustDate] = options;
+        let {searchData} = this.state;
+        searchData = adjustDate ? adjustDate.label : adjustDate;
         this.setState({
             pageNo: 1,
             totalPage: 0,
-            couponList: [],
+            activityList: [],
+            searchData
         }, () => {
             this.getActivityList(searchData);
         })

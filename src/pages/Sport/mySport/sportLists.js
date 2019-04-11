@@ -25,7 +25,9 @@ class SportList extends Component {
             dataSource,
             isLoading: false, // 是否显示加载状态
             height: document.documentElement.clientHeight,
-            showMask:false
+            showMask:false,
+            searchData: undefined,
+            searchStatus: undefined
         };
     }
     componentDidMount() {
@@ -87,17 +89,19 @@ class SportList extends Component {
 
     // 下拉刷新
     onRefresh = () => {
+        let {searchData, searchStatus} = this.state;
         this.setState({
             pageNo: 1,
             totalPage: 0,
             couponList: [],
         }, () => {
-            this.requestCouponsList();
+            this.requestCouponsList(searchData, searchStatus);
         })
     };
 
     // 加载更多
     onEndReached = () => {
+        let {searchData, searchStatus} = this.state;
         if (this.state.isLoading || (this.state.totalPage < this.state.pageNo)) {
             Toast.hide();
             return;
@@ -105,7 +109,7 @@ class SportList extends Component {
         this.setState({
             isLoading: true,
         }, () => {
-            this.requestCouponsList()
+            this.requestCouponsList(searchData, searchStatus)
         });
     };
 
@@ -144,14 +148,17 @@ class SportList extends Component {
     }
     onConfirm = (options) =>{
         const [runDateNum,auditStatus] = options;
-        let searchData = runDateNum?runDateNum.label:runDateNum;
-        let searState = auditStatus?auditStatus.label:auditStatus;
+        let {searchData, searchStatus} = this.state;
+        searchData = runDateNum?runDateNum.label:runDateNum;
+        searchStatus = auditStatus?auditStatus.label:auditStatus;
         this.setState({
             pageNo: 1,
             totalPage: 0,
             couponList: [],
+            searchData,
+            searchStatus
         }, () => {
-            this.requestCouponsList(searchData,searState);
+            this.requestCouponsList(searchData,searchStatus);
         })
     }
 
