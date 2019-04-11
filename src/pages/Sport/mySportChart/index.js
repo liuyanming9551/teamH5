@@ -58,7 +58,7 @@ class MySportChart extends React.Component {
         };
         return (
             <div>
-                <Chart height={300} data={mySportChartList} style={{paddingRight:'40px'}} scale={cols} forceFit>
+                <Chart height={300} data={mySportChartList} placeholder scale={cols} style={{background:"rgb(241, 239, 239)",color: "#999"}} forceFit>
                     <Axis name="date" />
                     <Axis name="value" label={{
                         formatter: val => `${val}km`
@@ -68,7 +68,17 @@ class MySportChart extends React.Component {
                             type: "y"
                         }}
                     />
-                    <Geom type="line" position="date*value" size={2} />
+                    <Geom type="line"
+                          position="date*value"
+                          size={2}
+                          tooltip={['date*value', (date, value) => {
+                              return {
+                                  name: '公里',
+                                  title: date,
+                                  value: value
+                              };
+                          }]}
+                    />
                     <Geom
                         type="point"
                         position="date*value"

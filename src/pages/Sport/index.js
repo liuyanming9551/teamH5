@@ -103,6 +103,7 @@ class Sport extends Component {
                         <WhiteSpace size="lg" />
                     </WingBlank>
                     <div className='personSportChartLabel'>上周个人运动折线图</div>
+                    <WhiteSpace size="lg" />
                     <MySportChart />
                 </footer>
             </div>
