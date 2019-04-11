@@ -115,7 +115,7 @@ class UserInfo extends Component {
             UserCode: isEvaluatedCode
         }
         if (evaluateContent) {
-            if (evaluateList.length < 7) {
+            if (evaluateList.length < 6) {
                 this.props.addComment(params, (res) => {
                     if (res.IsSuccess) {
                         Toast.success('添加评价成功', 1);
@@ -134,9 +134,8 @@ class UserInfo extends Component {
     }
 
     render() {
-        const {hisInformation,userModel,hisSportData} = this.props;
+        const {hisInformation, hisSportData} = this.props;
         let honorImgData = ['grade1', 'grade2', 'grade3', 'grade4', 'grade5', 'grade6', 'grade7']
-        let map = Map(userModel);
         let cardInfoData = '';
         let cardList = '';
         let hisInfoData = '';
@@ -300,7 +299,7 @@ class UserInfo extends Component {
                                             {
                                                 honorImgData.map((item, i) => {
                                                     return (
-                                                        <img key={i} src={`${baseUrl}/termImg/myhonorimg/${item}.png`} style={i+1 <= badge ? { width: (50+ (i*10))+'px', height: (50+ (i*8))+'px'} : {filter: "grayscale(100%)", WebkitFilter: "grayscale(100%)", width: (50+ (i*10))+'px', height: (50+ (i*8))+'px'}} />
+                                                        <img key={i} src={`${baseUrl}/termImg/myhonorimg/${item}.png`} style={i+1 <= badge ? { width: (50+ (i*10))+'px', height: (50+ (i*10))+'px'} : {filter: "grayscale(100%)", WebkitFilter: "grayscale(100%)", width: (50+ (i*10))+'px', height: (50+ (i*10))+'px'}} />
                                                     )
                                                 })
                                             }
