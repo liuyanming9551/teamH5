@@ -15,16 +15,19 @@ class CheckDetail extends Component{
         }
     }
     componentDidMount() {
+
+
         const dataCode = this.props.match.params.code;
         const {getCheckDetail} = this.props;
         getCheckDetail(dataCode)
     }
     onActiveBtn = (state) =>{
         const dataCode = this.props.match.params.code;
-        const {checkSportData} = this.props;
+        const {checkSportData,userCode} = this.props;
         let sportData = {
             DataCodeArray:[dataCode],
-            AuditStatus:state
+            AuditStatus:state,
+            Auditor:userCode
         }
         checkSportData(sportData)
     }
@@ -46,6 +49,7 @@ class CheckDetail extends Component{
     handleClose = () => {
         this.setState({
             isOpen: false,
+            chooseImgIndex:0
         });
     };
     render(){
@@ -99,6 +103,7 @@ class CheckDetail extends Component{
     }
 }
 const mapState = (state) => ({
+    userCode:state.getIn(['login','userCode']),
     sportDetailData:state.getIn(['sport','sportDetailData']),
     isCheck:state.getIn(['sport','isCheck'])
 })

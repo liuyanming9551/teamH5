@@ -40,6 +40,7 @@ class adjustmentDetail extends Component{
     handleClose = () => {
         this.setState({
             isOpen: false,
+            chooseImgIndex:0
         });
     };
     render(){

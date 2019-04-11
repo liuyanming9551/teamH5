@@ -17,37 +17,6 @@ class MySportChart extends React.Component {
         if(mySportChartData){
             mySportChartList = mySportChartData.toJS();
         }
-
-        const data = [
-            {
-                date: "04-1",
-                value: 1
-            },
-            {
-                date: "04-2",
-                value: 3
-            },
-            {
-                date: "04-3",
-                value: 3
-            },
-            {
-                date: "04-4",
-                value: 3
-            },
-            {
-                date: "04-5",
-                value: 3
-            },
-            {
-                date: "04-6",
-                value: 3
-            },
-            {
-                date: "04-7",
-                value: 3
-            }
-        ];
         const cols = {
             value: {
                 min: 0
@@ -58,7 +27,7 @@ class MySportChart extends React.Component {
         };
         return (
             <div>
-                <Chart height={300} data={mySportChartList} placeholder scale={cols} style={{background:"rgb(241, 239, 239)",color: "#999"}} forceFit>
+                <Chart height={300} data={mySportChartList} scale={cols}  style={{background:"rgb(241, 239, 239)",color: "#999",paddingRight:'40px'}} forceFit>
                     <Axis name="date" />
                     <Axis name="value" label={{
                         formatter: val => `${val}km`

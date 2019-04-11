@@ -44,6 +44,7 @@ class ViewMySport extends Component{
 
         this.setState({
             isOpen: false,
+            chooseImgIndex:0
         });
     };
     render(){
@@ -57,10 +58,8 @@ class ViewMySport extends Component{
              imgList.forEach((item) => {
                  newImgList.push(`${baseUrl}/${item}`)
              })
-
          }
          const{chooseImgIndex,isOpen} = this.state;
-         console.log(chooseImgIndex)
         return (
             <div>
                 <List  className="my-list">

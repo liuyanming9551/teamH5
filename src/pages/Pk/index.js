@@ -151,7 +151,7 @@ class PkList extends PureComponent {
                 }
                 return {
                     innerBg: {
-                        background: "#1131e6"
+                        background: "#38b0e6"
                     },
                     vaderWh: {
                         width: countWh
