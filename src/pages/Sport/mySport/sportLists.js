@@ -162,6 +162,10 @@ class SportList extends Component {
         })
     }
 
+    deleteDisabled = () => {
+        Toast.info("已审核的数据不能删除", 1)
+    }
+
     render() {
         const searchData = [{
             labelTips:"时间区间",
@@ -231,11 +235,12 @@ class SportList extends Component {
                                     },
                                     {
                                         text: '删除',
-                                        onPress: () => alert('是否删除？', '', [
+                                        
+                                        onPress: rowData.AuditStatus == 0 ? () => alert('是否删除？', '', [
                                             { text: '取消'},
                                             { text: '确定', onPress: () => {this.confirmDelete(rowData.DataCode)} },
-                                        ]),
-                                        style: { backgroundColor: '#F4333C', color: 'white' },
+                                        ]) : () => {this.deleteDisabled()},
+                                        style: rowData.AuditStatus == 0 ? { backgroundColor: '#F4333C', color: 'white' } : { backgroundColor: '#999999', color: 'white' },
                                     },
                                 ]}
                                     onOpen={() => console.log('global open')}
