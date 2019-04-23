@@ -57,7 +57,7 @@ class PersonalLook extends React.Component {
         const parmas = {
             PKCode:pkCode,
             PKAccept:3,
-            RejectionTimes:rejectionTimes,
+            RejectionTimes:++rejectionTimes,
             PKAUserCode:pKAUserCode,
             PKBUserCode:pKBUserCode
         }
