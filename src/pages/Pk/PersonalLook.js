@@ -8,7 +8,6 @@ const alert = Modal.alert;
 class PersonalLook extends React.Component {
     constructor(props) {
         super(props)
-
     }
     componentDidMount() {
         const {pkCode,pkAccept,pKAUserCode,pKBUserCode,rejectionTimes} = this.props.location.query;
@@ -129,7 +128,7 @@ class PersonalLook extends React.Component {
             for (let i = 0 ; i < newList.length ; i++) {
                 if(newList[i]){
                     pkDetailList.push(
-                        <div key={newList[i].PKCode} className='pkDetailListWrap'>
+                        <div key={newList[i].RunDate} className='pkDetailListWrap'>
                             <div className='pkItemDetail'>
                                 <span className='pkItem'>{newList[i].RunDate}</span>
                                 <span className='pkItem'>{newList[i].RunDistanceA}</span>
