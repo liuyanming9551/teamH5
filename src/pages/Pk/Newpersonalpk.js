@@ -94,7 +94,7 @@ class Newpersonalpk extends React.Component {
                         mode="date"
                         title="选择日期"
                         extra="Optional"
-                        minDate={minDate}
+                        // minDate={minDate}
                         {...getFieldProps('startValue', {
                             initialValue: minDate,
                         })}
@@ -105,7 +105,7 @@ class Newpersonalpk extends React.Component {
                         mode="date"
                         title="选择日期"
                         extra="Optional"
-                        minDate={minDate}
+                        // minDate={minDate}
                         {...getFieldProps('endValue', {
                             initialValue: minDate,
                         })}
