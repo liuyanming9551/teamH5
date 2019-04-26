@@ -193,8 +193,8 @@ class CreateSport extends Component {
                         mode="date"
                         title="选择日期"
                         extra="Optional"
-                        // minDate={minDate}
-                        // maxDate={maxDate}
+                        minDate={minDate}
+                        maxDate={maxDate}
                         value={this.state.date}
                         {...getFieldProps('dp', {
                             initialValue: this.state.date,

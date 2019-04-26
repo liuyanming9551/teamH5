@@ -12,9 +12,9 @@ let sources = {};
  * @date 2019/3/15
 */
 //测试环境
-const baseUrl = 'http://139.129.222.23:8021';
+// const baseUrl = 'http://139.129.222.23:8021';
 //正式环境
-//const baseUrl = 'http://139.129.222.23:8031';
+const baseUrl = 'http://139.129.222.23:8031';
 
 // const baseUrl = 'http://10.168.1.138:5656';
 
