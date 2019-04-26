@@ -60,7 +60,7 @@ class PersonalLook extends React.Component {
             PKAUserCode:pKAUserCode,
             PKBUserCode:pKBUserCode
         }
-        if(rejectionTimes >= 3){
+        if(rejectionTimes > 3){
             alert('拒绝超过3次，你将会被扣除2公里','确定拒绝?', [
                 { text: '取消', onPress: () => {return false} },
                 {

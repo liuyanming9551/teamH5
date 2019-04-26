@@ -25,7 +25,7 @@ class PkList extends PureComponent {
             dataSource,
             isLoading: false, // 是否显示加载状态
             height: document.documentElement.clientHeight,
-            showMask:false,
+            showMask: false,
             searchData: undefined,
             searchStatus: undefined
         };
@@ -40,7 +40,7 @@ class PkList extends PureComponent {
     }
 
     //获取列表
-    requestCouponsList(pKDate=0,pKAccept=4) {
+    requestCouponsList(pKDate = 0, pKAccept = 4) {
         let dataInfo = {
             PKDate: pKDate,
             PKAccept: pKAccept,
@@ -147,7 +147,7 @@ class PkList extends PureComponent {
                 if (runDistanceA === runDistanceB) {
                     countWh = "50%"
                 } else {
-                    countWh = parseInt(runDistanceA / (runDistanceA + runDistanceB) * 100)  + '%';
+                    countWh = parseInt(runDistanceA / (runDistanceA + runDistanceB) * 100) + '%';
                 }
                 return {
                     innerBg: {
@@ -180,16 +180,24 @@ class PkList extends PureComponent {
 
 
     }
-    onClose = (msg) =>{
+
+    isOwnData(userCode, PKAUserCode, PKBUserCode) {
+        if (userCode === PKAUserCode || userCode === PKBUserCode) {
+            return true
+        }
+        return false
+    }
+
+    onClose = (msg) => {
         this.setState({
-            showMask:msg.showMask
+            showMask: msg.showMask
         })
     }
-    onConfirm = (options) =>{
-        const [pKDate,pKAccept] = options;
+    onConfirm = (options) => {
+        const [pKDate, pKAccept] = options;
         let {searchData, searchStatus} = this.state;
-        searchData = pKDate?pKDate.label:pKDate;
-        searchStatus = pKAccept?pKAccept.label:pKAccept;
+        searchData = pKDate ? pKDate.label : pKDate;
+        searchStatus = pKAccept ? pKAccept.label : pKAccept;
         this.setState({
             pageNo: 1,
             totalPage: 0,
@@ -197,67 +205,75 @@ class PkList extends PureComponent {
             searchData,
             searchStatus
         }, () => {
-            this.requestCouponsList(searchData,searchStatus);
+            this.requestCouponsList(searchData, searchStatus);
         })
     }
+
     render() {
         const searchData = [{
-            labelTips:"时间区间",
-            dataList:[
+            labelTips: "时间区间",
+            dataList: [
                 {
-                    value:'全部',
-                    label:0
+                    value: '全部',
+                    label: 0
                 },
                 {
-                    value:'今天',
-                    label:1
+                    value: '今天',
+                    label: 1
                 },
                 {
-                    value:'本周内',
-                    label:2
+                    value: '本周内',
+                    label: 2
                 },
                 {
-                    value:'本月内',
-                    label:3
+                    value: '本月内',
+                    label: 3
                 },
                 {
-                    value:'本季度',
-                    label:4
+                    value: '本季度',
+                    label: 4
                 }
             ],
-            id:1
-        },{
-            labelTips:"消息状态",
-            dataList:[
+            id: 1
+        }, {
+            labelTips: "消息状态",
+            dataList: [
                 {
-                    value:'全部',
-                    label:4
+                    value: '全部',
+                    label: 4
                 },
                 {
-                    value:'未读',
-                    label:0
+                    value: '未读',
+                    label: 0
                 },
                 {
-                    value:'已读',
-                    label:1
+                    value: '已读',
+                    label: 1
                 },
                 {
-                    value:'接受',
-                    label:2
+                    value: '接受',
+                    label: 2
                 },
                 {
-                    value:'拒绝',
-                    label:3
+                    value: '拒绝',
+                    label: 3
                 }
             ],
-            id:2
+            id: 2
         }]
         const row = (rowData, sectionID, rowID) => {
-            let queryInfo = {pkCode: rowData.PKCode, pkAccept: rowData.PKAccept, pKAUserCode:rowData.PKAUserCode,pKBUserCode: rowData.PKBUserCode,rejectionTimes:rowData.RejectionTimes};
+            let queryInfo = {
+                pkCode: rowData.PKCode,
+                pkAccept: rowData.PKAccept,
+                pKAUserCode: rowData.PKAUserCode,
+                pKBUserCode: rowData.PKBUserCode,
+                rejectionTimes: rowData.RejectionTimes
+            };
             let path = {
                 pathname: '/pk/personallook',
                 query: queryInfo
             }
+            const {userCode} = this.props;
             return (
                 <div key={rowID} style={{margin: '10px 0'}}>
                     <List>
@@ -270,6 +286,8 @@ class PkList extends PureComponent {
                                         </div>
                                         <div className='dateWrap'>
                                             <span className='startDate'>{rowData.StartDate}</span>
+                                            <span className='iconfont icon-dacumojian'
+                                                  style={this.isOwnData(userCode,rowData.PKAUserCode,rowData.PKBUserCode)?{display:'block',fontSize: '20px'}:{display:'none'}}></span>
                                             <span className='endDate'>{rowData.EndDate}</span>
                                         </div>
                                         <div className='receive'>
@@ -280,10 +298,11 @@ class PkList extends PureComponent {
                                 </Badge>
 
                             </List.Item>
-                            <div className='pkListInner' style={this.getBgColor(rowData.PKAccept,rowData.RunDistanceA,rowData.RunDistanceB).innerBg}>
+                            <div className='pkListInner'
+                                 style={this.getBgColor(rowData.PKAccept, rowData.RunDistanceA, rowData.RunDistanceB).innerBg}>
                                 <div className="barContro_space">
                                     <span className="vader"
-                                          style={this.getBgColor(rowData.PKAccept,rowData.RunDistanceA,rowData.RunDistanceB).vaderWh}>
+                                          style={this.getBgColor(rowData.PKAccept, rowData.RunDistanceA, rowData.RunDistanceB).vaderWh}>
                                     </span>
                                 </div>
                             </div>
@@ -308,9 +327,9 @@ class PkList extends PureComponent {
                             }
                         },
                         {
-                            text: '筛选', onPress: () =>{
+                            text: '筛选', onPress: () => {
                                 this.setState({
-                                    showMask:true
+                                    showMask: true
                                 })
                             }
                         },
@@ -345,7 +364,7 @@ class PkList extends PureComponent {
 }
 
 const mapState = (state) => ({
-
+    userCode:state.getIn(['login','userCode'])
 })
 const mapDispatch = (dispatch) => ({
     changeSelectShows() {
